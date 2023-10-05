@@ -1,42 +1,82 @@
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+# ignore files for git
 
-### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-*.iws
-*.iml
-*.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+#*.jar
+*.rar
+*.tar
+*.zip
+*.war
+*.ear
+*.rpm
+
+# Directories & config files #
+##############################
+CVS/
 bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+build/
+target/
+test-output/
+dist/
+logs/
+node_modules/
+coverage/
+cmake-build-debug/
+tmp
+tmp/
+out/
+out
+data/
+data
+.metadata/
+.plugins/
+.settings/
+.JETEmitters/
+.svn/
+.iml/
+.idea/
+.angular/
+.gradle/
+*.classpath
+*.project
+*.tern-project
+.gitignore
+.recommenders
+.vagrant
+.idea
+*.iml
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# Logs and databases #
+######################
+*.log
+*.tlog
+#*.sql
+#*.sqlite
 
-### VS Code ###
-.vscode/
-
-### Mac OS ###
+# OS generated files #
+######################
+.lock
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+*.db
