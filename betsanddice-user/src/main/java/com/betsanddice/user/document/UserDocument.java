@@ -25,7 +25,7 @@ public class UserDocument {
     private UUID uuid;
 
     @Field(name = "name")
-    private String name;
+    private String firstName;
 
     @Field(name = "surname")
     private String surname;
