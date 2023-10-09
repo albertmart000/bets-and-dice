@@ -1,10 +1,12 @@
 [
   {
-    "_id": "6523ddc0a17f34501653efcb",
+    "_id": {
+      "$uuid": "a16821e2-cf3a-4cc2-b767-f331a5ef55e5"
+    },
     "name": "Admin",
     "surname": "Admin",
     "nickname": "Admin",
-    "email": "adminr@email.com",
+    "email": "admin@email.com",
     "password": "admin",
     "registered": "2014-08-14T07:19:21 -02:00",
     "role": "ADMIN",
@@ -12,7 +14,9 @@
     "stadistics": []
   },
   {
-    "_id": "6523ddc0ab08a1403104fef7",
+    "_id": {
+      "$uuid": "706507d4-b89f-41eb-a7eb-41838d08a08f"
+    },
     "name": "Robinson",
     "surname": "Price",
     "nickname": "Player1",
@@ -24,7 +28,9 @@
     "stadistics": []
   },
   {
-    "_id": "6523ddc0a5591dc95ec42f60",
+    "_id": {
+      "$uuid": "81099a9e-0d59-4571-a04c-31a08a711e3b"
+    },
     "name": "Morrow",
     "surname": "Montgomery",
     "nickname": "Player2",
@@ -36,7 +42,9 @@
     "stadistics": []
   },
   {
-    "_id": "6523ddc0acf685fa1baf29cb",
+    "_id": {
+      "$uuid": "1d16966d-8f33-4dde-806e-d11126ff9759"
+    },
     "name": "Leona",
     "surname": "Pennington",
     "nickname": "Player3",
@@ -48,7 +56,9 @@
     "stadistics": []
   },
   {
-    "_id": "6523ddc0812c6b3bf69d591c",
+    "_id": {
+      "$uuid": "58c15ea5-5970-4897-8044-c50f00c4eba8"
+    },
     "name": "Tabatha",
     "surname": "Thompson",
     "nickname": "Player4",
@@ -60,7 +70,9 @@
     "stadistics": []
   },
   {
-    "_id": "6523ddc0ddf7d8b5603f6610",
+    "_id": {
+      "$uuid": "5b589dac-c5c7-4d78-a79d-e36902bff99f"
+    },
     "name": "Natalia",
     "surname": "Davenport",
     "nickname": "Player5",
@@ -72,7 +84,9 @@
     "stadistics": []
   },
   {
-    "_id": "6523ddc0026486c3a581230d",
+    "_id": {
+      "$uuid": "29196e91-2ad1-4e23-b191-110ea7211423"
+    },
     "name": "Michele",
     "surname": "Petersen",
     "nickname": "Player6",
@@ -84,7 +98,9 @@
     "stadistics": []
   },
   {
-    "_id": "6523ddc02ea56ef25f76e7a0",
+    "_id": {
+      "$uuid": "7ea4b4c4-b76c-4f3d-a6dc-7112ac1daeb6"
+    },
     "name": "Rene",
     "surname": "Leon",
     "nickname": "Player7",
@@ -96,7 +112,9 @@
     "stadistics": []
   },
   {
-    "_id": "6523ddc05d818690ce5cba0c",
+    "_id": {
+      "$uuid": "e0f6b820-3fe5-4d43-b7c9-c20486e9adab"
+    },
     "name": "Roberson",
     "surname": "Booth",
     "nickname": "Player8",
@@ -108,7 +126,9 @@
     "stadistics": []
   },
   {
-    "_id": "6523ddc0d49a7eb0ebf74ee8",
+    "_id": {
+      "$uuid": "270402da-b57d-471d-a68a-67c77aa1ac2d"
+    },
     "name": "Wise",
     "surname": "Bennett",
     "nickname": "Player9",
