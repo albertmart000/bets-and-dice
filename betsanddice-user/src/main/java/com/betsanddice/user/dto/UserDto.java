@@ -25,7 +25,7 @@ public class UserDto {
     @JsonProperty(value = "nickname", index = 2)
     private String nickname;
 
-    @JsonProperty(value = "user_id", index = 3)
+    @JsonProperty(value = "email", index = 3)
     private String email;
 
     @JsonProperty(value = "registered", index = 4)
