@@ -1,0 +1,142 @@
+[
+  {
+    "_id": {
+      "$uuid": "a16821e2-cf3a-4cc2-b767-f331a5ef55e5"
+    },
+    "name": "Admin",
+    "surname": "Admin",
+    "nickname": "Admin",
+    "email": "admin@email.com",
+    "password": "admin",
+    "registered": "2014-08-14T07:19:21 -02:00",
+    "role": "ADMIN",
+    "games": [],
+    "stadistics": []
+  },
+  {
+    "_id": {
+      "$uuid": "706507d4-b89f-41eb-a7eb-41838d08a08f"
+    },
+    "name": "Robinson",
+    "surname": "Price",
+    "nickname": "Player1",
+    "email": "robinsonprice@email.com",
+    "password": "player1",
+    "registered": "2018-02-28T06:44:46 -01:00",
+    "role": "YOUNGER",
+    "games": [],
+    "stadistics": []
+  },
+  {
+    "_id": {
+      "$uuid": "81099a9e-0d59-4571-a04c-31a08a711e3b"
+    },
+    "name": "Morrow",
+    "surname": "Montgomery",
+    "nickname": "Player2",
+    "email": "morrowmontgomery@email.com",
+    "password": "player2",
+    "registered": "2023-01-31T12:46:29 -01:00",
+    "role": "YOUNGER",
+    "games": [],
+    "stadistics": []
+  },
+  {
+    "_id": {
+      "$uuid": "1d16966d-8f33-4dde-806e-d11126ff9759"
+    },
+    "name": "Leona",
+    "surname": "Pennington",
+    "nickname": "Player3",
+    "email": "leonapennington@email.com",
+    "password": "player3",
+    "registered": "2014-04-17T06:45:46 -02:00",
+    "role": "YOUNGER",
+    "games": [],
+    "stadistics": []
+  },
+  {
+    "_id": {
+      "$uuid": "58c15ea5-5970-4897-8044-c50f00c4eba8"
+    },
+    "name": "Tabatha",
+    "surname": "Thompson",
+    "nickname": "Player4",
+    "email": "tabathathompson@email.com",
+    "password": "player4",
+    "registered": "2017-05-03T12:52:31 -02:00",
+    "role": "BEGINNER",
+    "games": [],
+    "stadistics": []
+  },
+  {
+    "_id": {
+      "$uuid": "5b589dac-c5c7-4d78-a79d-e36902bff99f"
+    },
+    "name": "Natalia",
+    "surname": "Davenport",
+    "nickname": "Player5",
+    "email": "nataliadavenport@email.com",
+    "password": "player5",
+    "registered": "2018-05-03T02:13:28 -02:00",
+    "role": "BEGINNER",
+    "games": [],
+    "stadistics": []
+  },
+  {
+    "_id": {
+      "$uuid": "29196e91-2ad1-4e23-b191-110ea7211423"
+    },
+    "name": "Michele",
+    "surname": "Petersen",
+    "nickname": "Player6",
+    "email": "michelepetersen@email.com",
+    "password": "player6",
+    "registered": "2020-05-09T11:09:13 -02:00",
+    "role": "INTERMEDIATE",
+    "games": [],
+    "stadistics": []
+  },
+  {
+    "_id": {
+      "$uuid": "7ea4b4c4-b76c-4f3d-a6dc-7112ac1daeb6"
+    },
+    "name": "Rene",
+    "surname": "Leon",
+    "nickname": "Player7",
+    "email": "reneleon@email.com",
+    "password": "player7",
+    "registered": "2019-02-15T10:16:01 -01:00",
+    "role": "INTERMEDIATE",
+    "games": [],
+    "stadistics": []
+  },
+  {
+    "_id": {
+      "$uuid": "e0f6b820-3fe5-4d43-b7c9-c20486e9adab"
+    },
+    "name": "Roberson",
+    "surname": "Booth",
+    "nickname": "Player8",
+    "email": "robersonbooth@email.com",
+    "password": "player8",
+    "registered": "2020-07-14T08:12:25 -02:00",
+    "role": "ADVANCED",
+    "games": [],
+    "stadistics": []
+  },
+  {
+    "_id": {
+      "$uuid": "270402da-b57d-471d-a68a-67c77aa1ac2d"
+    },
+    "name": "Wise",
+    "surname": "Bennett",
+    "nickname": "Player9",
+    "email": "wisebennett@email.com",
+    "password": "player9",
+    "registered": "2016-11-29T01:14:05 -01:00",
+    "role": "ADVANCED",
+    "games": [],
+    "stadistics": []
+  }
+]

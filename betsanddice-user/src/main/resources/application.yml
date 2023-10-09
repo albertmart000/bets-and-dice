@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: betsanddice-user
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  jmx:
+    enabled: true
+  data:
+    mongodb:
+      uri: mongodb://admin_user:LuckyLuc000@localhost:27017/users
+      uuid-representation: standard
+
+server:
+  port: 8762
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  security:
+    enabled: false
+
+url:
+  connection_timeout: 30000
+  maxBytesInMemory: 30000000
