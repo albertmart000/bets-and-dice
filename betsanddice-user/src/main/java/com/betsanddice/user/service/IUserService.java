@@ -1,4 +1,4 @@
 package com.betsanddice.user.service;
 
-public class IUserService {
+public interface IUserService {
 }
