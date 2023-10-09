@@ -39,7 +39,7 @@ public class UserDocument {
     @Field(name = "password")
     private String password;
 
-    @Field(name="registration_date")
+    @Field(name="registered")
     private LocalDateTime registrationDate;
 
     @Field(name = "games")
