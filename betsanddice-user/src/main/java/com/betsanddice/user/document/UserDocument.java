@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -41,6 +42,9 @@ public class UserDocument {
 
     @Field(name="registered")
     private LocalDateTime registrationDate;
+
+    @Field(name = "cash")
+    private BigDecimal cash;
 
     @Field(name = "games")
     private List<UUID> games;
