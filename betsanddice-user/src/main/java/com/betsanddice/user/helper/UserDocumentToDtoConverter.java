@@ -21,8 +21,8 @@ public class UserDocumentToDtoConverter{
         ModelMapper mapper = new ModelMapper();
         Converter<LocalDateTime, String> fromLocalDateTimeToString = new AbstractConverter<>() {
             @Override
-            protected String convert(LocalDateTime creationDateFromDocument) {
-                return creationDateFromDocument.format(CUSTOM_FORMATTER);
+            protected String convert(LocalDateTime localDateFromDocument) {
+                return localDateFromDocument.format(CUSTOM_FORMATTER);
             }
         };
 
