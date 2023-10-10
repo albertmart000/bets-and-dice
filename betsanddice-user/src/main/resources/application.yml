@@ -11,6 +11,14 @@ spring:
       uri: mongodb://admin_user:LuckyLuc000@localhost:27017/users
       uuid-representation: standard
 
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui-custom.html"
+    operationsSorted: method
+  api-docs:
+    enable: true
+    path: "/api-docs"
+
 server:
   port: 8762
 
