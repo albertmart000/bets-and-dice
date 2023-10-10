@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -22,13 +23,16 @@ public class UserDto {
     @JsonProperty(value = "name", index = 1)
     private String name;
 
-    @JsonProperty(value = "nickname", index = 2)
+    @JsonProperty(value = "birthdate", index = 2)
+    private LocalDate birthdate;
+
+    @JsonProperty(value = "nickname", index = 3)
     private String nickname;
 
-    @JsonProperty(value = "email", index = 3)
+    @JsonProperty(value = "email", index = 4)
     private String email;
 
-    @JsonProperty(value = "registered", index = 4)
+    @JsonProperty(value = "registered", index = 5)
     private LocalDateTime registrationDate;
 
 }

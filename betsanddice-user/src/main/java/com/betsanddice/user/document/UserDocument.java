@@ -30,6 +30,9 @@ public class UserDocument {
     @Field(name = "surname")
     private String surname;
 
+    @Field(name = "birthdate")
+    private String birthdate;
+
     @Field(name = "nickname")
     private String nickname;
 
