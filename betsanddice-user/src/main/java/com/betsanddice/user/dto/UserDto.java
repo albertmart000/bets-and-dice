@@ -24,7 +24,7 @@ public class UserDto {
     private String name;
 
     @JsonProperty(value = "birthdate", index = 2)
-    private LocalDate birthdate;
+    private String birthdate;
 
     @JsonProperty(value = "nickname", index = 3)
     private String nickname;
@@ -33,6 +33,6 @@ public class UserDto {
     private String email;
 
     @JsonProperty(value = "registered", index = 5)
-    private LocalDateTime registrationDate;
+    private String registrationDate;
 
 }
