@@ -1,0 +1,13 @@
+{
+  "user_id":  "81099a9e-0d59-4571-a04c-31a08a711e3b",
+  "name": "Morrow",
+  "surname": "Montgomery",
+  "birthdate" :{ "$date": "2000-03-03T00:00:00.000+00:00"},
+  "nickname": "Player2",
+  "email": "morrowmontgomery@email.com",
+  "password": "player2",
+  "registered": { "$date": "2023-01-31T12:46:29 -01:00"},
+  "cash": 100,
+  "games": ["dcacb291-b4aa-4029-8e9b-284c8ca80296", "09fabe32-7362-4bfb-ac05-b7bf854c6e0f"],
+  "stadistics": ["70e9755e-9e83-41d3-853a-665f1f2a2f5c", "bb7897b8-517d-4843-8c17-e347aba086ca"]
+}
