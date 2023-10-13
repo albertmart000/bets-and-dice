@@ -29,9 +29,6 @@ import static org.mockito.Mockito.when;
 @WebFluxTest(controllers = GlobalExceptionHandlerTest.class)
 class GlobalExceptionHandlerTest {
 
-    private final String REQUEST = "Invalid request";
-    private final HttpStatus BAD_REQUEST = HttpStatus.BAD_REQUEST;
-
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
     @MockBean
@@ -48,6 +45,8 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void testHandleResponseStatusException() {
+        String REQUEST = "Invalid request";
+        HttpStatus BAD_REQUEST = HttpStatus.BAD_REQUEST;
 
         when(responseStatusException.getStatusCode()).thenReturn(BAD_REQUEST);
         when(responseStatusException.getReason()).thenReturn(REQUEST);
@@ -72,34 +71,28 @@ class GlobalExceptionHandlerTest {
     @Test
     void TestHandleMethodArgumentNotValidException() {
 
-        // Arrange
         BindingResult bindingResult = Mockito.mock(BindingResult.class);
         when(bindingResult.getFieldErrors()).thenReturn(List.of(new FieldError("object", "field", "errorMessage")));
         when(methodArgumentNotValidException.getBindingResult()).thenReturn(bindingResult);
 
-        // Act
-        ResponseEntity <ErrorResponseMessage> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
+        ResponseEntity<ErrorResponseMessage> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
 
-        // Assert
         MatcherAssert.assertThat(responseEntity, notNullValue());
     }
 
     @Test
     void TestHandleMethodArgumentNotValidException_Return_ErrorMessage() {
 
-        // Arrange
         BindingResult bindingResult = Mockito.mock(BindingResult.class);
         FieldError fieldError = Mockito.mock(FieldError.class);
         when(fieldError.getField()).thenReturn("name");
         when(fieldError.getDefaultMessage()).thenReturn("errorMessage");
-        when(fieldError.getCodes()).thenReturn(new String[] {"message"});
+        when(fieldError.getCodes()).thenReturn(new String[]{"message"});
         when(bindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
         when(methodArgumentNotValidException.getBindingResult()).thenReturn(bindingResult);
 
-        // Act
         ResponseEntity<ErrorResponseMessage> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
 
-        // Assert
         MatcherAssert.assertThat(responseEntity, notNullValue());
     }
 
