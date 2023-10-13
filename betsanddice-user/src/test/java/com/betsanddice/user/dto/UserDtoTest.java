@@ -31,9 +31,7 @@ class UserDtoTest {
     private ObjectMapper mapper;
 
     private final String userJsonPath = "json/UserSerialized.json";
-
     private UserDto userDtoToSerialize;
-
     private UserDto userDtoFromDeserialization;
 
     @BeforeEach
