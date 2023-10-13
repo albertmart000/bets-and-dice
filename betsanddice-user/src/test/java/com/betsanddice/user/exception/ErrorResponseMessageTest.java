@@ -28,7 +28,7 @@ class ErrorResponseMessageTest {
     }
 
     @Test
-    void testErrorResponseMessage_WhenReturn_StatusCodeAndErrorMessage() {
+    void testErrorResponseMessage_Return_StatusCodeAndErrorMessage() {
         int STATUS_CODE = 500;
         String ERROR_MESSAGE = "INTERNAL SERVER ERROR";
         HttpStatus INTERNAL_SERVER_ERROR = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -44,7 +44,7 @@ class ErrorResponseMessageTest {
     }
 
     @Test
-    void testErrorResponseMessage_WhenReturn_ErrorsAndErrorMessage() {
+    void testErrorResponseMessage_Return_ErrorsAndErrorMessage() {
         Map<String, String> errors = Map.of("Field1", "Message1", "Field2", "Message2");
         String message = "Parameter not valid";
         ErrorResponseMessage response = new ErrorResponseMessage(message, errors);
@@ -59,7 +59,7 @@ class ErrorResponseMessageTest {
     }
 
     @Test
-    void testErrorResponseMessage_WhenOnlyReturn_ErrorMessage() {
+    void testErrorResponseMessage_Return_ErrorMessage() {
         String message = "Message";
         ErrorResponseMessage response = new ErrorResponseMessage(message);
 
