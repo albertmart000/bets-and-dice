@@ -62,7 +62,7 @@ public class UserDto {
     @JsonProperty(value = "games", index = 9)
     private List<UUID> games;
 
-    @JsonProperty(value = "stadistics", index = 10)
-    private List<UUID> stadistics;
+    @JsonProperty(value = "statistics", index = 10)
+    private List<UUID> statistics;
 
 }

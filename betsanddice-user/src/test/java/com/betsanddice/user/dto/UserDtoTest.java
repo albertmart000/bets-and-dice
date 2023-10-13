@@ -1,5 +1,6 @@
 package com.betsanddice.user.dto;
 
+import com.betsanddice.user.helper.ResourceHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -42,16 +43,16 @@ class UserDtoTest {
         UUID uuidGame1 = UUID.fromString("dcacb291-b4aa-4029-8e9b-284c8ca80296");
         UUID uuidGame2 = UUID.fromString("09fabe32-7362-4bfb-ac05-b7bf854c6e0f");
 
-        UUID uuidStadistics1 = UUID.fromString("70e9755e-9e83-41d3-853a-665f1f2a2f5c");
-        UUID uuidStadistics2 = UUID.fromString("bb7897b8-517d-4843-8c17-e347aba086ca");
+        UUID uuidStatistics1 = UUID.fromString("70e9755e-9e83-41d3-853a-665f1f2a2f5c");
+        UUID uuidStatistics2 = UUID.fromString("bb7897b8-517d-4843-8c17-e347aba086ca");
 
         userDtoToSerialize = buildUserWithBasicInfoDto(uuidUser, "Morrow", "Montgomery", "2000-03-03T00:00:00.000+00:00",
                 "Player2", "morrowmontgomery@email.com", "player2", "2023-01-31T12:46:29 -01:00", 100,
-                buildGamesSorted(uuidGame1, uuidGame2), buildStadisticsSorted(uuidStadistics1, uuidStadistics2));
+                buildGamesSorted(uuidGame1, uuidGame2), buildStatisticsSorted(uuidStatistics1, uuidStatistics2));
 
         userDtoFromDeserialization = buildUserWithBasicInfoDto(uuidUser, "Morrow", "Montgomery", "2000-03-03T00:00:00.000+00:00",
                 "Player2", "morrowmontgomery@email.com", "player2", "2023-01-31T12:46:29 -01:00", 100,
-                buildGames(uuidGame1, uuidGame2), buildStadistics(uuidStadistics1, uuidStadistics2));
+                buildGames(uuidGame1, uuidGame2), buildStatistics(uuidStatistics1, uuidStatistics2));
     }
 
     @Test
@@ -62,7 +63,6 @@ class UserDtoTest {
                 .writer(new DefaultPrettyPrinter().withArrayIndenter(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE))
                 .writeValueAsString(userDtoToSerialize);
         String jsonExpected = new ResourceHelper(userJsonPath).readResourceAsString().orElse(null);
-        //Assertions.assertEquals(jsonExpectedV2, jsonResult);
         assertEquals(jsonExpected, jsonResult);
     }
 
@@ -77,7 +77,7 @@ class UserDtoTest {
 
     private UserDto buildUserWithBasicInfoDto
             (UUID user_id, String name, String surname, String birthdate, String nickname, String email,
-             String password, String registered, int cash, List<UUID> games, List<UUID> stadistics) {
+             String password, String registered, int cash, List<UUID> games, List<UUID> statistics) {
         return UserDto.builder()
                 .uuid(user_id)
                 .name(name)
@@ -89,7 +89,7 @@ class UserDtoTest {
                 .registrationDate(registered)
                 .cash(BigDecimal.valueOf(cash))
                 .games(games)
-                .stadistics(stadistics)
+                .statistics(statistics)
                 .build();
     }
 
@@ -100,18 +100,18 @@ class UserDtoTest {
         return buildGamesSorted;
     }
 
-    private List<UUID> buildStadisticsSorted(UUID uuidStadistics1, UUID uuidStadistics2) {
-        List<UUID> buildStadisticsSorted = new ArrayList<>();
-        buildStadisticsSorted.add(uuidStadistics1);
-        buildStadisticsSorted.add(uuidStadistics2);
-        return buildStadisticsSorted;
+    private List<UUID> buildStatisticsSorted(UUID uuidStatistics1, UUID uuidStatistics2) {
+        List<UUID> buildStatisticsSorted = new ArrayList<>();
+        buildStatisticsSorted.add(uuidStatistics1);
+        buildStatisticsSorted.add(uuidStatistics2);
+        return buildStatisticsSorted;
     }
 
     private List<UUID> buildGames(UUID uuidGame1, UUID uuidGame2) {
         return List.copyOf(List.of(uuidGame1, uuidGame2));
     }
 
-    private List<UUID> buildStadistics(UUID uuidStadistics1, UUID uuidStadistics2) {
-        return List.copyOf(List.of(uuidStadistics1, uuidStadistics2));
+    private List<UUID> buildStatistics(UUID uuidStatistics1, UUID uuidStatistics2) {
+        return List.copyOf(List.of(uuidStatistics1, uuidStatistics2));
     }
 }
