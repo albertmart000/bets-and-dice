@@ -31,7 +31,7 @@ public class UserController {
     @Operation(
             operationId = "Get all the stored users into the Database.",
             summary = "Get to see users.",
-            description = "Requesting all the challenges through the URI from the database.",
+            description = "Requesting all the users through the URI from the database.",
             responses = {
                     @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDto.class), mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404", description = "No users were found.", content = {@Content(schema = @Schema())})
