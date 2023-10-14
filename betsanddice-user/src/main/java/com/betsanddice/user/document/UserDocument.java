@@ -1,12 +1,12 @@
 package com.betsanddice.user.document;
 
-import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -25,15 +25,17 @@ public class UserDocument {
     private UUID uuid;
 
     @Field(name = "name")
-    private String name;
+    private String firstName;
 
     @Field(name = "surname")
     private String surname;
 
+    @Field(name = "birthdate")
+    private LocalDate birthdate;
+
     @Field(name = "nickname")
     private String nickname;
 
-    @Email
     @Field(name = "email")
     private String email;
 
@@ -50,9 +52,9 @@ public class UserDocument {
     private List<UUID> games;
 
     @Field(name = "stadistics")
-    private List<Role> stadistics;
+    private List<UUID> stadistics;
 
-    @Field(name = "role")
-    private List<Role> roles;
+/*    @Field(name = "role")
+    private List<Role> roles;*/
 
 }

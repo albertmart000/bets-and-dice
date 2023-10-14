@@ -8,11 +8,19 @@ spring:
     enabled: true
   data:
     mongodb:
-      uri: mongodb://admin_user:LuckyLuc000@localhost:27017/users
+      uri: mongodb://admin_user:LuckyLuc000@localhost:27017/users?authSource=admin
       uuid-representation: standard
 
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui-custom.html"
+    operationsSorted: method
+  api-docs:
+    enable: true
+    path: "/api-docs"
+
 server:
-  port: 8762
+  port: 8094
 
 management:
   endpoints:
