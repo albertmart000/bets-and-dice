@@ -1,9 +1,9 @@
 package com.betsanddice.user.document;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,14 +13,13 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@ToString
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Document(collection = "users")
 public class UserDocument {
 
-    @MongoId
+    @Id
     @Field(name = "_id")
     private UUID uuid;
 
