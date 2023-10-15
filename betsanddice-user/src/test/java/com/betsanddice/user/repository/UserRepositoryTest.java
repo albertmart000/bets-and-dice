@@ -22,13 +22,13 @@ class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+    UUID uuidUser1 = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
+    UUID uuidUser2 = UUID.fromString("26977eee-89f8-11ec-a8a3-0242ac120003");
+
     @BeforeEach
     public void setUp() {
 
         userRepository.deleteAll().block();
-
-        UUID uuidUser1 = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
-        UUID uuidUser2 = UUID.fromString("26977eee-89f8-11ec-a8a3-0242ac120003");
 
         UUID uuidGame1 = UUID.fromString("dcacb291-b4aa-4029-8e9b-284c8ca80296");
         UUID uuidGame2 = UUID.fromString("09fabe32-7362-4bfb-ac05-b7bf854c6e0f");
@@ -53,18 +53,15 @@ class UserRepositoryTest {
     @Test
     void testDB() {
         assertNotNull(userRepository);
-
     }
 
     @DisplayName("Find All Test")
     @Test
     void findAllTest() {
-
         Flux<UserDocument> users = userRepository.findAll();
         StepVerifier.create(users)
                 .expectNextCount(2)
                 .verifyComplete();
     }
-
 
 }
