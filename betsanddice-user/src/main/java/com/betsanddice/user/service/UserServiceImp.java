@@ -34,6 +34,6 @@ public class UserServiceImp implements IUserService {
                         .doOnError(error -> log.error("Error occurred while retrieving user: {}", error.getMessage()))
                 );
     }
-    
+
 }
 
