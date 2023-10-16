@@ -16,10 +16,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Getter
+@Setter
 public class UserDto {
 
     @JsonProperty(value = "user_id", index = 0)
-    @Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", message = "Invalid ID format. Please indicate the correct format.")
+   // @Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", message = "Invalid ID format. Please indicate the correct format.")
     private UUID uuid;
 
     @JsonProperty(value = "name", index = 1)
