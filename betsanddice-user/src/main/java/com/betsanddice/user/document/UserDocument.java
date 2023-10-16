@@ -44,6 +44,9 @@ public class UserDocument {
     @Field(name="registered")
     private LocalDateTime registrationDate;
 
+    @Field(name = "level")
+    private String level;
+
     @Field(name = "cash")
     private BigDecimal cash;
 
@@ -52,8 +55,5 @@ public class UserDocument {
 
     @Field(name = "statistics")
     private List<UUID> statistics;
-
-/*    @Field(name = "role")
-    private List<Role> roles;*/
 
 }

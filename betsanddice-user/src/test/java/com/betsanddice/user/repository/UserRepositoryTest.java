@@ -60,11 +60,11 @@ class UserRepositoryTest {
         List<UUID> statisticsList = List.of(uuidStatistics1, uuidStatistics2);
 
         UserDocument user1 = new UserDocument(uuidUser1, "Morrow", "Montgomery", LocalDate.now(),
-                "Player2", "morrowmontgomery@email.com", "player2", LocalDateTime.now(),
+                "Player2", "morrowmontgomery@email.com", "player2", LocalDateTime.now(), "level",
                 BigDecimal.valueOf(100), gameList, statisticsList);
 
         UserDocument user2 = new UserDocument(uuidUser2, "Morrow", "Montgomery", LocalDate.now(),
-                "Player2", "morrowmontgomery@email.com", "player2", LocalDateTime.now(),
+                "Player2", "morrowmontgomery@email.com", "player2", LocalDateTime.now(), "level",
                 BigDecimal.valueOf(100), gameList, statisticsList);
 
         userRepository.saveAll(Flux.just(user1, user2)).blockLast();

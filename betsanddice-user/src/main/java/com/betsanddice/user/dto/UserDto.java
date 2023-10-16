@@ -57,13 +57,16 @@ public class UserDto {
     @JsonProperty(value = "registered", index = 7)
     private String registrationDate;
 
-    @JsonProperty(value = "cash", index = 8)
+    @JsonProperty(value = "level", index = 8)
+    private String level;
+
+    @JsonProperty(value = "cash", index = 9)
     private BigDecimal cash;
 
-    @JsonProperty(value = "games", index = 9)
+    @JsonProperty(value = "games", index = 10)
     private List<UUID> games;
 
-    @JsonProperty(value = "statistics", index = 10)
+    @JsonProperty(value = "statistics", index = 11)
     private List<UUID> statistics;
 
 }

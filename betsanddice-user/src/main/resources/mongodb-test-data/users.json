@@ -10,7 +10,8 @@
     "email": "admin@email.com",
     "password": "admin",
     "registered": { "$date": "2014-08-14T01:19:21.000+00:00"},
-    "role": "ADMIN",
+    "level": "ADMIN",
+    "cash" : 100,
     "games": [
       {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
       {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
@@ -31,7 +32,8 @@
     "email": "robinsonprice@email.com",
     "password": "player1",
     "registered": { "$date": "2018-02-28T06:44:46 -01:00"},
-    "role": "YOUNGER",
+    "level": "YOUNGER",
+    "cash" : 100,
     "games": [
       {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
       {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
@@ -52,7 +54,8 @@
     "email": "morrowmontgomery@email.com",
     "password": "player2",
     "registered": { "$date": "2023-01-31T12:46:29 -01:00"},
-    "role": "YOUNGER",
+    "level": "YOUNGER",
+    "cash" : 100,
     "games": [
       {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
       {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
@@ -73,7 +76,8 @@
     "email": "leonapennington@email.com",
     "password": "player3",
     "registered": { "$date": "2014-04-17T06:45:46 -02:00"},
-    "role": "YOUNGER",
+    "level": "YOUNGER",
+    "cash" : 100,
     "games": [
       {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
       {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
@@ -94,7 +98,8 @@
     "email": "tabathathompson@email.com",
     "password": "player4",
     "registered": { "$date": "2017-05-03T12:52:31 -02:00"},
-    "role": "BEGINNER",
+    "level": "BEGINNER",
+    "cash" : 100,
     "games": [
       {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
       {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
@@ -115,7 +120,8 @@
     "email": "nataliadavenport@email.com",
     "password": "player5",
     "registered": { "$date": "2018-05-03T02:13:28 -02:00"},
-    "role": "BEGINNER",
+    "level": "BEGINNER",
+    "cash" : 100,
     "games": [
       {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
       {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
@@ -136,7 +142,8 @@
     "email": "michelepetersen@email.com",
     "password": "player6",
     "registered": { "$date": "2020-05-09T11:09:13 -02:00"},
-    "role": "INTERMEDIATE",
+    "level": "INTERMEDIATE",
+    "cash" : 100,
     "games": [
       {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
       {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
@@ -157,7 +164,8 @@
     "email": "reneleon@email.com",
     "password": "player7",
     "registered": { "$date": "2019-02-15T10:16:01 -01:00"},
-    "role": "INTERMEDIATE",
+    "level": "INTERMEDIATE",
+    "cash" : 100,
     "games": [
       {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
       {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
@@ -178,7 +186,8 @@
     "email": "robersonbooth@email.com",
     "password": "player8",
     "registered": { "$date": "2020-07-14T08:12:25 -02:00"},
-    "role": "ADVANCED",
+    "level": "ADVANCED",
+    "cash" : 100,
     "games": [
       {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
       {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
@@ -199,7 +208,8 @@
     "email": "wisebennett@email.com",
     "password": "player9",
     "registered": { "$date": "2016-11-29T01:14:05 -01:00"},
-    "role": "ADVANCED",
+    "level": "ADVANCED",
+    "cash" : 100,
     "games": [
       {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
       {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
