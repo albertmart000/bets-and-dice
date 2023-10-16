@@ -1,12 +1,14 @@
 package com.betsanddice.user.service;
 
+import com.betsanddice.user.document.UserDocument;
 import com.betsanddice.user.dto.UserDto;
+import com.betsanddice.user.helper.UserDocumentToDtoConverter;
 import com.betsanddice.user.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 @Service
 public class UserServiceImp implements IUserService {
@@ -16,12 +18,11 @@ public class UserServiceImp implements IUserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Override
-    public Mono<UserDto> getUserByUuid(String uuid) {
-        return null;
+    @Autowired
+    private UserDocumentToDtoConverter converter;
+
+    public Flux<UserDto> getAllUsers() {
+        Flux<UserDocument> usersList = userRepository.findAll();
+        return converter.convertDocumentFluxToDtoFlux(usersList);
     }
 }
-
-
-
-
