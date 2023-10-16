@@ -11,8 +11,14 @@
     "password": "admin",
     "registered": { "$date": "2014-08-14T01:19:21.000+00:00"},
     "role": "ADMIN",
-    "games": [],
-    "stadistics": []
+    "games": [
+      {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
+      {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
+    ],
+    "statistics": [
+      {"$uuid": "dec03f23-b034-4b2d-80e9-e504767f0519"},
+      {"$uuid": "527bad10-d689-4a10-a787-72507fafe415"}
+    ]
   },
   {
     "_id": {
@@ -26,8 +32,14 @@
     "password": "player1",
     "registered": { "$date": "2018-02-28T06:44:46 -01:00"},
     "role": "YOUNGER",
-    "games": [],
-    "stadistics": []
+    "games": [
+      {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
+      {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
+    ],
+    "statistics": [
+      {"$uuid": "dec03f23-b034-4b2d-80e9-e504767f0519"},
+      {"$uuid": "527bad10-d689-4a10-a787-72507fafe415"}
+    ]
   },
   {
     "_id": {
@@ -41,8 +53,14 @@
     "password": "player2",
     "registered": { "$date": "2023-01-31T12:46:29 -01:00"},
     "role": "YOUNGER",
-    "games": [],
-    "stadistics": []
+    "games": [
+      {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
+      {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
+    ],
+    "statistics": [
+      {"$uuid": "dec03f23-b034-4b2d-80e9-e504767f0519"},
+      {"$uuid": "527bad10-d689-4a10-a787-72507fafe415"}
+    ]
   },
   {
     "_id": {
@@ -56,8 +74,14 @@
     "password": "player3",
     "registered": { "$date": "2014-04-17T06:45:46 -02:00"},
     "role": "YOUNGER",
-    "games": [],
-    "stadistics": []
+    "games": [
+      {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
+      {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
+    ],
+    "statistics": [
+      {"$uuid": "dec03f23-b034-4b2d-80e9-e504767f0519"},
+      {"$uuid": "527bad10-d689-4a10-a787-72507fafe415"}
+    ]
   },
   {
     "_id": {
@@ -71,8 +95,14 @@
     "password": "player4",
     "registered": { "$date": "2017-05-03T12:52:31 -02:00"},
     "role": "BEGINNER",
-    "games": [],
-    "stadistics": []
+    "games": [
+      {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
+      {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
+    ],
+    "statistics": [
+      {"$uuid": "dec03f23-b034-4b2d-80e9-e504767f0519"},
+      {"$uuid": "527bad10-d689-4a10-a787-72507fafe415"}
+    ]
   },
   {
     "_id": {
@@ -86,8 +116,14 @@
     "password": "player5",
     "registered": { "$date": "2018-05-03T02:13:28 -02:00"},
     "role": "BEGINNER",
-    "games": [],
-    "stadistics": []
+    "games": [
+      {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
+      {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
+    ],
+    "statistics": [
+      {"$uuid": "dec03f23-b034-4b2d-80e9-e504767f0519"},
+      {"$uuid": "527bad10-d689-4a10-a787-72507fafe415"}
+    ]
   },
   {
     "_id": {
@@ -101,8 +137,14 @@
     "password": "player6",
     "registered": { "$date": "2020-05-09T11:09:13 -02:00"},
     "role": "INTERMEDIATE",
-    "games": [],
-    "stadistics": []
+    "games": [
+      {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
+      {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
+    ],
+    "statistics": [
+      {"$uuid": "dec03f23-b034-4b2d-80e9-e504767f0519"},
+      {"$uuid": "527bad10-d689-4a10-a787-72507fafe415"}
+    ]
   },
   {
     "_id": {
@@ -116,8 +158,14 @@
     "password": "player7",
     "registered": { "$date": "2019-02-15T10:16:01 -01:00"},
     "role": "INTERMEDIATE",
-    "games": [],
-    "stadistics": []
+    "games": [
+      {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
+      {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
+    ],
+    "statistics": [
+      {"$uuid": "dec03f23-b034-4b2d-80e9-e504767f0519"},
+      {"$uuid": "527bad10-d689-4a10-a787-72507fafe415"}
+    ]
   },
   {
     "_id": {
@@ -131,8 +179,14 @@
     "password": "player8",
     "registered": { "$date": "2020-07-14T08:12:25 -02:00"},
     "role": "ADVANCED",
-    "games": [],
-    "stadistics": []
+    "games": [
+      {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
+      {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
+    ],
+    "statistics": [
+      {"$uuid": "dec03f23-b034-4b2d-80e9-e504767f0519"},
+      {"$uuid": "527bad10-d689-4a10-a787-72507fafe415"}
+    ]
   },
   {
     "_id": {
@@ -146,7 +200,13 @@
     "password": "player9",
     "registered": { "$date": "2016-11-29T01:14:05 -01:00"},
     "role": "ADVANCED",
-    "games": [],
-    "stadistics": []
+    "games": [
+      {"$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"},
+      {"$uuid": "4dc78169-d4c9-413f-a032-c9cd8e7ca50f"}
+    ],
+    "statistics": [
+      {"$uuid": "dec03f23-b034-4b2d-80e9-e504767f0519"},
+      {"$uuid": "527bad10-d689-4a10-a787-72507fafe415"}
+    ]
   }
 ]

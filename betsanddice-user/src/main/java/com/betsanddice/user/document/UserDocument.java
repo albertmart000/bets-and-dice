@@ -50,8 +50,8 @@ public class UserDocument {
     @Field(name = "games")
     private List<UUID> games;
 
-    @Field(name = "stadistics")
-    private List<UUID> stadistics;
+    @Field(name = "statistics")
+    private List<UUID> statistics;
 
 /*    @Field(name = "role")
     private List<Role> roles;*/
