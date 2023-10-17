@@ -66,7 +66,7 @@ class ChallengeDocumentToDtoConverterTest {
     @DisplayName("Conversion from UserDocument to UserDto. Testing 'convertDocumentToDto' method.")
     void testConvertToDto() {
         UserDocument userDocumentMocked = userDocument1;
-        UserDto resultDto = converter.convertDocumentToDto(userDocumentMocked);
+        UserDto resultDto = converter.fromDocumentToDto(userDocumentMocked);
         UserDto expectedDto = userDto1;
 
         assertThat(expectedDto).usingRecursiveComparison()
@@ -79,7 +79,7 @@ class ChallengeDocumentToDtoConverterTest {
         UserDocument userDocument1 = this.userDocument1;
         UserDocument userDocument2 = this.userDocument2;
 
-        Flux<UserDto> resultDto = converter.convertDocumentFluxToDtoFlux(Flux.just(userDocument1, userDocument2));
+        Flux<UserDto> resultDto = converter.fromDocumentFluxToDtoFlux(Flux.just(userDocument1, userDocument2));
 
         UserDto expectedDto1 = userDto1;
         UserDto expectedDto2 = userDto2;
