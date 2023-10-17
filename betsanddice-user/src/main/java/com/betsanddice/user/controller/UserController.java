@@ -30,6 +30,7 @@ public class UserController {
         log.info("** Greetings from the logger **");
         return "Hello from Bets And Dice User!!!";
     }
+
     @GetMapping("/users")
     @Operation(
             operationId = "Get all the stored users into the Database.",
