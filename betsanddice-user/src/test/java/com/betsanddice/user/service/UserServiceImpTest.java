@@ -38,7 +38,7 @@ class UserServiceImpTest {
         UserDto[] expectedUsers = {userDto1, userDto2};
 
         when(userRepository.findAll()).thenReturn(Flux.just(new UserDocument(), new UserDocument()));
-        when(converter.convertDocumentFluxToDtoFlux(any())).thenReturn(Flux.just(userDto1, userDto2));
+        when(converter.fromDocumentFluxToDtoFlux(any())).thenReturn(Flux.just(userDto1, userDto2));
 
         Flux<UserDto> result = userService.getAllUsers();
 
@@ -48,7 +48,7 @@ class UserServiceImpTest {
                 .verify();
 
         verify(userRepository).findAll();
-        verify(converter).convertDocumentFluxToDtoFlux(any());
+        verify(converter).fromDocumentFluxToDtoFlux(any());
     }
 
 }
