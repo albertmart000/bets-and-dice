@@ -19,7 +19,7 @@ public class UserDocumentToDtoConverter {
 
     static final DateTimeFormatter CUSTOM_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public UserDto convertDocumentToDto(UserDocument document) throws ConverterException {
+    public UserDto fromDocumentToDto(UserDocument document) throws ConverterException {
 
         ModelMapper mapper = new ModelMapper();
         Converter<LocalDateTime, String> fromLocalDateTimeToString = new AbstractConverter<>() {
@@ -42,8 +42,8 @@ public class UserDocumentToDtoConverter {
         return mapper.map(document, UserDto.class);
     }
 
-    public Flux<UserDto> convertDocumentFluxToDtoFlux(Flux<UserDocument> documentFlux) {
-        return documentFlux.map(this::convertDocumentToDto);
+    public Flux<UserDto> fromDocumentFluxToDtoFlux(Flux<UserDocument> documentFlux) {
+        return documentFlux.map(this::fromDocumentToDto);
     }
 
 }

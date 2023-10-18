@@ -1,10 +1,7 @@
 package com.betsanddice.user.repository;
 
 import com.betsanddice.user.document.UserDocument;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -13,6 +10,7 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
@@ -22,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertNotNull;
+import static org.springframework.test.util.AssertionErrors.fail;
 
 @DataMongoTest
 @Testcontainers
@@ -43,13 +41,12 @@ class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+    UUID uuidUser1 = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
+    UUID uuidUser2 = UUID.fromString("26977eee-89f8-11ec-a8a3-0242ac120003");
     @BeforeEach
     public void setUp() {
 
         userRepository.deleteAll().block();
-
-        UUID uuidUser1 = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
-        UUID uuidUser2 = UUID.fromString("26977eee-89f8-11ec-a8a3-0242ac120003");
 
         UUID uuidGame1 = UUID.fromString("dcacb291-b4aa-4029-8e9b-284c8ca80296");
         UUID uuidGame2 = UUID.fromString("09fabe32-7362-4bfb-ac05-b7bf854c6e0f");
@@ -73,7 +70,7 @@ class UserRepositoryTest {
     @DisplayName("Repository not null Test")
     @Test
     void testDB() {
-        assertNotNull(userRepository);
+        Assertions.assertNotNull(userRepository);
     }
 
     @DisplayName("Find All Test")
@@ -85,4 +82,18 @@ class UserRepositoryTest {
                 .verifyComplete();
     }
 
+    @DisplayName("Find by UUID Test")
+    @Test
+    void findByUuidTest() {
+
+        Mono<UserDocument> user1 = userRepository.findByUuid(uuidUser1);
+        user1.blockOptional().ifPresentOrElse(
+                user -> Assertions.assertEquals(user.getUuid(), uuidUser1),
+                () -> fail("User not found: " + uuidUser1));
+
+        Mono<UserDocument> user2 = userRepository.findByUuid(uuidUser2);
+        user2.blockOptional().ifPresentOrElse(
+                user -> Assertions.assertEquals(user.getUuid(), uuidUser2),
+                () -> fail("User not found: " + uuidUser2));
+    }
 }
