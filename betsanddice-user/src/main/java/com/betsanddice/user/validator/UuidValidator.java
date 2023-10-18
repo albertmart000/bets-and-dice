@@ -1,13 +1,25 @@
 package com.betsanddice.user.validator;
 
-import jakarta.validation.constraints.Pattern;
+import com.betsanddice.user.annotation.UuidPattern;
+import io.micrometer.common.util.StringUtils;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import lombok.Getter;
 
-@Getter
-public class UuidValidator {
+import java.util.regex.Pattern;
 
-    @Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
-            message = "Invalid ID format. Please indicate the correct format.")
-    private String userId;
+@Getter
+public class UuidValidator implements ConstraintValidator <UuidPattern, String> {
+    @Override
+    public void initialize(UuidPattern constraintAnnotation) {
+        ConstraintValidator.super.initialize(constraintAnnotation);
+    }
+
+    @Override
+    public boolean isValid(String uuid, ConstraintValidatorContext context) {
+        Pattern uuidValidPattern = Pattern.compile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                Pattern.CASE_INSENSITIVE);
+        return !StringUtils.isEmpty(uuid) && uuidValidPattern.matcher(uuid).matches();
+    }
 
 }
