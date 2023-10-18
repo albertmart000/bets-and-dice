@@ -1,10 +1,7 @@
 package com.betsanddice.user.repository;
 
 import com.betsanddice.user.document.UserDocument;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -23,8 +20,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.util.AssertionErrors.fail;
 
 @DataMongoTest
@@ -75,7 +70,7 @@ class UserRepositoryTest {
     @DisplayName("Repository not null Test")
     @Test
     void testDB() {
-        assertNotNull(userRepository);
+        Assertions.assertNotNull(userRepository);
     }
 
     @DisplayName("Find All Test")
@@ -93,12 +88,12 @@ class UserRepositoryTest {
 
         Mono<UserDocument> user1 = userRepository.findByUuid(uuidUser1);
         user1.blockOptional().ifPresentOrElse(
-                user -> assertEquals(user.getUuid(), uuidUser1),
-                () -> fail("Challenge not found: " + uuidUser1));
+                user -> Assertions.assertEquals(user.getUuid(), uuidUser1),
+                () -> fail("User not found: " + uuidUser1));
 
         Mono<UserDocument> user2 = userRepository.findByUuid(uuidUser2);
         user2.blockOptional().ifPresentOrElse(
-                user -> assertEquals(user.getUuid(), uuidUser2),
-                () -> fail("Challenge not found: " + uuidUser2));
+                user -> Assertions.assertEquals(user.getUuid(), uuidUser2),
+                () -> fail("User not found: " + uuidUser2));
     }
 }
