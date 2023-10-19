@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping(value = "/betsanddice/api/v1/user")
 public class UserController {
+
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    private static final String NO_SERVICES= "No Services";
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     @Autowired
     IUserService userService;
@@ -28,6 +36,38 @@ public class UserController {
     @GetMapping(value = "/test")
     public String test() {
         log.info("** Greetings from the logger **");
+
+        Optional<String> userService = discoveryClient.getInstances("betsanddice-user")
+                .stream()
+                .findAny()
+                .map(Object::toString);
+
+        Optional<String> crapsService = discoveryClient.getInstances("betsanddice-craps")
+                .stream()
+                .findAny()
+                .map(Object::toString);
+
+        Optional<String> statService = discoveryClient.getInstances("betsanddice-stat")
+                .stream()
+                .findAny()
+                .map(Object::toString);
+
+        Optional<String> betService = discoveryClient.getInstances("betsanddice-bet")
+                .stream()
+                .findAny()
+                .map(Object::toString);
+
+        log.info("~~~~~~~~~~~~~~~~~~~~~~");
+        log.info("Scanning micros:");
+        log.info((userService.isPresent() ? userService.get() : NO_SERVICES)
+                .concat(System.lineSeparator())
+                .concat(crapsService.isPresent() ? crapsService.get() : NO_SERVICES)
+                .concat(System.lineSeparator())
+                .concat(statService.isPresent() ? statService.get() : NO_SERVICES)
+                .concat(System.lineSeparator())
+                .concat(betService.isPresent() ? betService.get() : NO_SERVICES));
+
+        log.info("~~~~~~~~~~~~~~~~~~~~~~");
         return "Hello from Bets And Dice User!!!";
     }
 
@@ -40,7 +80,9 @@ public class UserController {
                     @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDto.class), mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404", description = "No users were found.", content = {@Content(schema = @Schema())})
             })
-    public Flux<UserDto> getAllUsers() { return userService.getAllUsers();}
+    public Flux<UserDto> getAllUsers() {
+        return userService.getAllUsers();
+    }
 
     @GetMapping(path = "/users/{userId}")
     @Operation(
