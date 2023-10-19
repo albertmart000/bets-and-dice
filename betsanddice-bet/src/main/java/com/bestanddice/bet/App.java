@@ -1,4 +1,4 @@
-package com.betsanddice.user.craps;
+package com.bestanddice.bet;
 
 import org.springframework.boot.SpringApplication;
 
