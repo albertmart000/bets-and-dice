@@ -1,4 +1,4 @@
-package com.betsanddice.user.craps;
+package com.betsanddice.stat;
 
 import org.springframework.boot.SpringApplication;
 
