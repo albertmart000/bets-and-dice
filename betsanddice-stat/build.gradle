@@ -3,7 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.0.6'
 }
 
-group = 'com.betsanddice'
+group = 'com.bestanddice.stat'
 version = '1.0-SNAPSHOT'
 
 repositories {

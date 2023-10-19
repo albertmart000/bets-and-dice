@@ -9,7 +9,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/betsanddice-bet" />
             <option value="$PROJECT_DIR$/betsanddice-craps" />
+            <option value="$PROJECT_DIR$/betsanddice-stat" />
             <option value="$PROJECT_DIR$/betsanddice-user" />
           </set>
         </option>
