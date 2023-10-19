@@ -1,21 +1,25 @@
 package com.betsanddice.user.controller;
 
+import com.betsanddice.user.annotation.UuidValidPattern;
 import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+@Validated
 @RestController
 @RequestMapping(value = "/betsanddice/api/v1/user")
 public class UserController {
@@ -52,8 +56,8 @@ public class UserController {
                     @ApiResponse(responseCode = "404", description = "The User with given Id was not found.", content = {@Content(schema = @Schema())})
             }
     )
-    public Mono<UserDto> getOneUser(@PathVariable("userId") String id) {
-        return userService.getUserByUuid(id);
+    public Mono<UserDto> getOneUser(@Valid @UuidValidPattern @PathVariable("userId") String userId) {
+        return userService.getUserByUuid(userId);
     }
 
 }
