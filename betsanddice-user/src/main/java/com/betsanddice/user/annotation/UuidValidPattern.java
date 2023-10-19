@@ -15,8 +15,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = UuidValidator.class)
 @Documented
-public @interface UuidPattern {
-    String message() default "{Invalid ID format. Please indicate the correct format.}";
+public @interface UuidValidPattern {
+    String message() default "Invalid ID format. Please indicate the correct format.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
