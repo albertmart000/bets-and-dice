@@ -4,4 +4,5 @@ include 'betsanddice-craps'
 include 'betsanddice-sixdice'
 include 'betsanddice-bet'
 include 'betsanddice-stat'
+include 'betsanddice-tutorial'
 
