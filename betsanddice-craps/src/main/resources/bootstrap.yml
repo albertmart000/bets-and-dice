@@ -1,6 +1,6 @@
 spring:
   application:
-    name: betsanddice-user
+    name: betsanddice-craps
   cloud:
     consul:
       enabled: true #habilitar / deshabilitar el uso de consul
