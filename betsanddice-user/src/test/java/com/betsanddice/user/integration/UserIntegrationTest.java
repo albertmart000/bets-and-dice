@@ -1,17 +1,22 @@
-package com.betsanddice.user.repository;
+package com.betsanddice.user.integration;
 
 import com.betsanddice.user.document.UserDocument;
-import org.junit.jupiter.api.*;
+import com.betsanddice.user.dto.UserDto;
+import com.betsanddice.user.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -20,15 +25,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.test.util.AssertionErrors.fail;
+import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-@DataMongoTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureWebTestClient
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-class UserRepositoryTest {
+class UserIntegrationTest {
 
     @Container
     static MongoDBContainer container = new MongoDBContainer("mongo")
+            .withExposedPorts(27017)
             .withStartupTimeout(Duration.ofSeconds(60));
 
     @DynamicPropertySource
@@ -39,13 +47,19 @@ class UserRepositoryTest {
     }
 
     @Autowired
+    private WebTestClient webTestClient;
+
+    @Autowired
     private UserRepository userRepository;
+
+    private final String VALID_UUID = "81099a9e-0d59-4571-a04c-31a08a711e3b";
+    private final String INVALID_UUID = "ce020780-1a66-4587-bec4-284c8ca80296";
 
     UUID uuidUser1 = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
     UUID uuidUser2 = UUID.fromString("26977eee-89f8-11ec-a8a3-0242ac120003");
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
 
         userRepository.deleteAll().block();
 
@@ -68,33 +82,47 @@ class UserRepositoryTest {
         userRepository.saveAll(Flux.just(user1, user2)).blockLast();
     }
 
-    @DisplayName("Repository not null Test")
     @Test
-    void testDB() {
-        Assertions.assertNotNull(userRepository);
+    void test() {
+        webTestClient.get()
+                .uri("/betsanddice/api/v1/user/test")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .value(String::toString, equalTo("Hello from Bets And Dice!!!"));
     }
 
-    @DisplayName("Find All Test")
     @Test
-    void findAllTest() {
-        Flux<UserDocument> users = userRepository.findAll();
-        StepVerifier.create(users)
-                .expectNextCount(2)
-                .verifyComplete();
+    void getOneUser_InvalidId_UserNotFoundReturned() {
+        webTestClient.get()
+                .uri("/betsanddice/api/v1/user/users/{userUuid}", INVALID_UUID)
+                .exchange()
+                .expectStatus()
+                .isEqualTo(BAD_REQUEST);
     }
 
-    @DisplayName("Find by UUID Test")
     @Test
-    void findByUuidTest() {
-
-        Mono<UserDocument> user1 = userRepository.findByUuid(uuidUser1);
-        user1.blockOptional().ifPresentOrElse(
-                user -> Assertions.assertEquals(user.getUuid(), uuidUser1),
-                () -> fail("User not found: " + uuidUser1));
-
-        Mono<UserDocument> user2 = userRepository.findByUuid(uuidUser2);
-        user2.blockOptional().ifPresentOrElse(
-                user -> Assertions.assertEquals(user.getUuid(), uuidUser2),
-                () -> fail("User not found: " + uuidUser2));
+    void getOneUser_ValidId_UserReturned() {
+        webTestClient.get()
+                .uri("/betsanddice/api/v1/user/users/{userUuid}", VALID_UUID)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(UserDto.class)
+                .value(dto -> {
+                    assert dto != null;
+                });
     }
+
+    @Test
+    void getAllUsers_UsersExist_UsersReturned() {
+        webTestClient.get()
+                .uri("/betsanddice/api/v1/user/users")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(UserDto.class)
+                .hasSize(2);
+    }
+
 }

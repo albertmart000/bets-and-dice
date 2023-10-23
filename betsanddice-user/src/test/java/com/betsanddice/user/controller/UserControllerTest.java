@@ -41,14 +41,15 @@ class UserControllerTest {
         when(discoveryClient.getInstances("betsanddice-user")).thenReturn(instances);
         when(discoveryClient.getInstances("betsanddice-craps")).thenReturn(Collections.singletonList(instances.get(1)));
 
-        webTestClient.get().uri("/betsanddice/api/v1/user/test")
+        webTestClient.get()
+                .uri("/betsanddice/api/v1/user/test")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class).isEqualTo("Hello from Bets And Dice!!!");
     }
 
     @Test
-    void getOneUser_ValidId_ChallengeReturned() {
+    void getOneUser_ValidId_UserReturned() {
         String userUuid = "valid-user-uuid";
         UserDto expectedUserDto = new UserDto();
 
@@ -65,7 +66,7 @@ class UserControllerTest {
     }
 
     @Test
-    void getAllChallenges_ChallengesExist_ChallengesReturned() {
+    void getAllUsers_UsersExist_UsersReturned() {
         UserDto userDto1 = new UserDto();
         UserDto userDto2 = new UserDto();
         UserDto[] expectedUsers = {userDto1, userDto2};
