@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -24,13 +24,12 @@ import java.util.Optional;
 public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
-    private static final String NO_SERVICES= "No Services";
-
-    @Autowired
-    private DiscoveryClient discoveryClient;
 
     @Autowired
     IUserService userService;
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     @Operation(summary = "Testing the App")
     @GetMapping(value = "/test")
@@ -47,41 +46,15 @@ public class UserController {
                 .findAny()
                 .map(Object::toString);
 
-        Optional<String> statService = discoveryClient.getInstances("betsanddice-stat")
-                .stream()
-                .findAny()
-                .map(Object::toString);
-
-        Optional<String> betService = discoveryClient.getInstances("betsanddice-bet")
-                .stream()
-                .findAny()
-                .map(Object::toString);
-
         log.info("~~~~~~~~~~~~~~~~~~~~~~");
         log.info("Scanning micros:");
-        log.info((userService.isPresent() ? userService.get() : NO_SERVICES)
+        log.info((userService.isPresent() ? userService.get() : "No Services")
                 .concat(System.lineSeparator())
-                .concat(crapsService.isPresent() ? crapsService.get() : NO_SERVICES)
-                .concat(System.lineSeparator())
-                .concat(statService.isPresent() ? statService.get() : NO_SERVICES)
-                .concat(System.lineSeparator())
-                .concat(betService.isPresent() ? betService.get() : NO_SERVICES));
+                .concat(crapsService.isPresent() ? crapsService.get() : "No Services"));
 
         log.info("~~~~~~~~~~~~~~~~~~~~~~");
-        return "Hello from Bets And Dice User!!!";
-    }
 
-    @GetMapping("/users")
-    @Operation(
-            operationId = "Get all the stored users into the Database.",
-            summary = "Get to see users.",
-            description = "Requesting all the users through the URI from the database.",
-            responses = {
-                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDto.class), mediaType = "application/json")}),
-                    @ApiResponse(responseCode = "404", description = "No users were found.", content = {@Content(schema = @Schema())})
-            })
-    public Flux<UserDto> getAllUsers() {
-        return userService.getAllUsers();
+        return "Hello from Bets And Dice!!!";
     }
 
     @GetMapping(path = "/users/{userId}")
@@ -96,6 +69,19 @@ public class UserController {
     )
     public Mono<UserDto> getOneUser(@PathVariable("userId") String id) {
         return userService.getUserByUuid(id);
+    }
+
+    @GetMapping("/users")
+    @Operation(
+            operationId = "Get all the stored users into the Database.",
+            summary = "Get to see users.",
+            description = "Requesting all the users through the URI from the database.",
+            responses = {
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "404", description = "No users were found.", content = {@Content(schema = @Schema())})
+            })
+    public Flux<UserDto> getAllUsers() {
+        return userService.getAllUsers();
     }
 
 }
