@@ -1,35 +1,41 @@
 package com.betsanddice.user.validator;
 
 import com.betsanddice.user.annotation.UuidValidPattern;
-import io.micrometer.common.util.StringUtils;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.util.regex.Pattern;
-
+@Setter
 @Getter
-public class UuidValidator implements ConstraintValidator <UuidValidPattern, String> {
+public class UuidValidator implements ConstraintValidator<UuidValidPattern, String> {
 
-    private String message;
-    private Pattern pattern;
+    //private String message;
+    //private Pattern pattern;
+
+    private final String PATTERN = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$";
 
     @Override
     public void initialize(UuidValidPattern uuidValidPattern) {
-        this.message = uuidValidPattern.message();
+
+/*        this.message = uuidValidPattern.message();
         this.pattern = Pattern.compile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
-                Pattern.CASE_INSENSITIVE);
+                Pattern.CASE_INSENSITIVE);*/
     }
 
     @Override
     public boolean isValid(String userId, ConstraintValidatorContext context) {
-        if (StringUtils.isEmpty(userId) || pattern.matcher(userId).matches()) {
+        return userId.matches(this.PATTERN);
+
+        /*
+        boolean validUUID = !StringUtils.isEmpty(userId) && pattern.matcher(userId).matches();
+        if (!validUUID) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(message)
                     .addConstraintViolation();
             return false;
         }
-        return !StringUtils.isEmpty(userId) && pattern.matcher(userId).matches();
+        return true;*/
     }
 
 }

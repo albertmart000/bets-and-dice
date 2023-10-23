@@ -1,5 +1,7 @@
 package com.betsanddice.user.exception;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -9,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -28,6 +31,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseMessage> handleUserNotFoundException(UserNotFoundException ex) {
         return ResponseEntity.badRequest().body(new ErrorResponseMessage(ex.getMessage()));
     }
+
     @ExceptionHandler(ConverterException.class)
     public ResponseEntity<ErrorResponseMessage> handleConverterException(UserNotFoundException ex) {
         return ResponseEntity.badRequest().body(new ErrorResponseMessage(ex.getMessage()));
@@ -41,7 +45,33 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new ErrorResponseMessage("Parameter not valid", errors));
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponseMessage> handleConstraintViolationException(ConstraintViolationException ex) {
+       // List<String> errors = new ArrayList<>();
+        ex.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .collect(Collectors.toList());
+        return ResponseEntity.badRequest().body(new ErrorResponseMessage(ex.getMessage()));
+
+
+
+/*        List<String> constraints = new ArrayList<>();
+        ex.getConstraintViolations().forEach(constraint->
+                constraints.add(constraint.getMessageTemplate()));
+        return ResponseEntity.badRequest().body(new ErrorResponseMessage(ex.getMessage()));*/
+    }
 }
+/*
 
+       @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponseMessageDto> handleConstraintViolation(ConstraintViolationException ex) {
+        String errorMessage = ex.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .collect(Collectors.joining("; "));
 
+        return ResponseEntity.badRequest().body(new ErrorResponseMessageDto( 400, errorMessage));
+    }
+*/
 

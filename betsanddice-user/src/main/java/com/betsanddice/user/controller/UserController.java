@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,14 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping(value = "/betsanddice/api/v1/user")
 public class UserController {
+
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    private final String PATTERN = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$";
 
     @Autowired
     IUserService userService;
 
+    @Validated
     @Operation(summary = "Testing the App")
     @GetMapping(value = "/test")
     public String test() {
@@ -44,7 +47,9 @@ public class UserController {
                     @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDto.class), mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404", description = "No users were found.", content = {@Content(schema = @Schema())})
             })
-    public Flux<UserDto> getAllUsers() { return userService.getAllUsers();}
+    public Flux<UserDto> getAllUsers() {
+        return userService.getAllUsers();
+    }
 
     @GetMapping(path = "/users/{userId}")
     @Operation(
@@ -56,7 +61,7 @@ public class UserController {
                     @ApiResponse(responseCode = "404", description = "The User with given Id was not found.", content = {@Content(schema = @Schema())})
             }
     )
-    public Mono<UserDto> getOneUser(@Valid @UuidValidPattern @PathVariable("userId") String userId) {
+    public Mono<UserDto> getOneUser( @PathVariable("userId") @UuidValidPattern @Pattern(regexp = PATTERN) String userId) {
         return userService.getUserByUuid(userId);
     }
 

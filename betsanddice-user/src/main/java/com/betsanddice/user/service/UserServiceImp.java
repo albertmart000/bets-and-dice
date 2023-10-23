@@ -2,7 +2,6 @@ package com.betsanddice.user.service;
 
 import com.betsanddice.user.document.UserDocument;
 import com.betsanddice.user.dto.UserDto;
-import com.betsanddice.user.helper.UserDocumentToDtoConverter;
 import com.betsanddice.user.exception.UserNotFoundException;
 import com.betsanddice.user.helper.UserDocumentToDtoConverter;
 import com.betsanddice.user.repository.UserRepository;
