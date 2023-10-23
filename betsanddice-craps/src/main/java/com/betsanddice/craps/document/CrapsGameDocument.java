@@ -5,7 +5,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.List;
 import java.util.UUID;
 @Getter
 @Setter
@@ -13,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "games")
-public class GameDocument {
+public class CrapsGameDocument {
 
     @Id
     @Field(name = "_id")
@@ -26,5 +25,6 @@ public class GameDocument {
     private String userNickname;
 
     @Field(name = "diceRolls")
-    private List<Integer> diceRolls;
+    //private List<Integer> diceRolls;
+    private int[][] diceRolls = new int[2][];
 }
