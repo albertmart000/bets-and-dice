@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.UUID;
+
 @Getter
 @Setter
 @Builder
@@ -25,6 +26,6 @@ public class CrapsGameDocument {
     private String userNickname;
 
     @Field(name = "diceRolls")
-    //private List<Integer> diceRolls;
     private int[][] diceRolls = new int[2][];
+
 }
