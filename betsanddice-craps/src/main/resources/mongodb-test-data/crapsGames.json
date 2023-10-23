@@ -1,0 +1,43 @@
+[
+  {
+    "_id": {
+      "$uuid": "50feba3c-3cbf-48ad-8142-cccf7c6bf3d3"
+    },
+    "userId": {
+      "$uuid": "706507d4-b89f-41eb-a7eb-41838d08a08f"
+    },
+    "userNickname": "Player1",
+    "diceRolls": [[1, 2], [4, 5], [3, 4]]
+  },
+  {
+    "_id": {
+      "$uuid": "6160a07c-1d0f-4ac0-80b0-ef8f17bcad53"
+    },
+    "userId": {
+      "$uuid": "706507d4-b89f-41eb-a7eb-41838d08a08f"
+    },
+    "userNickname": "Player1",
+    "diceRolls": [[3, 3], [1, 5], [3, 6], [1,6]]
+  },
+  {
+    "_id": {
+      "$uuid": "70f4eb97-8892-4202-8629-2374696ba67d"
+    },
+    "userId": {
+      "$uuid": "81099a9e-0d59-4571-a04c-31a08a711e3b"
+    },
+    "userNickname": "Player2",
+    "diceRolls": [[3, 5], [2, 5]]
+  },
+  {
+    "_id": {
+      "$uuid": "93ab8353-b95f-4f39-87e7-9dbdd1a59571"
+    },
+    "userId": {
+      "$uuid": "81099a9e-0d59-4571-a04c-31a08a711e3b"
+    },
+    "userNickname": "Player2",
+    "diceRolls": [[1, 4], [2, 3], [6, 6], [4,3]]
+  }
+
+]
