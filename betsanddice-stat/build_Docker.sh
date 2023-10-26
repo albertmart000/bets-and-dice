@@ -1,7 +1,7 @@
 #!/bin/sh
 #  Start parameters:
 #  1.-fileConfig
-#  Example: ./betsanddice-user/build_Docker.sh conf/.env.dev
+#  Example: ./betsanddice-stat/build_Docker.sh conf/.env.dev
 
 # Init variables
 fileConfig=$1;
@@ -33,11 +33,10 @@ then
     echo "$fileConfig not found."
   fi
 
-./gradlew :betsanddice-user:build
+./gradlew :betsanddice-stat:build
 
-cd betsanddice-user
-docker build -t betsanddice-user-image . -f ./Dockerfile
- .
+cd betsanddice-stat
+docker build -t betsanddice-stat-image . -f ./Dockerfile
 
 #upload image to DockerHub
 #upload_image="pre"
