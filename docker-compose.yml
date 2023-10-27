@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+  betsanddice-user-mongodb:
+    container_name: betsanddice-user-mongodb
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin_user
+      MONGO_INITDB_ROOT_PASSWORD: XMOJocgKlmRHz2O
+      MONGO_INITDB_DATABASE: users
+    ports:
+      - "27018:27017"
+    volumes:
+      - betsanddice_user_mongodb_data:/var/lib/mongodb
+      - ../betsandice-user/src/main/resources/mongodb-init:/docker-entrypoint-initdb.d
+      - ../betsandice-user/src/main/resources/mongodb-test-data:/tmp/data/
+    networks:
+      - betsanddice
+
+  betsanddice-user:
+    image: betsanddice-user-image
+    container_name: betsanddice-user-v1.0-SNAPSHOT
+    restart: always
+    depends_on:
+      - betsanddice-user-mongodb
+    ports:
+      - "8094:8094"
+    environment:
+      - 'spring.data.mongodb.uri=mongodb://admin_user:XMOJocgKlmRHz2O@localhost:27017/users'
+    networks:
+      - betsanddice
+
+volumes:
+  betsanddice_user_mongodb_data:
+
+networks:
+  betsanddice:
