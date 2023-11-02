@@ -8,7 +8,7 @@ spring:
     enabled: true
   data:
     mongodb:
-      uri: mongodb://admin_user:XMOJocgKlmRHz2O@localhost:27017/craps?authSource=admin
+      uri: mongodb://admin_craps:XMOJocgKlmRHz2O@localhost:27017/craps?authSource=admin
       uuid-representation: standard
 
   springdoc:
