@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -24,6 +25,9 @@ public class CrapsGameDocument {
 
     @Field(name = "userNickname")
     private String userNickname;
+
+    @Field(name = "date")
+    private LocalDateTime date;
 
     @Field(name = "diceRolls")
     private int[][] diceRolls = new int[2][];
