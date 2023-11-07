@@ -8,28 +8,28 @@ spring:
     enabled: true
   data:
     mongodb:
-      uri: mongodb://admin_user:XMOJocgKlmRHz2O@localhost:27017/craps?authSource=admin
+      uri: mongodb://admin_craps:XMOJocgKlmRHz2O@localhost:27017/craps?authSource=admin
       uuid-representation: standard
 
-  springdoc:
-    swagger-ui:
-      path: "/swagger-ui-custom.html"
-      operationsSorted: method
-    api-docs:
-      enable: true
-      path: "/api-docs"
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui-custom.html"
+    operationsSorted: method
+  api-docs:
+    enable: true
+    path: "/api-docs"
 
-    server:
-      port: 8095
+server:
+  port: 8095
 
-    management:
-      endpoints:
-        web:
-          exposure:
-            include: "*"
-      security:
-        enabled: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  security:
+    enabled: false
 
-    url:
-      connection_timeout: 30000
-      maxBytesInMemory: 30000000
+url:
+  connection_timeout: 30000
+  maxBytesInMemory: 30000000
