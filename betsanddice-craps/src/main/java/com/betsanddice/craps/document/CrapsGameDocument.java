@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "games")
+@Document(collection = "crapsGames")
 public class CrapsGameDocument {
 
     @Id
