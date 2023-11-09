@@ -1,0 +1,42 @@
+version: "3.7"
+
+services:
+  betsanddice-user-mongodb:
+    container_name: mongodb-betsanddice-user
+    image: mongo:5.0.9
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin_user
+      MONGO_INITDB_ROOT_PASSWORD: XMOJocgKlmRHz2O
+      MONGO_INITDB_DATABASE: users
+    ports:
+      - "27018:27017"
+    volumes:
+      - data-mongo-bets-user:/var/lib/docker/volumes/data-mongo-bets-user/_data
+      - ../betsandice-user/src/main/resources/mongodb-init:/docker-entrypoint-initdb.d
+      - ../betsandice-user/src/main/resources/mongodb-test-data:/tmp/data/
+    networks:
+      - network-betsanddice
+
+  betsanddice-user:
+    image: betsanddice-user
+    container_name: betsanddice-user-v1.0-SNAPSHOT
+    restart: always
+    depends_on:
+      - betsanddice-user-mongodb
+    ports:
+      - "8094:8094"
+    environment:
+      MONGODB_HOST=mongodb: 27017
+      MONGODB_USERNAME: admin_user
+      MONGODB_PASSWORD: XMOJocgKlmRHz2O
+      MONGODB_CONTAINER_PORT: 27018
+      MONGODB_CHALLENGE_DATABASE: users
+    networks:
+      - network-betsanddice
+
+volumes:
+  data-mongo-bets-user:
+
+networks:
+  network-betsanddice:
