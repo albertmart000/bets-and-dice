@@ -30,9 +30,9 @@ class UserDtoTest {
     @Autowired
     private ObjectMapper mapper;
 
-    private final String userJsonPath = "json/UserSerialized.json";
+    private final String userJsonPath = "json/userSerialized.json";
     private UserDto userDtoToSerialize;
-    private UserDto userDtoFromDeserialization;
+    private UserDto userDtoFromDeserialize;
 
     @BeforeEach
     void setUp() {
@@ -44,11 +44,11 @@ class UserDtoTest {
         UUID uuidStatistics1 = UUID.fromString("70e9755e-9e83-41d3-853a-665f1f2a2f5c");
         UUID uuidStatistics2 = UUID.fromString("bb7897b8-517d-4843-8c17-e347aba086ca");
 
-        userDtoToSerialize = buildUserWithBasicInfoDto(uuidUser, "Morrow", "Montgomery", "2000-03-03T00:00:00.000+00:00",
+        userDtoToSerialize = buildBasicUserDto(uuidUser, "Morrow", "Montgomery", "2000-03-03T00:00:00.000+00:00",
                 "Player2", "morrowmontgomery@email.com", "player2", "2023-01-31T12:46:29 -01:00", 100,
                 buildGamesSorted(uuidGame1, uuidGame2), buildStatisticsSorted(uuidStatistics1, uuidStatistics2));
 
-        userDtoFromDeserialization = buildUserWithBasicInfoDto(uuidUser, "Morrow", "Montgomery", "2000-03-03T00:00:00.000+00:00",
+        userDtoFromDeserialize = buildBasicUserDto(uuidUser, "Morrow", "Montgomery", "2000-03-03T00:00:00.000+00:00",
                 "Player2", "morrowmontgomery@email.com", "player2", "2023-01-31T12:46:29 -01:00", 100,
                 buildGames(uuidGame1, uuidGame2), buildStatistics(uuidStatistics1, uuidStatistics2));
     }
@@ -70,10 +70,10 @@ class UserDtoTest {
     void rightDeserializationTest() {
         String challengeJsonSource = new ResourceHelper(userJsonPath).readResourceAsString().orElse(null);
         UserDto dtoResult = mapper.readValue(challengeJsonSource, UserDto.class);
-        assertThat(dtoResult).usingRecursiveComparison().isEqualTo(userDtoFromDeserialization);
+        assertThat(dtoResult).usingRecursiveComparison().isEqualTo(userDtoFromDeserialize);
     }
 
-    private UserDto buildUserWithBasicInfoDto
+    private UserDto buildBasicUserDto
             (UUID user_id, String name, String surname, String birthdate, String nickname, String email,
              String password, String registered, int cash, List<UUID> games, List<UUID> statistics) {
         return UserDto.builder()
