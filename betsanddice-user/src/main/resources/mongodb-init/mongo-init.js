@@ -5,7 +5,7 @@ db.createUser({
       { role: "dbOwner", db: "users" }
     ]
   });
-db.createCollection("users");
+//db.createCollection("users");
 
 
 
