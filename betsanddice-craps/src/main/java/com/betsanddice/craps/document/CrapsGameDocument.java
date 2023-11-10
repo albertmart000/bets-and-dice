@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -30,6 +31,6 @@ public class CrapsGameDocument {
     private LocalDateTime date;
 
     @Field(name = "diceRolls")
-    private int[][] diceRolls = new int[2][];
+    private List<UUID> diceRollsList;
 
 }
