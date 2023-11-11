@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserDocumentTest {
     @Test
-    void getUuid() {
+    void getUuidTest() {
         UUID uuid = UUID.randomUUID();
         UserDocument userDocument = new UserDocument(uuid, null, null, null, null,
                 null, null, null, null, null, null, null);
@@ -20,7 +20,7 @@ class UserDocumentTest {
     }
 
     @Test
-    void getName() {
+    void getNameTest() {
         String name = "name";
         UserDocument userDocument = new UserDocument(null, name, null, null, null,
                 null, null, null, null, null, null, null);
@@ -28,7 +28,7 @@ class UserDocumentTest {
     }
 
     @Test
-    void geSurName() {
+    void geSurNameTest() {
         String surname = "surname";
         UserDocument userDocument = new UserDocument(null, null, surname, null, null,
                 null, null, null, null, null, null, null);
@@ -36,7 +36,7 @@ class UserDocumentTest {
     }
 
     @Test
-    void getBirthdate() {
+    void getBirthdateTest() {
         LocalDate birthdate = LocalDate.now();
 
         UserDocument userDocument = new UserDocument(null, null, null, birthdate, null,
@@ -45,7 +45,7 @@ class UserDocumentTest {
     }
 
     @Test
-    void getNickName() {
+    void getNickNameTest() {
         String nickname = "nickname";
         UserDocument userDocument = new UserDocument(null, null, null, null, nickname,
                 null, null, null, null, null, null, null);
@@ -53,7 +53,7 @@ class UserDocumentTest {
     }
 
     @Test
-    void getEmail() {
+    void getEmailTest() {
         String email = "email";
         UserDocument userDocument = new UserDocument(null, null, null, null, null,
                 email, null, null, null, null, null, null);
@@ -61,7 +61,7 @@ class UserDocumentTest {
     }
 
     @Test
-    void getPassword() {
+    void getPasswordTest() {
         String password = "password";
         UserDocument userDocument = new UserDocument(null, null, null, null, null,
                 null, password, null, null, null, null, null);
@@ -69,7 +69,7 @@ class UserDocumentTest {
     }
 
     @Test
-    void getRegistered() {
+    void getRegisteredTest() {
         LocalDateTime registrationDate = now();
         UserDocument userDocument = new UserDocument(null, null, null, null, null,
                 null, null, registrationDate, null, null, null, null);
@@ -77,7 +77,7 @@ class UserDocumentTest {
     }
 
     @Test
-    void getLevel() {
+    void getLevelTest() {
         String level = "level";
         UserDocument userDocument = new UserDocument(null, null, null, null, null,
                 null, null, null, level, null, null, null);
@@ -85,9 +85,9 @@ class UserDocumentTest {
     }
 
     @Test
-    void getGames() {
-        UUID uuidGame1 = UUID.fromString("dcacb291-b4aa-4029-8e9b-284c8ca80296");
-        UUID uuidGame2 = UUID.fromString("09fabe32-7362-4bfb-ac05-b7bf854c6e0f");
+    void getGameTest() {
+        UUID uuidGame1 = UUID.randomUUID();
+        UUID uuidGame2 = UUID.randomUUID();
         List<UUID> gameList = List.of(uuidGame1, uuidGame2);
         UserDocument userDocument = new UserDocument(null, null, null, null, null,
                 null, null, null, null, null, gameList, null);
@@ -95,9 +95,9 @@ class UserDocumentTest {
     }
 
     @Test
-    void getStatistics() {
-        UUID uuidStatistics1 = UUID.fromString("70e9755e-9e83-41d3-853a-665f1f2a2f5c");
-        UUID uuidStatistics2 = UUID.fromString("bb7897b8-517d-4843-8c17-e347aba086ca");
+    void getStatisticsTest() {
+        UUID uuidStatistics1 = UUID.randomUUID();
+        UUID uuidStatistics2 = UUID.randomUUID();
         List<UUID> statisticsList = List.of(uuidStatistics1, uuidStatistics2);
         UserDocument userDocument = new UserDocument(null, null, null, null, null,
                 null,null, null, null, null, null, statisticsList);

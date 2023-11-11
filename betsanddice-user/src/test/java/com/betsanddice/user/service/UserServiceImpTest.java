@@ -55,7 +55,7 @@ class UserServiceImpTest {
     }
 
     @Test
-    void getChallengeById_NonexistentId_ErrorThrown() {
+    void getUserById_NonExistId_ErrorThrown() {
         UUID userId = UUID.randomUUID();
 
         when(userRepository.findByUuid(userId)).thenReturn(Mono.empty());

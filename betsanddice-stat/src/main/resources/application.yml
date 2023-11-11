@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: betsanddice-stat
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  jmx:
+    enabled: true
+  data:
+    mongodb:
+      uri: mongodb://admin_stat:XMOJocgKlmRHz2O@localhost:27017/stat?authSource=admin
+      uuid-representation: standard
+
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui-custom.html"
+    operationsSorted: method
+  api-docs:
+    enable: true
+    path: "/api-docs"
+
+server:
+  port: 8096
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  security:
+    enabled: false
+
+url:
+  connection_timeout: 30000
+  maxBytesInMemory: 30000000

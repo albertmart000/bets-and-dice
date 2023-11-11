@@ -43,6 +43,7 @@ class UserRepositoryTest {
 
     UUID uuidUser1 = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
     UUID uuidUser2 = UUID.fromString("26977eee-89f8-11ec-a8a3-0242ac120003");
+
     @BeforeEach
     public void setUp() {
 
