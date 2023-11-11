@@ -2,7 +2,7 @@ package com.betsanddice.craps.service;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
 import com.betsanddice.craps.dto.CrapsGameDto;
-import com.betsanddice.craps.helper.DocumentToDtoConverter;
+import com.betsanddice.craps.helper.CrapsGameDocumentToDtoConverter;
 import com.betsanddice.craps.repository.CrapsGameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +19,12 @@ public class CrapsGameServiceImp implements ICrapsGameService{
     private CrapsGameRepository crapsGameRepository;
 
     @Autowired
-    private DocumentToDtoConverter<CrapsGameDocument, CrapsGameDto> crapsGameConverter = new DocumentToDtoConverter<>();
+    private CrapsGameDocumentToDtoConverter crapsGameConverter = new CrapsGameDocumentToDtoConverter();
 
     @Override
     public Flux<CrapsGameDto> getAllCrapsGame() {
         Flux<CrapsGameDocument> crapsGameList = crapsGameRepository.findAll();
-        return crapsGameConverter.fromDocumentFluxToDtoFlux(crapsGameList, CrapsGameDto.class);
-
+        return crapsGameConverter.fromDocumentFluxToDtoFlux(crapsGameList);
     }
+
 }

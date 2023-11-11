@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Component
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter

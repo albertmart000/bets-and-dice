@@ -16,7 +16,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,9 +29,9 @@ class UserDtoTest {
     @Autowired
     private ObjectMapper mapper;
 
-    private final String userJsonPath = "json/UserSerialized.json";
+    private final String userJsonPath = "json/userSerialized.json";
     private UserDto userDtoToSerialize;
-    private UserDto userDtoFromDeserialization;
+    private UserDto userDtoFromDeserialize;
 
     @BeforeEach
     void setUp() {
@@ -40,17 +39,19 @@ class UserDtoTest {
 
         UUID uuidGame1 = UUID.fromString("dcacb291-b4aa-4029-8e9b-284c8ca80296");
         UUID uuidGame2 = UUID.fromString("09fabe32-7362-4bfb-ac05-b7bf854c6e0f");
+        List<UUID> gameList = List.of(uuidGame1, uuidGame2);
 
         UUID uuidStatistics1 = UUID.fromString("70e9755e-9e83-41d3-853a-665f1f2a2f5c");
         UUID uuidStatistics2 = UUID.fromString("bb7897b8-517d-4843-8c17-e347aba086ca");
+        List<UUID> statisticsList = List.of(uuidStatistics1, uuidStatistics2);
 
-        userDtoToSerialize = buildUserWithBasicInfoDto(uuidUser, "Morrow", "Montgomery", "2000-03-03T00:00:00.000+00:00",
+        userDtoToSerialize = buildUserDto(uuidUser, "Morrow", "Montgomery", "2000-03-03T00:00:00.000+00:00",
                 "Player2", "morrowmontgomery@email.com", "player2", "2023-01-31T12:46:29 -01:00", 100,
-                buildGamesSorted(uuidGame1, uuidGame2), buildStatisticsSorted(uuidStatistics1, uuidStatistics2));
+                gameList, statisticsList);
 
-        userDtoFromDeserialization = buildUserWithBasicInfoDto(uuidUser, "Morrow", "Montgomery", "2000-03-03T00:00:00.000+00:00",
+        userDtoFromDeserialize = buildUserDto(uuidUser, "Morrow", "Montgomery", "2000-03-03T00:00:00.000+00:00",
                 "Player2", "morrowmontgomery@email.com", "player2", "2023-01-31T12:46:29 -01:00", 100,
-                buildGames(uuidGame1, uuidGame2), buildStatistics(uuidStatistics1, uuidStatistics2));
+                gameList, statisticsList);
     }
 
     @Test
@@ -70,10 +71,10 @@ class UserDtoTest {
     void rightDeserializationTest() {
         String challengeJsonSource = new ResourceHelper(userJsonPath).readResourceAsString().orElse(null);
         UserDto dtoResult = mapper.readValue(challengeJsonSource, UserDto.class);
-        assertThat(dtoResult).usingRecursiveComparison().isEqualTo(userDtoFromDeserialization);
+        assertThat(dtoResult).usingRecursiveComparison().isEqualTo(userDtoFromDeserialize);
     }
 
-    private UserDto buildUserWithBasicInfoDto
+    private UserDto buildUserDto
             (UUID user_id, String name, String surname, String birthdate, String nickname, String email,
              String password, String registered, int cash, List<UUID> games, List<UUID> statistics) {
         return UserDto.builder()
@@ -91,25 +92,4 @@ class UserDtoTest {
                 .build();
     }
 
-    private List<UUID> buildGamesSorted(UUID uuidGame1, UUID uuidGame2) {
-        List<UUID> buildGamesSorted = new ArrayList<>();
-        buildGamesSorted.add(uuidGame1);
-        buildGamesSorted.add(uuidGame2);
-        return buildGamesSorted;
-    }
-
-    private List<UUID> buildStatisticsSorted(UUID uuidStatistics1, UUID uuidStatistics2) {
-        List<UUID> buildStatisticsSorted = new ArrayList<>();
-        buildStatisticsSorted.add(uuidStatistics1);
-        buildStatisticsSorted.add(uuidStatistics2);
-        return buildStatisticsSorted;
-    }
-
-    private List<UUID> buildGames(UUID uuidGame1, UUID uuidGame2) {
-        return List.copyOf(List.of(uuidGame1, uuidGame2));
-    }
-
-    private List<UUID> buildStatistics(UUID uuidStatistics1, UUID uuidStatistics2) {
-        return List.copyOf(List.of(uuidStatistics1, uuidStatistics2));
-    }
 }

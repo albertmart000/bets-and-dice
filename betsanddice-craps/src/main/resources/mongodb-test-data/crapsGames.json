@@ -3,45 +3,62 @@
     "_id": {
       "$uuid": "50feba3c-3cbf-48ad-8142-cccf7c6bf3d3"
     },
-    "userId": {
+    "id_user": {
       "$uuid": "706507d4-b89f-41eb-a7eb-41838d08a08f"
     },
-    "userNickname": "Player1",
+    "user_nickname": "Player1",
     "date": { "$date": "2023-01-31T12:46:29 -01:00"},
-    "diceRolls": [[1, 2], [4, 5], [3, 4]]
+    "dice_rolls": [
+      {"$uuid": "c4de0c2d-7226-4426-b38d-23d4e7506eb7"},
+      {"$uuid": "d5028c3a-e694-4e8d-b117-974ae2fcd8b5"},
+      {"$uuid": "d34bd966-264b-4dd3-ad82-7a031b2f4895"}
+    ]
   },
   {
     "_id": {
       "$uuid": "6160a07c-1d0f-4ac0-80b0-ef8f17bcad53"
     },
-    "userId": {
+    "id_user": {
       "$uuid": "706507d4-b89f-41eb-a7eb-41838d08a08f"
     },
-    "userNickname": "Player1",
+    "user_nickname": "Player1",
     "date" :{ "$date": "2000-01-01T00:00:00.000+00:00"},
-    "diceRolls": [[3, 3], [1, 5], [3, 6], [1,6]]
+    "dice_rolls": [
+      {"$uuid": "b0ca7df0-52d1-440e-97c8-dceceee07976"},
+      {"$uuid": "c8676ece-ba3e-4e4a-8108-c8a74835ac12"},
+      {"$uuid": "3bc23dac-7dc1-4e35-958f-023cb55d2e03"},
+      {"$uuid": "680f2d6f-2464-4e88-9a39-bb7f344e8870"}
+    ]
   },
   {
     "_id": {
       "$uuid": "70f4eb97-8892-4202-8629-2374696ba67d"
     },
-    "userId": {
+    "id_user": {
       "$uuid": "81099a9e-0d59-4571-a04c-31a08a711e3b"
     },
-    "userNickname": "Player2",
+    "user_nickname": "Player2",
     "date": { "$date": "2014-08-14T01:19:21.000+00:00"},
-    "diceRolls": [[3, 5], [2, 5]]
+    "dice_rolls": [
+      {"$uuid": "89015ee9-5309-4c55-a123-784ef929183f"},
+      {"$uuid": "77c25a45-e032-426b-b8be-c4527d3f38fe"}
+    ]
   },
   {
     "_id": {
       "$uuid": "93ab8353-b95f-4f39-87e7-9dbdd1a59571"
     },
-    "userId": {
+    "id_user": {
       "$uuid": "81099a9e-0d59-4571-a04c-31a08a711e3b"
     },
-    "userNickname": "Player2",
+    "user_nickname": "Player2",
     "date" :{ "$date": "2000-04-04T00:00:00.000+00:00"},
-    "diceRolls": [[1, 4], [2, 3], [6, 6], [4,3]]
+    "dice_rolls": [
+      {"$uuid": "b08c3550-b4b5-4781-96e2-24c7befbd53b"},
+      {"$uuid": "cc120f82-8398-44dc-adae-eabbb4e53cc2"},
+      {"$uuid": "0c25812d-37c2-4f42-b137-c8cf7ef85050"},
+      {"$uuid": "ca6e8b8a-2710-41f2-a2bd-7863a690fa1a"}
+    ]
   }
 
 ]

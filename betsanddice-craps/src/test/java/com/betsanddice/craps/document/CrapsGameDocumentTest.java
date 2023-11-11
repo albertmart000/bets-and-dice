@@ -3,6 +3,7 @@ package com.betsanddice.craps.document;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
@@ -41,10 +42,13 @@ class CrapsGameDocumentTest {
 
     @Test
     void getDiceRollsTest() {
-        int[][] diceRolls = {{1, 2}, {3, 4}, {5, 6}};
+        UUID uuid1 = UUID.randomUUID();
+        UUID uuid2 = UUID.randomUUID();
+        List<UUID> diceRollsList = List.of(uuid1, uuid2);
+
         CrapsGameDocument crapsGameDocument = new CrapsGameDocument(null, null,
-                null, null, diceRolls);
-        assertEquals(diceRolls, crapsGameDocument.getDiceRolls());
+                null, null, diceRollsList);
+        assertEquals(diceRollsList, crapsGameDocument.getDiceRollsList());
     }
 
 }
