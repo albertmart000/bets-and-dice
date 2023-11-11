@@ -6,8 +6,8 @@ db.createUser({
     ]
   });
 
-db.createCollection("crapsGames");
-
+//db.createCollection("crapsGames");
+//db.createCollection("diceRolls");
 
 
 
