@@ -17,13 +17,13 @@ public class DiceRollsDocument {
     @Field(name = "_id")
     private UUID uuid;
 
-    @Field(name = "crapsGameUuid")
+    @Field(name = "id_craps_game")
     private UUID crapsGameUuid;
 
-    @Field(name = "dice1")
+    @Field(name = "dice_1")
     private Integer dice1;
 
-    @Field(name = "dice2")
+    @Field(name = "dice_2")
     private Integer dice2;
 
 }

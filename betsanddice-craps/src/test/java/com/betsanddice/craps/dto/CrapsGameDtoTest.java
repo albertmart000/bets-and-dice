@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,14 +36,17 @@ class CrapsGameDtoTest {
     void setUp() {
         UUID uuidCrapsGame = UUID.fromString("50feba3c-3cbf-48ad-8142-cccf7c6bf3d3");
 
-        UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
-        int[][] diceRolls = new int[][]{{1, 2}, {4, 5}, {3, 4}};
+        UUID uuidUser= UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
-        crapsGameDtoToSerialize = buildBasicCrapsGameDto (uuidCrapsGame, uuidUser, "Player1",
-                "2023-01-31T12:46:29 -01:00", diceRolls);
+        UUID uuid1 = UUID.fromString("c341527c-6379-4d8a-a885-c938b121fb75");
+        UUID uuid2 = UUID.fromString("5c12481c-e571-4808-a7dc-a9247e5c1037");
+        List<UUID> diceRollsList = List.of(uuid1, uuid2);
 
-        crapsGameDtoFromDeserialize = buildBasicCrapsGameDto (uuidCrapsGame, uuidUser, "Player1",
-                "2023-01-31T12:46:29 -01:00", diceRolls);
+        crapsGameDtoToSerialize = new CrapsGameDto(uuidCrapsGame, uuidUser, "Player1",
+                "2023-01-31T12:46:29 -01:00", diceRollsList);
+        crapsGameDtoFromDeserialize = new CrapsGameDto(uuidCrapsGame, uuidUser, "Player1",
+                "2023-01-31T12:46:29 -01:00", diceRollsList);
+
     }
 
     @Test
@@ -63,17 +67,6 @@ class CrapsGameDtoTest {
         String crapsGameJsonSource = new ResourceHelper(crapsGameJsonPath).readResourceAsString().orElse(null);
         CrapsGameDto dtoResult = mapper.readValue(crapsGameJsonSource, CrapsGameDto.class);
         assertThat(dtoResult).usingRecursiveComparison().isEqualTo(crapsGameDtoFromDeserialize);
-    }
-
-    private CrapsGameDto buildBasicCrapsGameDto(UUID uuidCrapsGame, UUID uuidUser, String userNickname,
-                                                String date, int[][] diceRolls) {
-        return CrapsGameDto.builder()
-                .uuid(uuidCrapsGame)
-                .uuid(uuidUser)
-                .userNickname(userNickname)
-                .date(date)
-                .diceRolls(diceRolls)
-                .build();
     }
 
 }

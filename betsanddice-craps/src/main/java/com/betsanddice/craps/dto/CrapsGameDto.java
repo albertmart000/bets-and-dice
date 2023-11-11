@@ -17,10 +17,10 @@ import java.util.UUID;
 @Setter
 public class CrapsGameDto {
 
-    @JsonProperty(value = "crapsGame_id", index = 0)
+    @JsonProperty(value = "id_craps_game", index = 0)
     private UUID uuid;
 
-    @JsonProperty(value = "userid", index = 1)
+    @JsonProperty(value = "id_user", index = 1)
     private UUID userId;
 
     @JsonProperty(value = "user_nickname", index = 2)

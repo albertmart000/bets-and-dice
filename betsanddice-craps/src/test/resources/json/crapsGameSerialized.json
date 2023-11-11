@@ -1,7 +1,10 @@
 {
-  "uuidCrapsGame": "50feba3c-3cbf-48ad-8142-cccf7c6bf3d3",
-  "uuidUser": "706507d4-b89f-41eb-a7eb-41838d08a08f",
-  "userNickname" : "Player1",
+  "id_craps_game" : "50feba3c-3cbf-48ad-8142-cccf7c6bf3d3",
+  "id_user" : "706507d4-b89f-41eb-a7eb-41838d08a08f",
+  "user_nickname" : "Player1",
   "date" : "2023-01-31T12:46:29 -01:00",
-  "diceRolls" : [[1, 2], [4, 5], [3, 4]]
+  "dice_rolls" : [
+    "c341527c-6379-4d8a-a885-c938b121fb75",
+    "5c12481c-e571-4808-a7dc-a9247e5c1037"
+  ]
 }

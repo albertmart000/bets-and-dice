@@ -14,6 +14,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @DataMongoTest
@@ -43,12 +44,15 @@ class CrapsGameRepositoryTest {
         UUID uuidCrapsGame2 = UUID.fromString("6160a07c-1d0f-4ac0-80b0-ef8f17bcad53");
 
         UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
-        int[][] diceRolls = new int[][]{{1, 2}, {4, 5}, {3, 4}};
+
+        UUID uuid1 = UUID.fromString("c341527c-6379-4d8a-a885-c938b121fb75");
+        UUID uuid2 = UUID.fromString("5c12481c-e571-4808-a7dc-a9247e5c1037");
+        List<UUID> diceRollsList = List.of(uuid1, uuid2);
 
         CrapsGameDocument crapsGameDocument1 = new CrapsGameDocument (uuidCrapsGame1, uuidUser, "Player1",
-                LocalDateTime.now(), diceRolls);
+                LocalDateTime.now(), diceRollsList);
         CrapsGameDocument crapsGameDocument2 = new CrapsGameDocument (uuidCrapsGame2, uuidUser, "Player1",
-                LocalDateTime.now(), diceRolls);
+                LocalDateTime.now(), diceRollsList);
 
         crapsGameRepository.saveAll(Flux.just(crapsGameDocument1, crapsGameDocument2)).blockLast();
     }

@@ -3,130 +3,130 @@
     "_id": {
       "$uuid": "c4de0c2d-7226-4426-b38d-23d4e7506eb7"
     },
-    "crapsGameId": {
+    "id_craps_game": {
       "$uuid": "50feba3c-3cbf-48ad-8142-cccf7c6bf3d3"
     },
-    "dice1": 1,
-    "dice2": 2
+    "dice_1": 1,
+    "dice_2": 2
   },
   {
     "_id": {
       "$uuid": "d5028c3a-e694-4e8d-b117-974ae2fcd8b5"
     },
-    "crapsGameId": {
+    "id_craps_game": {
       "$uuid": "50feba3c-3cbf-48ad-8142-cccf7c6bf3d3"
     },
-    "dice1": 4,
-    "dice2": 5
+    "dice_1": 4,
+    "dice_2": 5
   },
   {
     "_id": {
       "$uuid": "d34bd966-264b-4dd3-ad82-7a031b2f4895"
     },
-    "crapsGameId": {
+    "id_craps_game": {
       "$uuid": "50feba3c-3cbf-48ad-8142-cccf7c6bf3d3"
     },
-    "dice1": 3,
-    "dice2": 4
+    "dice_1": 3,
+    "dice_2": 4
   },
   {
     "_id": {
       "$uuid": "b0ca7df0-52d1-440e-97c8-dceceee07976"
     },
-    "crapsGameId": {
+    "id_craps_game": {
       "$uuid": "6160a07c-1d0f-4ac0-80b0-ef8f17bcad53"
     },
-    "dice1": 3,
-    "dice2": 6
+    "dice_1": 3,
+    "dice_2": 6
   },
   {
     "_id": {
       "$uuid": "c8676ece-ba3e-4e4a-8108-c8a74835ac12"
     },
-    "crapsGameId": {
+    "id_craps_game": {
       "$uuid": "6160a07c-1d0f-4ac0-80b0-ef8f17bcad53"
     },
-    "dice1": 3,
-    "dice2": 3
+    "dice_1": 3,
+    "dice_2": 3
   },
   {
     "_id": {
       "$uuid": "3bc23dac-7dc1-4e35-958f-023cb55d2e03"
     },
-    "crapsGameId": {
+    "id_craps_game": {
       "$uuid": "6160a07c-1d0f-4ac0-80b0-ef8f17bcad53"
     },
-    "dice1": 1,
-    "dice2": 5
+    "dice_1": 1,
+    "dice_2": 5
   },
   {
     "_id": {
       "$uuid": "680f2d6f-2464-4e88-9a39-bb7f344e8870"
     },
-    "crapsGameId": {
+    "id_craps_game": {
       "$uuid": "6160a07c-1d0f-4ac0-80b0-ef8f17bcad53"
     },
-    "dice1": 1,
-    "dice2": 6
+    "dice_1": 1,
+    "dice_2": 6
   },
   {
     "_id": {
       "$uuid": "89015ee9-5309-4c55-a123-784ef929183f"
     },
-    "crapsGameId": {
+    "id_craps_game": {
       "$uuid": "70f4eb97-8892-4202-8629-2374696ba67d"
     },
-    "dice1": 3,
-    "dice2": 5
+    "dice_1": 3,
+    "dice_2": 5
   },
   {
     "_id": {
       "$uuid": "77c25a45-e032-426b-b8be-c4527d3f38fe"
     },
-    "crapsGameId": {
+    "id_craps_game": {
       "$uuid": "70f4eb97-8892-4202-8629-2374696ba67d"
     },
-    "dice1": 2,
-    "dice2": 5
+    "dice_1": 2,
+    "dice_2": 5
   },
   {
     "_id": {
       "$uuid": "b08c3550-b4b5-4781-96e2-24c7befbd53b"
     },
-    "crapsGameId": {
+    "id_craps_game": {
       "$uuid": "93ab8353-b95f-4f39-87e7-9dbdd1a59571"
     },
-    "dice1": 1,
-    "dice2": 4
+    "dice_1": 1,
+    "dice_2": 4
   },
   {
     "_id": {
       "$uuid": "cc120f82-8398-44dc-adae-eabbb4e53cc2"
     },
-    "crapsGameId": {
+    "id_craps_game": {
       "$uuid": "93ab8353-b95f-4f39-87e7-9dbdd1a59571"
     },
-    "dice1": 2,
-    "dice2": 3
+    "dice_1": 2,
+    "dice_2": 3
   },
   {
     "_id": {
       "$uuid": "0c25812d-37c2-4f42-b137-c8cf7ef85050"
     },
-    "crapsGameId": {
+    "id_craps_game": {
       "$uuid": "93ab8353-b95f-4f39-87e7-9dbdd1a59571"
     },
-    "dice1": 6,
-    "dice2": 6
+    "dice_1": 6,
+    "dice_2": 6
   },
   {
     "_id": {
       "$uuid": "ca6e8b8a-2710-41f2-a2bd-7863a690fa1a"
     },
-    "crapsGameId": {
+    "id_craps_game": {
       "$uuid": "93ab8353-b95f-4f39-87e7-9dbdd1a59571"
     },
-    "dice1": 4,
-    "dice2": 3
+    "dice_1": 4,
+    "dice_2": 3
   }
 ]

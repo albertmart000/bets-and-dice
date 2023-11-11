@@ -21,16 +21,16 @@ public class CrapsGameDocument {
     @Field(name = "_id")
     private UUID uuid;
 
-    @Field(name = "userId")
+    @Field(name = "id_user")
     private UUID userId;
 
-    @Field(name = "userNickname")
+    @Field(name = "user_nickname")
     private String userNickname;
 
     @Field(name = "date")
     private LocalDateTime date;
 
-    @Field(name = "diceRolls")
+    @Field(name = "dice_rolls")
     private List<UUID> diceRollsList;
 
 }
