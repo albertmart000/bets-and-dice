@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class CrapsGameServiceImp implements ICrapsGameService{
@@ -20,6 +21,11 @@ public class CrapsGameServiceImp implements ICrapsGameService{
 
     @Autowired
     private CrapsGameDocumentToDtoConverter crapsGameConverter = new CrapsGameDocumentToDtoConverter();
+
+    @Override
+    public Mono<CrapsGameDto> addCrapsGame() {
+        return null;
+    }
 
     @Override
     public Flux<CrapsGameDto> getAllCrapsGame() {
