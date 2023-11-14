@@ -10,7 +10,8 @@ spring:
     enabled: true
   data:
     mongodb:
-      uri: mongodb://admin_user:XMOJocgKlmRHz2O@mongodb-betsanddice-user:27017/users?authSource=admin
+      #uri: mongodb://admin_user:XMOJocgKlmRHz2O@mongodb-betsanddice-user:27017/users?authSource=admin
+      uri: mongodb://admin_user:XMOJocgKlmRHz2O@localhost:27017/users?authSource=admin
       uuid-representation: standard
 
 springdoc:
