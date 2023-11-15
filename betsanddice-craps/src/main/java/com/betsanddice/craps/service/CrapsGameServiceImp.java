@@ -22,11 +22,13 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import static java.util.UUID.fromString;
+
 @Service
 public class CrapsGameServiceImp implements ICrapsGameService {
 
     private static final Logger log = LoggerFactory.getLogger(CrapsGameServiceImp.class);
-    private static final Pattern UUID_FORM = Pattern.compile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern UUID_FORM = Pattern.compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", Pattern.CASE_INSENSITIVE);
 
     @Autowired
     private CrapsGameRepository crapsGameRepository;
@@ -38,13 +40,13 @@ public class CrapsGameServiceImp implements ICrapsGameService {
     private final CrapsGameDtoToDocumentConverter dtoToDocumentConverter = new CrapsGameDtoToDocumentConverter();
 
     @Override
-    public CrapsGameDto addCrapsGameToUser(String userId) {
+    public Mono<CrapsGameDto> addCrapsGameToUser(String userId) {
         CrapsGameDto crapsGameDto = new CrapsGameDto();
-        crapsGameDto.setUserId(UUID.fromString(userId));
+        crapsGameDto.setUserId(validateUuid(userId).block());
         crapsGameDto.setDate(String.valueOf(LocalDateTime.now()));
         crapsGameDto.setDiceRollsList(getDiceRollsList());
         crapsGameRepository.save(dtoToDocumentConverter.fromDtoToDocument(crapsGameDto));
-        return Mono.just(crapsGameDto).block();
+        return Mono.just(crapsGameDto);
     }
 
     @Override
@@ -72,7 +74,7 @@ public class CrapsGameServiceImp implements ICrapsGameService {
             log.warn("Invalid ID format: {}", id);
             return Mono.error(new BadUuidException("Invalid ID format. Please indicate the correct format."));
         }
-        return Mono.just(UUID.fromString(id));
+        return Mono.just(fromString(id));
     }
 
 }

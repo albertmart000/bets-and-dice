@@ -26,7 +26,7 @@ public class DiceRollDto {
     @JsonProperty(value = "dice_2", index = 2)
     private Integer dice2;
 
-    @JsonProperty(value = "dice_1", index = 3)
+    @JsonProperty(value = "result", index = 3)
     private Integer result;
 
     public DiceRollDto(Integer dice1, Integer dice2, Integer result) {
@@ -34,4 +34,5 @@ public class DiceRollDto {
         this.dice2 = dice2;
         this.result = result;
     }
+
 }
