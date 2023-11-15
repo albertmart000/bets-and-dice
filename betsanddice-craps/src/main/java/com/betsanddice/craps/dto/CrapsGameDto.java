@@ -23,6 +23,9 @@ public class CrapsGameDto {
     @JsonProperty(value = "id_user", index = 1)
     private UUID userId;
 
+    @JsonProperty(value = "game_number_user", index = 1)
+    private Integer gameNumberUser;
+
     @JsonProperty(value = "user_nickname", index = 2)
     private String userNickname;
 
@@ -30,6 +33,9 @@ public class CrapsGameDto {
     private String date;
 
     @JsonProperty(value = "dice_rolls", index = 4)
-    private List<UUID> diceRollsList;
+    private List<DiceRollDto> diceRollsList;
+
+    @JsonProperty(value = "attempts", index = 5)
+    private Integer attempts;
 
 }

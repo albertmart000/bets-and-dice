@@ -12,4 +12,5 @@ public interface CrapsGameRepository extends ReactiveMongoRepository<CrapsGameDo
 
     Flux<CrapsGameDocument> findAll();
 
+
 }

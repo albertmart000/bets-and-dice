@@ -11,14 +11,14 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "diceRolls")
-public class DiceRollsDocument {
+public class DiceRollDocument {
 
     @Id
     @Field(name = "_id")
     private UUID uuid;
 
-    @Field(name = "id_craps_game")
-    private UUID crapsGameUuid;
+/*    @Field(name = "id_craps_game")
+    private UUID crapsGameUuid;*/
 
     @Field(name = "dice_1")
     private Integer dice1;
@@ -26,4 +26,12 @@ public class DiceRollsDocument {
     @Field(name = "dice_2")
     private Integer dice2;
 
+    @Field(name = "result")
+    private Integer result;
+
+    public DiceRollDocument(Integer dice1, Integer dice2, Integer result) {
+        this.dice1 = dice1;
+        this.dice2 = dice2;
+        this.result = result;
+    }
 }

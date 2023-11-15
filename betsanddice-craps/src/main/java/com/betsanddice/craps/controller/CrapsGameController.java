@@ -45,8 +45,8 @@ public class CrapsGameController {
                     @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = CrapsGameDto.class), mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404", description = "The User with given Id was not found.", content = {@Content(schema = @Schema())})
             })
-    public Mono<CrapsGameDto> addCrapsGame() {
-        return crapsGameService.addCrapsGame();
+    public Mono<CrapsGameDto> addCrapsGameToUser(String userId) {
+        return crapsGameService.addCrapsGame(userId);
     }
 
     @GetMapping("/crapsGames")

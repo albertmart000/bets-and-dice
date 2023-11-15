@@ -1,5 +1,4 @@
-package com.betsanddice.craps.utils;
-
+package com.betsanddice.craps.helper;
 
 import com.betsanddice.craps.document.DatabaseSequence;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +12,13 @@ import java.util.Objects;
 import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
-
 @Service
-public class SequenceGeneratorService {
+public class SequenceGenerator {
 
     private MongoOperations mongoOperations;
 
     @Autowired
-    public SequenceGeneratorService(MongoOperations mongoOperations) {
+    public SequenceGenerator(MongoOperations mongoOperations) {
         this.mongoOperations = mongoOperations;
     }
 

@@ -31,6 +31,6 @@ public class CrapsGameDocument {
     private LocalDateTime date;
 
     @Field(name = "dice_rolls")
-    private List<UUID> diceRollsList;
+    private List<DiceRollDocument> diceRollsList;
 
 }

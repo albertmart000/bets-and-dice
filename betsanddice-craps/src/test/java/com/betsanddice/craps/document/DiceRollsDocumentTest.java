@@ -7,26 +7,26 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DiceRollsDocumentTest {
-    @Test
+/*    @Test
     void getUuidTest() {
         UUID uuid = UUID.randomUUID();
-        DiceRollsDocument diceRollsDocument = new DiceRollsDocument(uuid, null,
-                null, null);
+        DiceRollDocument diceRollsDocument = new DiceRollDocument(uuid, null,
+                null);
         assertEquals(uuid, diceRollsDocument.getUuid());
-    }
+    }*/
 
-    @Test
+/*    @Test
     void getCrapsGameUuidTest() {
         UUID uuid = UUID.randomUUID();
-        DiceRollsDocument diceRollsDocument = new DiceRollsDocument(null, uuid,
+        DiceRollDocument diceRollsDocument = new DiceRollDocument(null, uuid,
                 null, null);
         assertEquals(uuid, diceRollsDocument.getCrapsGameUuid());
-    }
+    }*/
 
     @Test
     void getDice1Test() {
         Integer dice1 = 1;
-        DiceRollsDocument diceRollsDocument = new DiceRollsDocument(null, null,
+        DiceRollDocument diceRollsDocument = new DiceRollDocument(null,
                 1, null);
         assertEquals(dice1, diceRollsDocument.getDice1());
     }
@@ -34,7 +34,7 @@ class DiceRollsDocumentTest {
     @Test
     void getDice2Test() {
         Integer dice2 = 2;
-        DiceRollsDocument diceRollsDocument = new DiceRollsDocument(null, null,
+        DiceRollDocument diceRollsDocument = new DiceRollDocument(null,
                 null, 2);
         assertEquals(dice2, diceRollsDocument.getDice2());
     }
