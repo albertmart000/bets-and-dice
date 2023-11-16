@@ -1,6 +1,7 @@
 package com.betsanddice.craps.repository;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
+import com.betsanddice.craps.document.DiceRollDocument;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
@@ -45,14 +46,14 @@ class CrapsGameRepositoryTest {
 
         UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
-        UUID uuid1 = UUID.fromString("c341527c-6379-4d8a-a885-c938b121fb75");
-        UUID uuid2 = UUID.fromString("5c12481c-e571-4808-a7dc-a9247e5c1037");
-        List<UUID> diceRollsList = List.of(uuid1, uuid2);
+        DiceRollDocument diceRollDocument1= new DiceRollDocument( 1, 2, 3);
+        DiceRollDocument diceRollDocument2= new DiceRollDocument( 3, 4, 7);
+        List<DiceRollDocument> diceRollsList = List.of(diceRollDocument1, diceRollDocument2);
 
-        CrapsGameDocument crapsGameDocument1 = new CrapsGameDocument (uuidCrapsGame1, uuidUser, "Player1",
-                LocalDateTime.now(), diceRollsList);
-        CrapsGameDocument crapsGameDocument2 = new CrapsGameDocument (uuidCrapsGame2, uuidUser, "Player1",
-                LocalDateTime.now(), diceRollsList);
+        CrapsGameDocument crapsGameDocument1 = new CrapsGameDocument (uuidCrapsGame1, uuidUser, LocalDateTime.now(),
+                2, diceRollsList);
+        CrapsGameDocument crapsGameDocument2 = new CrapsGameDocument (uuidCrapsGame2, uuidUser, LocalDateTime.now(),
+                2, diceRollsList);
 
         crapsGameRepository.saveAll(Flux.just(crapsGameDocument1, crapsGameDocument2)).blockLast();
     }

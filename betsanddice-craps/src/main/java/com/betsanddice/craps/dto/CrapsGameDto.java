@@ -23,19 +23,19 @@ public class CrapsGameDto {
     @JsonProperty(value = "id_user", index = 1)
     private UUID userId;
 
-    @JsonProperty(value = "game_number_user", index = 1)
-    private Integer gameNumberUser;
+/*  @JsonProperty(value = "game_number_user", index = 1)
+    private Integer gameNumberUser;*/
 
-    @JsonProperty(value = "user_nickname", index = 2)
-    private String userNickname;
+/*  @JsonProperty(value = "user_nickname", index = 2)
+    private String userNickname;*/
 
-    @JsonProperty(value = "date", index = 3)
+    @JsonProperty(value = "date", index = 2)
     private String date;
+
+    @JsonProperty(value = "attempts", index = 3)
+    private Integer attempts;
 
     @JsonProperty(value = "dice_rolls", index = 4)
     private List<DiceRollDto> diceRollsList;
-
-    @JsonProperty(value = "attempts", index = 5)
-    private Integer attempts;
 
 }

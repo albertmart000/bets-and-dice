@@ -38,14 +38,14 @@ class CrapsGameDtoTest {
 
         UUID uuidUser= UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
-        UUID uuid1 = UUID.fromString("c341527c-6379-4d8a-a885-c938b121fb75");
-        UUID uuid2 = UUID.fromString("5c12481c-e571-4808-a7dc-a9247e5c1037");
-        List<UUID> diceRollsList = List.of(uuid1, uuid2);
+        DiceRollDto diceRollDto1= new DiceRollDto( 1, 2, 3);
+        DiceRollDto diceRollDto2= new DiceRollDto( 3, 4, 7);
+        List<DiceRollDto> diceRollsDtoList = List.of(diceRollDto1, diceRollDto2);
 
-        crapsGameDtoToSerialize = new CrapsGameDto(uuidCrapsGame, uuidUser, "Player1",
-                "2023-01-31T12:46:29 -01:00", diceRollsList);
-        crapsGameDtoFromDeserialize = new CrapsGameDto(uuidCrapsGame, uuidUser, "Player1",
-                "2023-01-31T12:46:29 -01:00", diceRollsList);
+        crapsGameDtoToSerialize = new CrapsGameDto(uuidCrapsGame, uuidUser,
+                "2023-01-31 12:46:29", 2, diceRollsDtoList);
+        crapsGameDtoFromDeserialize = new CrapsGameDto(uuidCrapsGame, uuidUser,
+                "2023-01-31 12:46:29", 2, diceRollsDtoList);
 
     }
 

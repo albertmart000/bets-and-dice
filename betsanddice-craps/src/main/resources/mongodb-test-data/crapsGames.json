@@ -6,12 +6,26 @@
     "id_user": {
       "$uuid": "706507d4-b89f-41eb-a7eb-41838d08a08f"
     },
-    "user_nickname": "Player1",
-    "date": { "$date": "2023-01-31T12:46:29 -01:00"},
+    "date": {
+      "$date": "2023-01-31T12:46:29 -01:00"
+    },
+    "attempts": 3,
     "dice_rolls": [
-      {"$uuid": "c4de0c2d-7226-4426-b38d-23d4e7506eb7"},
-      {"$uuid": "d5028c3a-e694-4e8d-b117-974ae2fcd8b5"},
-      {"$uuid": "d34bd966-264b-4dd3-ad82-7a031b2f4895"}
+      {
+        "dice_1": 1,
+        "dice_2": 2,
+        "result": 3
+      },
+      {
+        "dice_1": 4,
+        "dice_2": 5,
+        "result": 9
+      },
+      {
+        "dice_1": 3,
+        "dice_2": 4,
+        "result": 7
+      }
     ]
   },
   {
@@ -21,13 +35,31 @@
     "id_user": {
       "$uuid": "706507d4-b89f-41eb-a7eb-41838d08a08f"
     },
-    "user_nickname": "Player1",
-    "date" :{ "$date": "2000-01-01T00:00:00.000+00:00"},
+    "date" :{
+      "$date": "2000-01-01T00:00:00.000+00:00"
+    },
+    "attempts": 4,
     "dice_rolls": [
-      {"$uuid": "b0ca7df0-52d1-440e-97c8-dceceee07976"},
-      {"$uuid": "c8676ece-ba3e-4e4a-8108-c8a74835ac12"},
-      {"$uuid": "3bc23dac-7dc1-4e35-958f-023cb55d2e03"},
-      {"$uuid": "680f2d6f-2464-4e88-9a39-bb7f344e8870"}
+      {
+        "dice_1": 3,
+        "dice_2": 6,
+        "result": 9
+      },
+      {
+        "dice_1": 3,
+        "dice_2": 3,
+        "result": 6
+      },
+      {
+        "dice_1": 1,
+        "dice_2": 5,
+        "result": 6
+      },
+      {
+        "dice_1": 1,
+        "dice_2": 6,
+        "result": 7
+      }
     ]
   },
   {
@@ -37,11 +69,19 @@
     "id_user": {
       "$uuid": "81099a9e-0d59-4571-a04c-31a08a711e3b"
     },
-    "user_nickname": "Player2",
     "date": { "$date": "2014-08-14T01:19:21.000+00:00"},
+    "attempts": 2,
     "dice_rolls": [
-      {"$uuid": "89015ee9-5309-4c55-a123-784ef929183f"},
-      {"$uuid": "77c25a45-e032-426b-b8be-c4527d3f38fe"}
+      {
+        "dice_1": 3,
+        "dice_2": 5,
+        "result": 8
+      },
+      {
+        "dice_1": 2,
+        "dice_2": 5,
+        "result": 7
+      }
     ]
   },
   {
@@ -51,14 +91,29 @@
     "id_user": {
       "$uuid": "81099a9e-0d59-4571-a04c-31a08a711e3b"
     },
-    "user_nickname": "Player2",
     "date" :{ "$date": "2000-04-04T00:00:00.000+00:00"},
+    "attempts": 4,
     "dice_rolls": [
-      {"$uuid": "b08c3550-b4b5-4781-96e2-24c7befbd53b"},
-      {"$uuid": "cc120f82-8398-44dc-adae-eabbb4e53cc2"},
-      {"$uuid": "0c25812d-37c2-4f42-b137-c8cf7ef85050"},
-      {"$uuid": "ca6e8b8a-2710-41f2-a2bd-7863a690fa1a"}
+      {
+        "dice_1": 1,
+        "dice_2": 4,
+        "result": 5
+      },
+      {
+        "dice_1": 2,
+        "dice_2": 3,
+        "result": 5
+      },
+      {
+        "dice_1": 6,
+        "dice_2": 6,
+        "result": 12
+      },
+      {
+        "dice_1": 4,
+        "dice_2": 3,
+        "result": 7
+      }
     ]
   }
-
 ]

@@ -14,8 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class DiceRollDto {
 
-    @JsonProperty(value = "id_dice_roll", index = 0)
-    private UUID uuid;
+/*    @JsonProperty(value = "id_dice_roll", index = 0)
+    private UUID uuid;*/
 
 /*  @Field(name = "id_craps_game")
     private UUID crapsGameUuid;*/
@@ -29,10 +29,10 @@ public class DiceRollDto {
     @JsonProperty(value = "result", index = 3)
     private Integer result;
 
-    public DiceRollDto(Integer dice1, Integer dice2, Integer result) {
+/*    public DiceRollDto(Integer dice1, Integer dice2, Integer result) {
         this.dice1 = dice1;
         this.dice2 = dice2;
         this.result = result;
-    }
+    }*/
 
 }

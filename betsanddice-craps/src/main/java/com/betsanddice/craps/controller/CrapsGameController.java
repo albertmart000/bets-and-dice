@@ -33,7 +33,7 @@ public class CrapsGameController {
         return "Hello from Craps!!!";
     }
 
-    @PostMapping("/crapsGames/{userIdÇ")
+    @PostMapping("/crapsGames/{userId}")
     @Operation(
             operationId = "Allows the chosen user to play a game of craps game",
             summary = "Play one game of craps games.",
