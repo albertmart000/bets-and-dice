@@ -1,7 +1,6 @@
 package com.betsanddice.craps.helper;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
-import com.betsanddice.craps.document.DiceRollDocument;
 import com.betsanddice.craps.dto.CrapsGameDto;
 import com.betsanddice.craps.dto.DiceRollDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,21 +35,21 @@ class CrapsGameDocumentToDtoConverterTest {
 
         UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
-        DiceRollDocument diceRollDocument1= new DiceRollDocument( 1, 2, 3);
+/*        DiceRollDocument diceRollDocument1= new DiceRollDocument( 1, 2, 3);
         DiceRollDocument diceRollDocument2= new DiceRollDocument( 3, 4, 7);
-        List<DiceRollDocument> diceRollsList = List.of(diceRollDocument1, diceRollDocument2);
+        List<DiceRollDocument> diceRollsList = List.of(diceRollDocument1, diceRollDocument2);*/
 
         DiceRollDto diceRollDto1= new DiceRollDto( 1, 2, 3);
         DiceRollDto diceRollDto2= new DiceRollDto( 3, 4, 7);
-        List<DiceRollDto> diceRollsDtoList = List.of(diceRollDto1, diceRollDto2);
+        List<DiceRollDto> diceRollsList = List.of(diceRollDto1, diceRollDto2);
 
         LocalDateTime date = LocalDateTime.of(2023, 1, 31, 12, 0, 0);
 
         crapsGameDocument1 = new CrapsGameDocument(uuidCrapsGame1, uuidUser, date, 2, diceRollsList);
         crapsGameDocument2 = new CrapsGameDocument(uuidCrapsGame2, uuidUser, date, 2, diceRollsList);
 
-        crapsGameDto1 = getCrapsGameDtoMocked(uuidCrapsGame1, uuidUser,"2023-01-31 12:00:00", diceRollsDtoList, 2);
-        crapsGameDto2 = getCrapsGameDtoMocked(uuidCrapsGame2, uuidUser,"2023-01-31 12:00:00", diceRollsDtoList, 2);
+        crapsGameDto1 = getCrapsGameDtoMocked(uuidCrapsGame1, uuidUser,"2023-01-31 12:00:00", diceRollsList, 2);
+        crapsGameDto2 = getCrapsGameDtoMocked(uuidCrapsGame2, uuidUser,"2023-01-31 12:00:00", diceRollsList, 2);
     }
 
     @Test

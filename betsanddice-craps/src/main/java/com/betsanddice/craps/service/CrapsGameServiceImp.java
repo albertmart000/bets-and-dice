@@ -1,8 +1,8 @@
 package com.betsanddice.craps.service;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
-import com.betsanddice.craps.document.DiceRollDocument;
 import com.betsanddice.craps.dto.CrapsGameDto;
+import com.betsanddice.craps.dto.DiceRollDto;
 import com.betsanddice.craps.exception.BadUuidException;
 import com.betsanddice.craps.helper.CrapsGameDocumentToDtoConverter;
 import com.betsanddice.craps.repository.CrapsGameRepository;
@@ -37,7 +37,7 @@ public class CrapsGameServiceImp implements ICrapsGameService {
 
     @Override
     public Mono<CrapsGameDto> addCrapsGameToUser(String userId) {
-        List<DiceRollDocument> diceRollsList = getDiceRollsList();
+        List<DiceRollDto> diceRollsList = getDiceRollsList();
         CrapsGameDocument crapsGameDocument = new CrapsGameDocument(UUID.randomUUID(),
                 UUID.fromString(userId), LocalDateTime.now(), diceRollsList.size(),
                 diceRollsList);
@@ -52,17 +52,17 @@ public class CrapsGameServiceImp implements ICrapsGameService {
         return documentToDtoConverter.fromDocumentFluxToDtoFlux(crapsGameList);
     }
 
-    public List<DiceRollDocument> getDiceRollsList() {
+    public List<DiceRollDto> getDiceRollsList() {
         Random diceValue = new Random();
-        List<DiceRollDocument> diceRollDocumentList = new ArrayList<>();
+        List<DiceRollDto> diceRollList = new ArrayList<>();
         int result = 0;
         while (result != 7) {
             int dice1 = diceValue.nextInt(5) + 1;
             int dice2 = diceValue.nextInt(5) + 1;
             result = dice1 + dice2;
-            diceRollDocumentList.add(new DiceRollDocument(dice1, dice2, result));
+            diceRollList.add(new DiceRollDto(dice1, dice2, result));
         }
-        return diceRollDocumentList;
+        return diceRollList;
     }
 
     private Mono<UUID> validateUuid(String id) {

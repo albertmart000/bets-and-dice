@@ -1,5 +1,6 @@
 package com.betsanddice.craps.document;
 
+import com.betsanddice.craps.dto.DiceRollDto;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -44,9 +45,9 @@ class CrapsGameDocumentTest {
 
     @Test
     void getDiceRollsTest() {
-        DiceRollDocument diceRollDocument1= new DiceRollDocument( 1, 2, 3);
-        DiceRollDocument diceRollDocument2= new DiceRollDocument( 3, 4, 7);
-        List<DiceRollDocument> diceRollsList = List.of(diceRollDocument1, diceRollDocument2);
+        DiceRollDto diceRollDto1= new DiceRollDto( 1, 2, 3);
+        DiceRollDto diceRollDto2= new DiceRollDto( 3, 4, 7);
+        List<DiceRollDto> diceRollsList = List.of(diceRollDto1, diceRollDto2);
 
         CrapsGameDocument crapsGameDocument = new CrapsGameDocument(null, null,
                 null, null, diceRollsList);

@@ -1,8 +1,8 @@
 package com.betsanddice.craps.integration;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
-import com.betsanddice.craps.document.DiceRollDocument;
 import com.betsanddice.craps.dto.CrapsGameDto;
+import com.betsanddice.craps.dto.DiceRollDto;
 import com.betsanddice.craps.repository.CrapsGameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,9 +65,9 @@ class CrapsGameIntegrationTest {
     void setUp() {
         crapsGameRepository.deleteAll().block();
 
-        DiceRollDocument diceRollDocument1 = new DiceRollDocument(1, 2, 3);
-        DiceRollDocument diceRollDocument2 = new DiceRollDocument(3, 4, 7);
-        List<DiceRollDocument> diceRollsList = List.of(diceRollDocument1, diceRollDocument2);
+        DiceRollDto diceRollDto1= new DiceRollDto( 1, 2, 3);
+        DiceRollDto diceRollDto2= new DiceRollDto( 3, 4, 7);
+        List<DiceRollDto> diceRollsList = List.of(diceRollDto1, diceRollDto2);
 
         LocalDateTime date = LocalDateTime.of(2023, 1, 31, 12, 0, 0);
 

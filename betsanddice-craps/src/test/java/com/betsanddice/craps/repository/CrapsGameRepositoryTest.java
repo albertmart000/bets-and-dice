@@ -1,7 +1,7 @@
 package com.betsanddice.craps.repository;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
-import com.betsanddice.craps.document.DiceRollDocument;
+import com.betsanddice.craps.dto.DiceRollDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
@@ -46,9 +46,9 @@ class CrapsGameRepositoryTest {
 
         UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
-        DiceRollDocument diceRollDocument1= new DiceRollDocument( 1, 2, 3);
-        DiceRollDocument diceRollDocument2= new DiceRollDocument( 3, 4, 7);
-        List<DiceRollDocument> diceRollsList = List.of(diceRollDocument1, diceRollDocument2);
+        DiceRollDto diceRollDto1= new DiceRollDto( 1, 2, 3);
+        DiceRollDto diceRollDto2= new DiceRollDto( 3, 4, 7);
+        List<DiceRollDto> diceRollsList = List.of(diceRollDto1, diceRollDto2);
 
         CrapsGameDocument crapsGameDocument1 = new CrapsGameDocument (uuidCrapsGame1, uuidUser, LocalDateTime.now(),
                 2, diceRollsList);
