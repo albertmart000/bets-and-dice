@@ -2,6 +2,7 @@ package com.betsanddice.craps.helper;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
 import com.betsanddice.craps.dto.CrapsGameDto;
+import com.betsanddice.craps.dto.DiceRollDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,21 +35,17 @@ class CrapsGameDocumentToDtoConverterTest {
 
         UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
-        UUID uuid1 = UUID.fromString("c341527c-6379-4d8a-a885-c938b121fb75");
-        UUID uuid2 = UUID.fromString("5c12481c-e571-4808-a7dc-a9247e5c1037");
-        List<UUID> diceRollsList = List.of(uuid1, uuid2);
+        DiceRollDto diceRollDto1= new DiceRollDto( 1, 2, 3);
+        DiceRollDto diceRollDto2= new DiceRollDto( 3, 4, 7);
+        List<DiceRollDto> diceRollsList = List.of(diceRollDto1, diceRollDto2);
 
         LocalDateTime date = LocalDateTime.of(2023, 1, 31, 12, 0, 0);
 
-        crapsGameDocument1 = new CrapsGameDocument(uuidCrapsGame1, uuidUser, "Player1",
-                date, diceRollsList);
-        crapsGameDocument2 = new CrapsGameDocument(uuidCrapsGame2, uuidUser, "Player1",
-                date, diceRollsList);
+        crapsGameDocument1 = new CrapsGameDocument(uuidCrapsGame1, uuidUser, date, 2, diceRollsList);
+        crapsGameDocument2 = new CrapsGameDocument(uuidCrapsGame2, uuidUser, date, 2, diceRollsList);
 
-        crapsGameDto1 = getCrapsGameDtoMocked(uuidCrapsGame1, uuidUser, "Player1",
-                "2023-01-31 12:00:00", diceRollsList);
-        crapsGameDto2 = getCrapsGameDtoMocked(uuidCrapsGame2, uuidUser, "Player1",
-                "2023-01-31 12:00:00", diceRollsList);
+        crapsGameDto1 = getCrapsGameDtoMocked(uuidCrapsGame1, uuidUser,"2023-01-31 12:00:00", diceRollsList, 2);
+        crapsGameDto2 = getCrapsGameDtoMocked(uuidCrapsGame2, uuidUser,"2023-01-31 12:00:00", diceRollsList, 2);
     }
 
     @Test
@@ -81,15 +78,14 @@ class CrapsGameDocumentToDtoConverterTest {
                 .isEqualTo(expectedDto2);
     }
 
-    private CrapsGameDto getCrapsGameDtoMocked(UUID uuidCrapsGame, UUID uuidUser, String userNickname,
-                                               String date, List<UUID> diceRollsList) {
+    private CrapsGameDto getCrapsGameDtoMocked(UUID uuidCrapsGame, UUID uuidUser, String date,
+                                               List<DiceRollDto> diceRollsDtoList, Integer attempts) {
         CrapsGameDto crapsGameDtoMocked = mock(CrapsGameDto.class);
-
         when(crapsGameDtoMocked.getUuid()).thenReturn(uuidCrapsGame);
         when(crapsGameDtoMocked.getUserId()).thenReturn(uuidUser);
-        when(crapsGameDtoMocked.getUserNickname()).thenReturn(userNickname);
         when(crapsGameDtoMocked.getDate()).thenReturn(date);
-        when(crapsGameDtoMocked.getDiceRollsList()).thenReturn(diceRollsList);
+        when(crapsGameDtoMocked.getDiceRollsList()).thenReturn(diceRollsDtoList);
+        when(crapsGameDtoMocked.getAttempts()).thenReturn(attempts);
         return crapsGameDtoMocked;
     }
 

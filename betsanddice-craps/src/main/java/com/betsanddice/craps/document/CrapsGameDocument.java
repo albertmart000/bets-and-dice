@@ -1,5 +1,6 @@
 package com.betsanddice.craps.document;
 
+import com.betsanddice.craps.dto.DiceRollDto;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,23 +15,27 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "crapsGames")
+@Document(collection="craps-games")
 public class CrapsGameDocument {
 
     @Id
+
     @Field(name = "_id")
     private UUID uuid;
 
     @Field(name = "id_user")
     private UUID userId;
 
-    @Field(name = "user_nickname")
-    private String userNickname;
+/*  @Field(name = "user_nickname")
+    private String userNickname;*/
 
     @Field(name = "date")
     private LocalDateTime date;
 
+    @Field(name =  "attempts")
+    private Integer attempts;
+
     @Field(name = "dice_rolls")
-    private List<UUID> diceRollsList;
+    private List<DiceRollDto> diceRollsList;
 
 }

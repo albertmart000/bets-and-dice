@@ -10,10 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping(value = "/betsanddice/api/v1/craps")
@@ -34,6 +33,19 @@ public class CrapsGameController {
         return "Hello from Craps!!!";
     }
 
+    @PostMapping("/crapsGames/{userId}")
+    @Operation(
+            operationId = "Allows the chosen user to play a game of craps game",
+            summary = "Play one game of craps games.",
+            description = "The chosen user plays a game of craps that is stored in the database.",
+            responses = {
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = CrapsGameDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "404", description = "The User with given Id was not found.", content = {@Content(schema = @Schema())})
+            })
+    public Mono<CrapsGameDto> addCrapsGameToUser(@PathVariable("userId") String userId) {
+        return crapsGameService.addCrapsGameToUser(userId);
+    }
+
     @GetMapping("/crapsGames")
     @Operation(
             operationId = "Get all the stored craps games into the Database.",
@@ -41,7 +53,6 @@ public class CrapsGameController {
             description = "Requesting all the craps games through the URI from the database.",
             responses = {
                     @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = CrapsGameDto.class), mediaType = "application/json")}),
-                    @ApiResponse(responseCode = "404", description = "No games were found.", content = {@Content(schema = @Schema())})
             })
     public Flux<CrapsGameDto> getAllCrapsGames() {
         return crapsGameService.getAllCrapsGame();

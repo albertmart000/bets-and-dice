@@ -1,5 +1,6 @@
 package com.betsanddice.craps.document;
 
+import com.betsanddice.craps.dto.DiceRollDto;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -25,26 +26,28 @@ class CrapsGameDocumentTest {
                 null, null, null);
         assertEquals(uuid, crapsGameDocument.getUserId());
     }
-    @Test
-    void getUserNickNameTest() {
-        String userNickName = "userNickName";
-        CrapsGameDocument crapsGameDocument = new CrapsGameDocument(null, null,
-                userNickName, null, null);
-        assertEquals(userNickName, crapsGameDocument.getUserNickname());
-    }
+
     @Test
     void getDateTest() {
         LocalDateTime date = now();
         CrapsGameDocument crapsGameDocument = new CrapsGameDocument(null, null,
-                null, date, null);
+                 date, null, null);
         assertEquals(date, crapsGameDocument.getDate());
     }
 
     @Test
+    void getAttemptsTest() {
+        int attempts = 2;
+        CrapsGameDocument crapsGameDocument = new CrapsGameDocument(null, null,
+                null, 2, null);
+        assertEquals(attempts, crapsGameDocument.getAttempts());
+    }
+
+    @Test
     void getDiceRollsTest() {
-        UUID uuid1 = UUID.randomUUID();
-        UUID uuid2 = UUID.randomUUID();
-        List<UUID> diceRollsList = List.of(uuid1, uuid2);
+        DiceRollDto diceRollDto1= new DiceRollDto( 1, 2, 3);
+        DiceRollDto diceRollDto2= new DiceRollDto( 3, 4, 7);
+        List<DiceRollDto> diceRollsList = List.of(diceRollDto1, diceRollDto2);
 
         CrapsGameDocument crapsGameDocument = new CrapsGameDocument(null, null,
                 null, null, diceRollsList);
