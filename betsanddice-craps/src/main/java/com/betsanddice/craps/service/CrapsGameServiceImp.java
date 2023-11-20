@@ -17,8 +17,8 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 import static java.util.UUID.fromString;
@@ -33,7 +33,7 @@ public class CrapsGameServiceImp implements ICrapsGameService {
     private CrapsGameRepository crapsGameRepository;
 
     @Autowired
-    private final CrapsGameDocumentToDtoConverter documentToDtoConverter = new CrapsGameDocumentToDtoConverter();
+    private CrapsGameDocumentToDtoConverter documentToDtoConverter;
 
     @Override
     public Mono<CrapsGameDto> addCrapsGameToUser(String userId) {
@@ -52,13 +52,12 @@ public class CrapsGameServiceImp implements ICrapsGameService {
         return documentToDtoConverter.fromDocumentFluxToDtoFlux(crapsGameList);
     }
 
-    public List<DiceRollDto> getDiceRollsList() {
-        Random diceValue = new Random();
+    private List<DiceRollDto> getDiceRollsList() {
         List<DiceRollDto> diceRollList = new ArrayList<>();
         int result = 0;
         while (result != 7) {
-            int dice1 = diceValue.nextInt(5) + 1;
-            int dice2 = diceValue.nextInt(5) + 1;
+            int dice1 = ThreadLocalRandom.current().nextInt(1, 7);
+            int dice2 = ThreadLocalRandom.current().nextInt(1, 7);
             result = dice1 + dice2;
             diceRollList.add(new DiceRollDto(dice1, dice2, result));
         }

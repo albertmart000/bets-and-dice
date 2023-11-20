@@ -35,10 +35,6 @@ class CrapsGameDocumentToDtoConverterTest {
 
         UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
-/*        DiceRollDocument diceRollDocument1= new DiceRollDocument( 1, 2, 3);
-        DiceRollDocument diceRollDocument2= new DiceRollDocument( 3, 4, 7);
-        List<DiceRollDocument> diceRollsList = List.of(diceRollDocument1, diceRollDocument2);*/
-
         DiceRollDto diceRollDto1= new DiceRollDto( 1, 2, 3);
         DiceRollDto diceRollDto2= new DiceRollDto( 3, 4, 7);
         List<DiceRollDto> diceRollsList = List.of(diceRollDto1, diceRollDto2);
