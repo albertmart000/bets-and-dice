@@ -46,7 +46,6 @@ class CrapsGameDtoTest {
                 "2023-01-31 12:46:29", 2, diceRollsDtoList);
         crapsGameDtoFromDeserialize = new CrapsGameDto(uuidCrapsGame, uuidUser,
                 "2023-01-31 12:46:29", 2, diceRollsDtoList);
-
     }
 
     @Test
