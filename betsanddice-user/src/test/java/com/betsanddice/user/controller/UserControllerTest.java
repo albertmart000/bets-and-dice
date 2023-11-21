@@ -22,6 +22,8 @@ import static org.mockito.Mockito.when;
 @WebFluxTest(UserController.class)
 class UserControllerTest {
 
+    private final String USER_BASE_URL = "/betsanddice/api/v1/user";
+
     @Autowired
     private WebTestClient webTestClient;
 
@@ -42,10 +44,11 @@ class UserControllerTest {
         when(discoveryClient.getInstances("betsanddice-craps")).thenReturn(Collections.singletonList(instances.get(1)));
 
         webTestClient.get()
-                .uri("/betsanddice/api/v1/user/test")
+                .uri(USER_BASE_URL + "/test")
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(String.class).isEqualTo("Hello from Bets And Dice!!!");
+                .expectBody(String.class)
+                .isEqualTo("Hello from Bets And Dice!!!");
     }
 
     @Test
@@ -56,7 +59,7 @@ class UserControllerTest {
         when(userService.getUserByUuid(userUuid)).thenReturn(Mono.just(expectedUserDto));
 
         webTestClient.get()
-                .uri("/betsanddice/api/v1/user/users/{userUuid}", userUuid)
+                .uri(USER_BASE_URL + "/users/{userUuid}", userUuid)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(UserDto.class)
@@ -75,7 +78,7 @@ class UserControllerTest {
         when(userService.getAllUsers()).thenReturn(expectedUsersFlux);
 
         webTestClient.get()
-                .uri("/betsanddice/api/v1/user/users")
+                .uri(USER_BASE_URL + "/users")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(UserDto.class);

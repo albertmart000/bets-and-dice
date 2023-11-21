@@ -82,7 +82,7 @@ class CrapsGameControllerTest {
     }
 
     @Test
-    void AddUserTest(){
+    void AddCrapsGameToUserTest(){
 
         when(crapsGameService.addCrapsGameToUser(String.valueOf(userId))).thenAnswer(x->(Mono.just(crapsGameDto1)));
 

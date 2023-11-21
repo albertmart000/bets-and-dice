@@ -34,6 +34,8 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class UserIntegrationTest {
 
+    private final String USER_BASE_URL = "/betsanddice/api/v1/user";
+
     @Container
     static MongoDBContainer container = new MongoDBContainer("mongo")
             .withExposedPorts(27017)
@@ -85,7 +87,7 @@ class UserIntegrationTest {
     @Test
     void test() {
         webTestClient.get()
-                .uri("/betsanddice/api/v1/user/test")
+                .uri(USER_BASE_URL + "/test")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
@@ -96,7 +98,7 @@ class UserIntegrationTest {
     @Test
     void getOneUser_InvalidId_UserNotFoundReturned() {
         webTestClient.get()
-                .uri("/betsanddice/api/v1/user/users/{userUuid}", INVALID_UUID)
+                .uri(USER_BASE_URL + "/users/{userUuid}", INVALID_UUID)
                 .exchange()
                 .expectStatus()
                 .isEqualTo(BAD_REQUEST);
@@ -105,7 +107,7 @@ class UserIntegrationTest {
     @Test
     void getOneUser_ValidId_UserReturned() {
         webTestClient.get()
-                .uri("/betsanddice/api/v1/user/users/{userUuid}", VALID_UUID)
+                .uri(USER_BASE_URL + "/users/{userUuid}", VALID_UUID)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
@@ -118,7 +120,7 @@ class UserIntegrationTest {
     @Test
     void getAllUsers_UsersExist_UsersReturned() {
         webTestClient.get()
-                .uri("/betsanddice/api/v1/user/users")
+                .uri(USER_BASE_URL + "/users")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(UserDto.class)
