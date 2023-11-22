@@ -46,12 +46,18 @@ public class UserController {
                 .findAny()
                 .map(Object::toString);
 
+        Optional<String> tutorialService = discoveryClient.getInstances("betsanddice-tutorial")
+                .stream()
+                .findAny()
+                .map(Object::toString);
+
         log.info("~~~~~~~~~~~~~~~~~~~~~~");
         log.info("Scanning micros:");
         log.info((userService.isPresent() ? userService.get() : "No Services")
                 .concat(System.lineSeparator())
-                .concat(crapsService.isPresent() ? crapsService.get() : "No Services"));
-
+                .concat(crapsService.isPresent() ? crapsService.get() : "No Services")
+                .concat(System.lineSeparator())
+                .concat(crapsService.isPresent() ? tutorialService.get() : "No Services"));
         log.info("~~~~~~~~~~~~~~~~~~~~~~");
 
         return "Hello from Bets And Dice!!!";
