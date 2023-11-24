@@ -3,7 +3,7 @@ package com.betsanddice.tutorial.service;
 import com.betsanddice.tutorial.document.GameTutorialDocument;
 import com.betsanddice.tutorial.dto.GameTutorialDto;
 import com.betsanddice.tutorial.exception.BadUuidException;
-import com.betsanddice.tutorial.exception.GameNotFoundException;
+import com.betsanddice.tutorial.exception.GameTutorialNotFoundException;
 import com.betsanddice.tutorial.helper.GameTutorialDocumentToDtoConverter;
 import com.betsanddice.tutorial.repository.GameTutorialRepository;
 import io.micrometer.common.util.StringUtils;
@@ -40,8 +40,8 @@ public class GameTutorialServiceImp implements IGameTutorialService {
         return validateUuid(uuid)
                 .flatMap(gameTutorialUuid -> gameTutorialRepository.findByUuid(gameTutorialUuid)
                         .map(gameTutorialDocument -> converter.fromDocumentToDto(gameTutorialDocument))
-                        .switchIfEmpty(Mono.error(new GameNotFoundException("Game with id " + gameTutorialUuid + " not found")))
-                        .doOnSuccess(userDto -> log.info("Game found with ID: {}", gameTutorialUuid))
+                        .switchIfEmpty(Mono.error(new GameTutorialNotFoundException("GameTutorial with id " + gameTutorialUuid + " not found")))
+                        .doOnSuccess(userDto -> log.info("GameTutorial found with ID: {}", gameTutorialUuid))
                         .doOnError(error -> log.error("Error occurred while retrieving game: {}", error.getMessage()))
                 );
     }
