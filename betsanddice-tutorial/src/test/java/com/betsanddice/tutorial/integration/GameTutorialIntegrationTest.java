@@ -1,7 +1,7 @@
 package com.betsanddice.tutorial.integration;
 
 import com.betsanddice.tutorial.document.GameTutorialDocument;
-import com.betsanddice.tutorial.dto.GameTutorialDto;
+import com.betsanddice.tutorial.dto.out.GameTutorialDto;
 import com.betsanddice.tutorial.repository.GameTutorialRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,6 @@ import java.time.Duration;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient

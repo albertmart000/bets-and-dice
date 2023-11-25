@@ -1,7 +1,8 @@
 package com.betsanddice.tutorial.service;
 
 import com.betsanddice.tutorial.document.GameTutorialDocument;
-import com.betsanddice.tutorial.dto.GameTutorialDto;
+import com.betsanddice.tutorial.dto.in.GameTutorialDtoByName;
+import com.betsanddice.tutorial.dto.out.GameTutorialDto;
 import com.betsanddice.tutorial.exception.BadUuidException;
 import com.betsanddice.tutorial.exception.GameTutorialNotFoundException;
 import com.betsanddice.tutorial.helper.GameTutorialDocumentToDtoConverter;
@@ -30,6 +31,15 @@ public class GameTutorialServiceImp implements IGameTutorialService {
     private GameTutorialDocumentToDtoConverter converter;
 
     @Override
+    public Mono<GameTutorialDto> addGameTutorial(GameTutorialDtoByName gameTutorialDtoByName) {
+        GameTutorialDocument gameTutorialDocument = new GameTutorialDocument(UUID.randomUUID(),
+                gameTutorialDtoByName.getGameName(), gameTutorialDtoByName.getRules());
+        gameTutorialRepository.save(gameTutorialDocument).block();
+        GameTutorialDto gameTutorialDto = converter.fromDocumentToDto(gameTutorialDocument);
+        return Mono.just(gameTutorialDto);
+    }
+
+    @Override
     public Flux<GameTutorialDto> getAllGameTutorials() {
         Flux<GameTutorialDocument> gameTutorialsList = gameTutorialRepository.findAll();
         return converter.fromDocumentFluxToDtoFlux(gameTutorialsList);
@@ -53,7 +63,6 @@ public class GameTutorialServiceImp implements IGameTutorialService {
             log.warn("Invalid ID format: {}", id);
             return Mono.error(new BadUuidException("Invalid ID format. Please indicate the correct format."));
         }
-
         return Mono.just(UUID.fromString(id));
     }
 

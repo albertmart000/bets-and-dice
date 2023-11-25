@@ -9,5 +9,9 @@ import java.util.UUID;
 
 @Repository
 public interface GameTutorialRepository extends ReactiveMongoRepository<GameTutorialDocument, UUID> {
+
     Mono<GameTutorialDocument> findByUuid(UUID uuid);
+
+
+
 }

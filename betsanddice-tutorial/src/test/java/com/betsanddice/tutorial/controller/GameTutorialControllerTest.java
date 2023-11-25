@@ -1,6 +1,6 @@
 package com.betsanddice.tutorial.controller;
 
-import com.betsanddice.tutorial.dto.GameTutorialDto;
+import com.betsanddice.tutorial.dto.out.GameTutorialDto;
 import com.betsanddice.tutorial.service.IGameTutorialService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
