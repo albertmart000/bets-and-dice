@@ -9,20 +9,20 @@ import java.util.UUID;
 
 @Component
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
 @Setter
 public class UserStatDto {
 
-    @JsonProperty(value = "userStat_id", index = 0)
+    @JsonProperty(value = "id_user_stat", index = 0)
     private UUID uuid;
 
-    @JsonProperty(value = "userid", index = 1)
+    @JsonProperty(value = "id_user", index = 1)
     private UUID userId;
 
-    @JsonProperty(value = "gameId", index = 2)
+    @JsonProperty(value = "id_game", index = 2)
     private UUID gameId;
 
     @JsonProperty(value = "average", index = 3)

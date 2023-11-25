@@ -2,11 +2,11 @@ db.createUser({
     user: "admin_stat",
     pwd: "XMOJocgKlmRHz2O",
     roles: [
-      { role: "dbOwner", db: "stat" }
+      { role: "dbOwner", db: "stats" }
     ]
   });
 
-db.createCollection("userStats");
+//db.createCollection("user-stats");
 
 
 

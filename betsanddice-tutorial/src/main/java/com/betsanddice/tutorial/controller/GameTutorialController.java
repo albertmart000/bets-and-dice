@@ -57,7 +57,7 @@ public class GameTutorialController {
             description = "Requesting all the games through the URI from the database.",
             responses = {
                     @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = GameTutorialDto.class), mediaType = "application/json")}),
-                    @ApiResponse(responseCode = "404", description = "No users were found.", content = {@Content(schema = @Schema())})
+                    @ApiResponse(responseCode = "404", description = "No games were found.", content = {@Content(schema = @Schema())})
             })
     public Flux<GameTutorialDto> getAllGameTutorials() {
         return gameTutorialService.getAllGameTutorials();

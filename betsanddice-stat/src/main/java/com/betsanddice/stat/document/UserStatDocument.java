@@ -12,17 +12,17 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "userStats")
+@Document(collection = "user-stats")
 public class UserStatDocument {
 
     @Id
     @Field(name = "_id")
     private UUID uuid;
 
-    @Field(name = "userId")
+    @Field(name = "id_user")
     private UUID userId;
 
-    @Field(name = "gameId")
+    @Field(name = "id_game")
     private UUID gameId;
 
     @Field(name = "average")

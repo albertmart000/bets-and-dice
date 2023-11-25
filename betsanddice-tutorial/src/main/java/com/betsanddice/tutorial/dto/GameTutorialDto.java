@@ -14,7 +14,6 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-
 public class GameTutorialDto {
     @JsonProperty(value = "game_id", index = 0)
     private UUID gameId;

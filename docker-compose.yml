@@ -12,10 +12,11 @@ services:
     ports:
       - "27018:27017"
     volumes:
+      - betsanddice_mongodb_data:/data/db
       #- data-mongo-bets-user:/var/lib/docker/volumes/data-mongo-bets-user/_data
-      - betsanddice_mongodb_data:/var/lib/mongodb
-      - ../betsandice-user/src/main/resources/mongodb-init:/docker-entrypoint-initdb.d
-      - ../betsandice-user/src/main/resources/mongodb-test-data:/tmp/data/
+      #- betsanddice_mongodb_data:/var/lib/mongodb
+      #- ../betsandice-user/src/main/resources/mongodb-init:/docker-entrypoint-initdb.d
+      #- ../betsandice-user/src/main/resources/mongodb-test-data:/tmp/data/
     networks:
       - network-betsanddice
 
@@ -67,6 +68,23 @@ services:
       MONGODB_PASSWORD: XMOJocgKlmRHz2O
       MONGODB_CONTAINER_PORT: 27018
       MONGODB_TUTORIAL_DATABASE: tutorials
+    networks:
+      - network-betsanddice
+
+  betsanddice-stat:
+    image: betsanddice-stat
+    container_name: betsanddice-stat-v1.0-SNAPSHOT
+    restart: always
+    depends_on:
+      - betsanddice-mongodb
+    ports:
+      - "8096:8096"
+    environment:
+      MONGODB_HOST=mongodb: 27017
+      MONGODB_USERNAME: admin_betsanddice
+      MONGODB_PASSWORD: XMOJocgKlmRHz2O
+      MONGODB_CONTAINER_PORT: 27018
+      MONGODB_CRAPS_DATABASE: stats
     networks:
       - network-betsanddice
 
