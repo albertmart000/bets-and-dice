@@ -19,7 +19,6 @@ import java.util.UUID;
 public class CrapsGameDocument {
 
     @Id
-
     @Field(name = "_id")
     private UUID uuid;
 

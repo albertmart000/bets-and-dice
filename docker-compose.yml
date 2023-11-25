@@ -1,20 +1,22 @@
 version: "3.7"
 
 services:
-  betsanddice-user-mongodb:
-    container_name: mongodb-betsanddice-user
+  betsanddice-mongodb:
+    container_name: mongodb-betsanddice
     image: mongo:5.0.9
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin_user
+      MONGO_INITDB_ROOT_USERNAME: admin_betsanddice
       MONGO_INITDB_ROOT_PASSWORD: XMOJocgKlmRHz2O
       MONGO_INITDB_DATABASE: users
     ports:
       - "27018:27017"
     volumes:
-      - data-mongo-bets-user:/var/lib/docker/volumes/data-mongo-bets-user/_data
-      - ../betsandice-user/src/main/resources/mongodb-init:/docker-entrypoint-initdb.d
-      - ../betsandice-user/src/main/resources/mongodb-test-data:/tmp/data/
+      - betsanddice_mongodb_data:/data/db
+      #- data-mongo-bets-user:/var/lib/docker/volumes/data-mongo-bets-user/_data
+      #- betsanddice_mongodb_data:/var/lib/mongodb
+      #- ../betsandice-user/src/main/resources/mongodb-init:/docker-entrypoint-initdb.d
+      #- ../betsandice-user/src/main/resources/mongodb-test-data:/tmp/data/
     networks:
       - network-betsanddice
 
@@ -23,20 +25,71 @@ services:
     container_name: betsanddice-user-v1.0-SNAPSHOT
     restart: always
     depends_on:
-      - betsanddice-user-mongodb
+      - betsanddice-mongodb
     ports:
       - "8094:8094"
     environment:
       MONGODB_HOST=mongodb: 27017
-      MONGODB_USERNAME: admin_user
+      MONGODB_USERNAME: admin_betsanddice
       MONGODB_PASSWORD: XMOJocgKlmRHz2O
       MONGODB_CONTAINER_PORT: 27018
-      MONGODB_CHALLENGE_DATABASE: users
+      MONGODB_USER_DATABASE: users
+    networks:
+      - network-betsanddice
+
+  betsanddice-craps:
+    image: betsanddice-craps
+    container_name: betsanddice-craps-v1.0-SNAPSHOT
+    restart: always
+    depends_on:
+      - betsanddice-mongodb
+    ports:
+      - "8095:8095"
+    environment:
+      MONGODB_HOST=mongodb: 27017
+      MONGODB_USERNAME: admin_betsanddice
+      MONGODB_PASSWORD: XMOJocgKlmRHz2O
+      MONGODB_CONTAINER_PORT: 27018
+      MONGODB_CRAPS_DATABASE: craps
+    networks:
+      - network-betsanddice
+
+  betsanddice-tutorial:
+    image: betsanddice-tutorial
+    container_name: betsanddice-tutorial-v1.0-SNAPSHOT
+    restart: always
+    depends_on:
+      - betsanddice-mongodb
+    ports:
+      - "8098:8098"
+    environment:
+      MONGODB_HOST=mongodb: 27017
+      MONGODB_USERNAME: admin_betsanddice
+      MONGODB_PASSWORD: XMOJocgKlmRHz2O
+      MONGODB_CONTAINER_PORT: 27018
+      MONGODB_TUTORIAL_DATABASE: tutorials
+    networks:
+      - network-betsanddice
+
+  betsanddice-stat:
+    image: betsanddice-stat
+    container_name: betsanddice-stat-v1.0-SNAPSHOT
+    restart: always
+    depends_on:
+      - betsanddice-mongodb
+    ports:
+      - "8096:8096"
+    environment:
+      MONGODB_HOST=mongodb: 27017
+      MONGODB_USERNAME: admin_betsanddice
+      MONGODB_PASSWORD: XMOJocgKlmRHz2O
+      MONGODB_CONTAINER_PORT: 27018
+      MONGODB_CRAPS_DATABASE: stats
     networks:
       - network-betsanddice
 
 volumes:
-  data-mongo-bets-user:
+  betsanddice_mongodb_data:
 
 networks:
   network-betsanddice:

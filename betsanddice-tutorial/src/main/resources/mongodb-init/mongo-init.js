@@ -6,4 +6,4 @@ db.createUser({
     ]
   });
 
-db.createCollection("game-tutorials");
+//db.createCollection("game-tutorials");

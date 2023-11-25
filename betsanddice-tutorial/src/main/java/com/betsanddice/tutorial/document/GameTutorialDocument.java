@@ -16,7 +16,7 @@ import java.util.UUID;
 public class GameTutorialDocument {
 
     @Id
-    @Field(name = "game_id")
+    @Field(name = "_id")
     private UUID uuid;
 
     @Field(name = "game_name")
