@@ -18,6 +18,11 @@ public class ErrorMessageDto {
         this.message = message;
     }
 
+    public ErrorMessageDto(String message, int statusCode) {
+        this.message = message;
+        this.statusCode = statusCode;
+    }
+
     public ErrorMessageDto(String message, Map<String, String> errors) {
         this.message = message;
         this.errors = errors;

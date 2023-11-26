@@ -12,6 +12,4 @@ public interface GameTutorialRepository extends ReactiveMongoRepository<GameTuto
 
     Mono<GameTutorialDocument> findByUuid(UUID uuid);
 
-
-
 }
