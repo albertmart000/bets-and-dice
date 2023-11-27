@@ -78,7 +78,7 @@ class GameTutorialServiceImpTest {
     }
 
     @Test
-    void testAddCrapsGameToUser() {
+    void testAddGameTutorial() {
         UUID uuidGameTutorialDocument1 = UUID.fromString("660e1b18-0c0a-4262-a28a-85de9df6ac5f");
         GameTutorialDtoByName gameTutorialDtoByName = new GameTutorialDtoByName("Name", "rules");
 

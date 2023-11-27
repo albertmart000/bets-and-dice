@@ -17,6 +17,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 @DataMongoTest
 @Testcontainers
@@ -52,10 +53,25 @@ class GameTutorialRepositoryTest {
 
         gameTutorialRepository.saveAll(Flux.just(gameTutorialDocument1, gameTutorialDocument2 )).blockLast();
     }
+
     @DisplayName("Repository not null Test")
     @Test
     void testDB() {
         Assertions.assertNotNull(gameTutorialRepository);
+    }
+
+    @DisplayName("Exists by UUID Test")
+    @Test
+    void existsByUuidTest() {
+        Boolean exists = gameTutorialRepository.existsByUuid(uuidGameTutorialDocument1).block();
+        assertEquals(true, exists);
+    }
+
+    @DisplayName("Exists by gameName Test")
+    @Test
+    void existsByGameNameTest() {
+        Boolean exists = gameTutorialRepository.existsByGameName("Craps").block();
+        assertEquals(true, exists);
     }
 
     @DisplayName("Find All Test")

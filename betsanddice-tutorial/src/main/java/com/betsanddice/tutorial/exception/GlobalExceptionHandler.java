@@ -22,6 +22,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new ErrorMessageDto(ex.getMessage()));
     }
 
+    @ExceptionHandler(GameTutorialAlreadyExistException.class)
+    public ResponseEntity<ErrorMessageDto> handleGameTutorialAlreadyExistException(GameTutorialAlreadyExistException ex) {
+        return ResponseEntity.badRequest().body(new ErrorMessageDto(ex.getMessage()));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorMessageDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
