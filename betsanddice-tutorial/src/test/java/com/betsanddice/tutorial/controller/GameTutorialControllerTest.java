@@ -1,7 +1,6 @@
 package com.betsanddice.tutorial.controller;
 
-import com.betsanddice.tutorial.dto.in.GameTutorialDtoByName;
-import com.betsanddice.tutorial.dto.out.GameTutorialDto;
+import com.betsanddice.tutorial.dto.GameTutorialDto;
 import com.betsanddice.tutorial.service.IGameTutorialService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +39,7 @@ class GameTutorialControllerTest {
     GameTutorialDto gameTutorialDto2 = new GameTutorialDto();
     GameTutorialDto[] expectedGameTutorials = {gameTutorialDto1, gameTutorialDto2};
 
-    GameTutorialDtoByName gameTutorialDtoByName = new GameTutorialDtoByName();
+    GameTutorialDtoByName gameTutorialDtoToAdd = new GameTutorialDtoByName();
 
     @BeforeEach
     void setUp() {
@@ -51,7 +50,7 @@ class GameTutorialControllerTest {
         gameTutorialDto2 = new GameTutorialDto(uuidGameTutorialDocument2, "SixDice",
                 "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusan…");
 
-        gameTutorialDtoByName = new GameTutorialDtoByName("Craps",
+        gameTutorialDtoToAdd = new GameTutorialDtoByName("Craps",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmo…");
     }
 
@@ -99,13 +98,13 @@ class GameTutorialControllerTest {
     @Test
     void AddGameTutorialTest() {
         UUID uuidGameTutorialDocument = UUID.fromString("660e1b18-0c0a-4262-a28a-85de9df6ac5f");
-        GameTutorialDto gameTutorialDto = new GameTutorialDto(uuidGameTutorialDocument, gameTutorialDtoByName.getGameName(),
-                gameTutorialDtoByName.getRules());
+        GameTutorialDto gameTutorialDto = new GameTutorialDto(uuidGameTutorialDocument, gameTutorialDtoToAdd.getGameName(),
+                gameTutorialDtoToAdd.getRules());
 
-        when(gameTutorialService.addGameTutorial(gameTutorialDtoByName)).thenAnswer(x -> (Mono.just(gameTutorialDto)));
+        when(gameTutorialService.addGameTutorial(gameTutorialDto)).thenAnswer(x -> (Mono.just(gameTutorialDto)));
 
         webTestClient.post()
-                .uri(TUTORIAL_BASE_URL + "/gameTutorials", gameTutorialDtoByName)
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials", gameTutorialDtoToAdd)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(gameTutorialDto), GameTutorialDto.class)
                 .exchange()

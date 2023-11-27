@@ -1,8 +1,7 @@
 package com.betsanddice.tutorial.service;
 
 import com.betsanddice.tutorial.document.GameTutorialDocument;
-import com.betsanddice.tutorial.dto.in.GameTutorialDtoByName;
-import com.betsanddice.tutorial.dto.out.GameTutorialDto;
+import com.betsanddice.tutorial.dto.GameTutorialDto;
 import com.betsanddice.tutorial.exception.BadUuidException;
 import com.betsanddice.tutorial.exception.GameTutorialAlreadyExistException;
 import com.betsanddice.tutorial.exception.GameTutorialNotFoundException;
@@ -12,6 +11,7 @@ import com.betsanddice.tutorial.repository.GameTutorialRepository;
 import io.micrometer.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -35,36 +35,28 @@ public class GameTutorialServiceImp implements IGameTutorialService {
     @Autowired
     private GameTutorialDtoToDocumentConverter dtoToDocumentConverter;
 
-    @Override
-    public Mono<GameTutorialDto> addGameTutorial(GameTutorialDtoByName gameTutorialDtoByName) {
-        return Mono.just(gameTutorialDtoByName.getGameName())
-                .flatMap(gameNameTutorialToAdd -> {
-                    Mono<Boolean> existGameTutorial = gameTutorialRepository.existsByGameName(gameNameTutorialToAdd);
-                    return existGameTutorial
+    public Mono<GameTutorialDto> addGameTutorial(GameTutorialDto gameTutorialDto) {
+        return Mono.just(gameTutorialDto)
+                .flatMap(gameName -> {
+                    Mono<GameTutorialDocument> gameTutorialDocumentMono = gameTutorialRepository.findByGameName(gameTutorialDto.getGameName());
+                    return gameTutorialDocumentMono
+                            .hasElement()
                             .flatMap(result -> {
-                                if (Boolean.TRUE.equals(result)) {
-                                    return Mono.error(new GameTutorialAlreadyExistException("Game with name " + gameTutorialDtoByName + " already exist."));
+                                if (Boolean.FALSE.equals(result)) {
+                                    GameTutorialDocument gameTutorialDocument = new GameTutorialDocument();
+                                    BeanUtils.copyProperties(gameTutorialDto, gameTutorialDocument);
+                                    gameTutorialDocument.setUuid(UUID.randomUUID());
+                                    return Mono.just(gameTutorialDocument)
+                                            .flatMap(gameTutorialDocumentToSave -> gameTutorialRepository.save(gameTutorialDocumentToSave))
+                                            .map(documentToDtoConverter::fromDocumentToDto);
                                 } else {
-                                    GameTutorialDocument gameTutorialDocumentToAdd = dtoToDocumentConverter.fromDtoToDocument(gameTutorialDtoByName);
-                                    gameTutorialDocumentToAdd.setUuid(UUID.randomUUID());
-                                    gameTutorialRepository.save(gameTutorialDocumentToAdd);
-                                    return Mono.just(documentToDtoConverter.fromDocumentToDto(gameTutorialDocumentToAdd));
+                                    return Mono.error(new GameTutorialAlreadyExistException("Game with name " + gameTutorialDto.getGameName() + " already exist."));
                                 }
                             })
-                            .doOnSuccess(gameTutorialDto -> log.info("Game Tutorial saved with ID: {}", gameTutorialDto.getGameId()))
+                            .doOnSuccess(gameTutorialDtoAdded -> log.info("Game Tutorial saved with name: {}", gameName))
                             .doOnError(error -> log.error("Error occurred while saving Game Tutorial: {}", error.getMessage()));
                 });
     }
-
-    /*if (Boolean.FALSE.equals(result)) */
-/*    @Override
-    public Mono<GameTutorialDto> addGameTutorial(GameTutorialDtoByName gameTutorialDtoByName) {
-        GameTutorialDocument gameTutorialDocument = new GameTutorialDocument(UUID.randomUUID(),
-                gameTutorialDtoByName.getGameName(), gameTutorialDtoByName.getRules());
-        gameTutorialRepository.save(gameTutorialDocument).block();
-        GameTutorialDto gameTutorialDto = converter.fromDocumentToDto(gameTutorialDocument);
-        return Mono.just(gameTutorialDto);
-    }*/
 
     @Override
     public Flux<GameTutorialDto> getAllGameTutorials() {

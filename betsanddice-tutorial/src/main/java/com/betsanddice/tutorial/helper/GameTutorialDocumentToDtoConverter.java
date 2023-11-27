@@ -1,7 +1,7 @@
 package com.betsanddice.tutorial.helper;
 
 import com.betsanddice.tutorial.document.GameTutorialDocument;
-import com.betsanddice.tutorial.dto.out.GameTutorialDto;
+import com.betsanddice.tutorial.dto.GameTutorialDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;

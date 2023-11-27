@@ -1,8 +1,7 @@
 package com.betsanddice.tutorial.integration;
 
 import com.betsanddice.tutorial.document.GameTutorialDocument;
-import com.betsanddice.tutorial.dto.in.GameTutorialDtoByName;
-import com.betsanddice.tutorial.dto.out.GameTutorialDto;
+import com.betsanddice.tutorial.dto.GameTutorialDto;
 import com.betsanddice.tutorial.repository.GameTutorialRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

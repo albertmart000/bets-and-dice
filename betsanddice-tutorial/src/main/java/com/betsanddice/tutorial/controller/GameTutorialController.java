@@ -1,7 +1,6 @@
 package com.betsanddice.tutorial.controller;
 
-import com.betsanddice.tutorial.dto.in.GameTutorialDtoByName;
-import com.betsanddice.tutorial.dto.out.GameTutorialDto;
+import com.betsanddice.tutorial.dto.GameTutorialDto;
 import com.betsanddice.tutorial.service.IGameTutorialService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,8 +44,8 @@ public class GameTutorialController {
                     @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(schema = @Schema())}),
                     @ApiResponse(responseCode = "503", description = "Service Unavailable", content = {@Content(schema = @Schema())})
             })
-    public Mono<GameTutorialDto> addGameTutorial(@Valid @RequestBody GameTutorialDtoByName gameTutorialDtoByName) {
-        return gameTutorialService.addGameTutorial(gameTutorialDtoByName);
+    public Mono<GameTutorialDto> addGameTutorial(@Valid @RequestBody GameTutorialDto gameTutorialDto) {
+        return gameTutorialService.addGameTutorial(gameTutorialDto);
     }
 
     @GetMapping(path = "/gameTutorials/{gameTutorialUuid}")

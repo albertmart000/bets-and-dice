@@ -1,6 +1,5 @@
 package com.betsanddice.tutorial.dto;
 
-import com.betsanddice.tutorial.dto.out.GameTutorialDto;
 import com.betsanddice.tutorial.helper.ResourceHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
