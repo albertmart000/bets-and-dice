@@ -96,7 +96,7 @@ class GameTutorialControllerTest {
     }
 
     @Test
-    void AddGameTutorialTest() {
+    void addGameTutorialTest() {
         UUID uuidGameTutorialDocument = UUID.fromString("660e1b18-0c0a-4262-a28a-85de9df6ac5f");
         GameTutorialDto gameTutorialDto = new GameTutorialDto(uuidGameTutorialDocument, gameTutorialDtoToAdd.getGameName(),
                 gameTutorialDtoToAdd.getRules());

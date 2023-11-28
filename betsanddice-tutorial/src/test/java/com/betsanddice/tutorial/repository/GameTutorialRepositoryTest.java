@@ -3,7 +3,6 @@ package com.betsanddice.tutorial.repository;
 import com.betsanddice.tutorial.document.GameTutorialDocument;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -17,8 +16,8 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.util.AssertionErrors.fail;
+
 @DataMongoTest
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
@@ -60,18 +59,49 @@ class GameTutorialRepositoryTest {
         Assertions.assertNotNull(gameTutorialRepository);
     }
 
+
     @DisplayName("Exists by UUID Test")
     @Test
     void existsByUuidTest() {
         Boolean exists = gameTutorialRepository.existsByUuid(uuidGameTutorialDocument1).block();
-        assertEquals(true, exists);
+        Assertions.assertEquals(true, exists);
     }
 
-    @DisplayName("Exists by gameName Test")
+    @DisplayName("Exists by GameName Test")
     @Test
     void existsByGameNameTest() {
         Boolean exists = gameTutorialRepository.existsByGameName("Craps").block();
-        assertEquals(true, exists);
+        Assertions.assertEquals(true, exists);
+    }
+
+    @DisplayName("Find by GameName Test")
+    @Test
+    void findByChallengeTitleTest() {
+
+        Mono<GameTutorialDocument> gameTutorialDocument1 = gameTutorialRepository.findByGameName("Craps");
+        gameTutorialDocument1.blockOptional().ifPresentOrElse(
+                gameTutorialDocument -> Assertions.assertEquals("Craps", gameTutorialDocument.getGameName()),
+                () -> fail("Game with name Craps not found."));
+
+        Mono<GameTutorialDocument> gameTutorialDocument2 = gameTutorialRepository.findByGameName("SixDice");
+        gameTutorialDocument2.blockOptional().ifPresentOrElse(
+                gameTutorialDocument -> Assertions.assertEquals("SixDice", gameTutorialDocument.getGameName()),
+                () -> fail("Game with name SixDice not found."));
+    }
+
+    @DisplayName("Find by UUID Test")
+    @Test
+    void findByUuidTest() {
+
+        Mono<GameTutorialDocument> gameTutorialDocument1 = gameTutorialRepository.findByUuid(uuidGameTutorialDocument1);
+        gameTutorialDocument1.blockOptional().ifPresentOrElse(
+                gameTutorialDocument -> Assertions.assertEquals(uuidGameTutorialDocument1, gameTutorialDocument.getUuid()),
+                () -> fail("Game Tutorial not found: " + uuidGameTutorialDocument1));
+
+        Mono<GameTutorialDocument> gameTutorialDocument2 = gameTutorialRepository.findByUuid(uuidGameTutorialDocument2);
+        gameTutorialDocument2.blockOptional().ifPresentOrElse(
+                gameTutorialDocument -> Assertions.assertEquals(uuidGameTutorialDocument2, gameTutorialDocument.getUuid()),
+                () -> fail("Game Tutorial not found: " + uuidGameTutorialDocument2));
     }
 
     @DisplayName("Find All Test")
@@ -81,21 +111,6 @@ class GameTutorialRepositoryTest {
         StepVerifier.create(gameTutorialDocumentFlux)
                 .expectNextCount(2)
                 .verifyComplete();
-    }
-
-    @DisplayName("Find by UUID Test")
-    @Test
-    void findByUuidTest() {
-
-        Mono<GameTutorialDocument> gameTutorialDocument1 = gameTutorialRepository.findByUuid(uuidGameTutorialDocument1);
-        gameTutorialDocument1.blockOptional().ifPresentOrElse(
-                user -> Assertions.assertEquals(user.getUuid(), uuidGameTutorialDocument1),
-                () -> fail("User not found: " + uuidGameTutorialDocument1));
-
-        Mono<GameTutorialDocument> gameTutorialDocument2 = gameTutorialRepository.findByUuid(uuidGameTutorialDocument2);
-        gameTutorialDocument2.blockOptional().ifPresentOrElse(
-                user -> Assertions.assertEquals(user.getUuid(), uuidGameTutorialDocument2),
-                () -> fail("User not found: " + uuidGameTutorialDocument2));
     }
 
 }
