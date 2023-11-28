@@ -24,4 +24,8 @@ public class GameTutorialDto {
     @JsonProperty(value = "rules", index = 2)
     private String rules;
 
+    public GameTutorialDto(String gameName, String rules) {
+        this.gameName = gameName;
+        this.rules = rules;
+    }
 }

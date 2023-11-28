@@ -55,11 +55,11 @@ class CrapsGameIntegrationTest {
 
     UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
-    UUID uuidCrapsGame1 = UUID.fromString("50feba3c-3cbf-48ad-8142-cccf7c6bf3d3");
-    UUID uuidCrapsGame2 = UUID.fromString("6160a07c-1d0f-4ac0-80b0-ef8f17bcad53");
+    UUID uuidCrapsGame = UUID.fromString("50feba3c-3cbf-48ad-8142-cccf7c6bf3d3");
+    UUID uuidCrapsGame1 = UUID.fromString("6160a07c-1d0f-4ac0-80b0-ef8f17bcad53");
 
+    CrapsGameDocument crapsGameDocument = new CrapsGameDocument();
     CrapsGameDocument crapsGameDocument1 = new CrapsGameDocument();
-    CrapsGameDocument crapsGameDocument2 = new CrapsGameDocument();
 
     @BeforeEach
     void setUp() {
@@ -71,10 +71,10 @@ class CrapsGameIntegrationTest {
 
         LocalDateTime date = LocalDateTime.of(2023, 1, 31, 12, 0, 0);
 
+        crapsGameDocument = new CrapsGameDocument(uuidCrapsGame, uuidUser, date, 2, diceRollsList);
         crapsGameDocument1 = new CrapsGameDocument(uuidCrapsGame1, uuidUser, date, 2, diceRollsList);
-        crapsGameDocument2 = new CrapsGameDocument(uuidCrapsGame2, uuidUser, date, 2, diceRollsList);
 
-        crapsGameRepository.saveAll(Flux.just(crapsGameDocument1, crapsGameDocument2)).blockLast();
+        crapsGameRepository.saveAll(Flux.just(crapsGameDocument, crapsGameDocument1)).blockLast();
     }
 
     @Test
@@ -103,12 +103,12 @@ class CrapsGameIntegrationTest {
         webTestClient.post()
                 .uri(CRAPS_BASE_URL + "/crapsGames/{userId}", uuidUser)
                 .accept(MediaType.APPLICATION_JSON)
-                .body(Mono.just(crapsGameDocument1), CrapsGameDocument.class)
+                .body(Mono.just(crapsGameDocument), CrapsGameDocument.class)
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                .expectBody();
-                //.equals(Mono.just(crapsGameDocument1).block());
+                .expectBody()
+                .equals(Mono.just(crapsGameDocument).block());
     }
 
 }

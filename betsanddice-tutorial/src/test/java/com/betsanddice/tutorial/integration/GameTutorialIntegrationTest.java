@@ -17,6 +17,7 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.UUID;
@@ -53,6 +54,8 @@ class GameTutorialIntegrationTest {
     UUID uuidGameTutorial1 = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
     UUID uuidGameTutorial2 = UUID.fromString("9cc65b00-8412-46e7-ba6f-ead17a9fe167");
 
+    GameTutorialDto gameTutorialDtoByName = new GameTutorialDto();
+
     @BeforeEach
     void setUp() {
 
@@ -62,7 +65,6 @@ class GameTutorialIntegrationTest {
         GameTutorialDocument gameTutorial2 = new GameTutorialDocument(uuidGameTutorial2, "SixDice", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt...");
 
         gameTutorialRepository.saveAll(Flux.just(gameTutorial1, gameTutorial2)).blockLast();
-
     }
 
     @Test
@@ -76,21 +78,39 @@ class GameTutorialIntegrationTest {
                 .value(String::toString, equalTo("Hello from Tutorial!!!"));
     }
 
-/*    @Test
+    @Test
+    void addGameTutorialTest() {
+        UUID uuidGameTutorialDocument = UUID.fromString("660e1b18-0c0a-4262-a28a-85de9df6ac5f");
+        gameTutorialDtoByName = new GameTutorialDto("Name", "rules");
+        GameTutorialDto gameTutorialDto = new GameTutorialDto(uuidGameTutorialDocument, gameTutorialDtoByName.getGameName(),
+                gameTutorialDtoByName.getRules());
+
+        webTestClient.post()
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials", gameTutorialDtoByName)
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(gameTutorialDto), GameTutorialDto.class)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBody()
+                .equals(Mono.just(gameTutorialDto).block());
+    }
+
+    @Test
     void getOneGameTutorial_InvalidId_GameTutorialNotFoundReturned() {
-        String INVALID_UUID = "ce020780-1a66-bec4-284c8ca80296";
+        String invalidUuid = "ce020780-1a66-bec4-284c8ca80296";
         webTestClient.get()
-                .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", INVALID_UUID)
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", invalidUuid)
                 .exchange()
                 .expectStatus()
                 .isEqualTo(BAD_REQUEST);
-    }*/
+    }
 
     @Test
     void getOneGameTutorial_ValidId_GameTutorialReturned() {
-        String VALID_UUID = "c8a5440d-6466-463a-bccc-7fefbe9396e4";
+        String validUuid = "c8a5440d-6466-463a-bccc-7fefbe9396e4";
         webTestClient.get()
-                .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", VALID_UUID)
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", validUuid)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()

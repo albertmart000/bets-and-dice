@@ -57,7 +57,7 @@ public class UserController {
                 .concat(System.lineSeparator())
                 .concat(crapsService.isPresent() ? crapsService.get() : "No Services")
                 .concat(System.lineSeparator())
-                .concat(crapsService.isPresent() ? tutorialService.get() : "No Services"));
+                .concat(tutorialService.isPresent() ? tutorialService.get() : "No Services"));
         log.info("~~~~~~~~~~~~~~~~~~~~~~");
 
         return "Hello from Bets And Dice!!!";

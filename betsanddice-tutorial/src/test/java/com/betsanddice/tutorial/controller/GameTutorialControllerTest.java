@@ -6,11 +6,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebFlux;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -40,6 +39,8 @@ class GameTutorialControllerTest {
     GameTutorialDto gameTutorialDto2 = new GameTutorialDto();
     GameTutorialDto[] expectedGameTutorials = {gameTutorialDto1, gameTutorialDto2};
 
+    GameTutorialDto gameTutorialDtoToAdd = new GameTutorialDto();
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -48,6 +49,9 @@ class GameTutorialControllerTest {
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmo…");
         gameTutorialDto2 = new GameTutorialDto(uuidGameTutorialDocument2, "SixDice",
                 "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusan…");
+
+        gameTutorialDtoToAdd = new GameTutorialDto("Craps",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmo…");
     }
 
     @Test
@@ -76,7 +80,6 @@ class GameTutorialControllerTest {
                 .value(dto -> {
                     assert dto != null;
                 });
-
     }
 
     @Test
@@ -90,6 +93,24 @@ class GameTutorialControllerTest {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(GameTutorialDto.class);
+    }
+
+    @Test
+    void addGameTutorialTest() {
+        UUID uuidGameTutorialDocument = UUID.fromString("660e1b18-0c0a-4262-a28a-85de9df6ac5f");
+        GameTutorialDto gameTutorialDto = new GameTutorialDto(uuidGameTutorialDocument, gameTutorialDtoToAdd.getGameName(),
+                gameTutorialDtoToAdd.getRules());
+
+        when(gameTutorialService.addGameTutorial(gameTutorialDto)).thenAnswer(x -> (Mono.just(gameTutorialDto)));
+
+        webTestClient.post()
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials", gameTutorialDtoToAdd)
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(gameTutorialDto), GameTutorialDto.class)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .equals(Mono.just(gameTutorialDto));
     }
 
 }

@@ -6,6 +6,8 @@ import reactor.core.publisher.Mono;
 
 public interface IGameTutorialService {
 
+    Mono<GameTutorialDto> addGameTutorial(GameTutorialDto gameTutorialDto);
+
     Flux<GameTutorialDto> getAllGameTutorials();
 
     Mono<GameTutorialDto> getGameTutorialByUuid(String uuid);

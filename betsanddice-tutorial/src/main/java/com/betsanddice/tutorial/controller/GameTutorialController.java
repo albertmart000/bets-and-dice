@@ -6,14 +6,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -34,6 +32,20 @@ public class GameTutorialController {
     public String test() {
         log.info("** Gretings from the logger **");
         return "Hello from Tutorial!!!";
+    }
+
+    @PostMapping("/gameTutorials")
+    @Operation(
+            operationId = "Allows to add a new game tutorial in the database",
+            summary = "Add game tutorial.",
+            description = "A new game tutorial is stored in the database.",
+            responses = {
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = GameTutorialDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(schema = @Schema())}),
+                    @ApiResponse(responseCode = "503", description = "Service Unavailable", content = {@Content(schema = @Schema())})
+            })
+    public Mono<GameTutorialDto> addGameTutorial(@Valid @RequestBody GameTutorialDto gameTutorialDto) {
+        return gameTutorialService.addGameTutorial(gameTutorialDto);
     }
 
     @GetMapping(path = "/gameTutorials/{gameTutorialUuid}")
