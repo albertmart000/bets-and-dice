@@ -54,7 +54,7 @@ class GameTutorialIntegrationTest {
     UUID uuidGameTutorial1 = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
     UUID uuidGameTutorial2 = UUID.fromString("9cc65b00-8412-46e7-ba6f-ead17a9fe167");
 
-    GameTutorialDtoByName gameTutorialDtoByName = new GameTutorialDtoByName();
+    GameTutorialDto gameTutorialDtoByName = new GameTutorialDto();
 
     @BeforeEach
     void setUp() {
@@ -81,7 +81,7 @@ class GameTutorialIntegrationTest {
     @Test
     void addGameTutorialTest() {
         UUID uuidGameTutorialDocument = UUID.fromString("660e1b18-0c0a-4262-a28a-85de9df6ac5f");
-        gameTutorialDtoByName = new GameTutorialDtoByName("Name", "rules");
+        gameTutorialDtoByName = new GameTutorialDto("Name", "rules");
         GameTutorialDto gameTutorialDto = new GameTutorialDto(uuidGameTutorialDocument, gameTutorialDtoByName.getGameName(),
                 gameTutorialDtoByName.getRules());
 
@@ -98,9 +98,9 @@ class GameTutorialIntegrationTest {
 
     @Test
     void getOneGameTutorial_InvalidId_GameTutorialNotFoundReturned() {
-        String INVALID_UUID = "ce020780-1a66-bec4-284c8ca80296";
+        String invalidUuid = "ce020780-1a66-bec4-284c8ca80296";
         webTestClient.get()
-                .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", INVALID_UUID)
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", invalidUuid)
                 .exchange()
                 .expectStatus()
                 .isEqualTo(BAD_REQUEST);
@@ -108,9 +108,9 @@ class GameTutorialIntegrationTest {
 
     @Test
     void getOneGameTutorial_ValidId_GameTutorialReturned() {
-        String VALID_UUID = "c8a5440d-6466-463a-bccc-7fefbe9396e4";
+        String validUuid = "c8a5440d-6466-463a-bccc-7fefbe9396e4";
         webTestClient.get()
-                .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", VALID_UUID)
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", validUuid)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()

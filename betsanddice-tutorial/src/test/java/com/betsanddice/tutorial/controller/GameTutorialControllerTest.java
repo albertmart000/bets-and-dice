@@ -39,7 +39,7 @@ class GameTutorialControllerTest {
     GameTutorialDto gameTutorialDto2 = new GameTutorialDto();
     GameTutorialDto[] expectedGameTutorials = {gameTutorialDto1, gameTutorialDto2};
 
-    GameTutorialDtoByName gameTutorialDtoToAdd = new GameTutorialDtoByName();
+    GameTutorialDto gameTutorialDtoToAdd = new GameTutorialDto();
 
     @BeforeEach
     void setUp() {
@@ -50,7 +50,7 @@ class GameTutorialControllerTest {
         gameTutorialDto2 = new GameTutorialDto(uuidGameTutorialDocument2, "SixDice",
                 "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusan…");
 
-        gameTutorialDtoToAdd = new GameTutorialDtoByName("Craps",
+        gameTutorialDtoToAdd = new GameTutorialDto("Craps",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmo…");
     }
 

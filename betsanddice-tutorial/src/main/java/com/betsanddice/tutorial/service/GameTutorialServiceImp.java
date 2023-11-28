@@ -59,12 +59,6 @@ public class GameTutorialServiceImp implements IGameTutorialService {
     }
 
     @Override
-    public Flux<GameTutorialDto> getAllGameTutorials() {
-        Flux<GameTutorialDocument> gameTutorialsList = gameTutorialRepository.findAll();
-        return documentToDtoConverter.fromDocumentFluxToDtoFlux(gameTutorialsList);
-    }
-
-    @Override
     public Mono<GameTutorialDto> getGameTutorialByUuid(String uuid) {
         return validateUuid(uuid)
                 .flatMap(gameTutorialUuid -> gameTutorialRepository.findByUuid(gameTutorialUuid)
@@ -73,6 +67,12 @@ public class GameTutorialServiceImp implements IGameTutorialService {
                         .doOnSuccess(gameTutorialDto -> log.info("GameTutorial found with ID: {}", gameTutorialUuid))
                         .doOnError(error -> log.error("Error occurred while retrieving game: {}", error.getMessage()))
                 );
+    }
+
+    @Override
+    public Flux<GameTutorialDto> getAllGameTutorials() {
+        Flux<GameTutorialDocument> gameTutorialsList = gameTutorialRepository.findAll();
+        return documentToDtoConverter.fromDocumentFluxToDtoFlux(gameTutorialsList);
     }
 
     private Mono<UUID> validateUuid(String id) {
