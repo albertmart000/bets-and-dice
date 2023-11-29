@@ -1,6 +1,19 @@
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.6'
+    id 'jacoco'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.betsanddice.bet.App'
+        )
+    }
+}
+jacoco{
+    toolVersion = '0.8.8'
+    reportsDirectory = layout.buildDirectory.dir('jacocoXml')
 }
 
 group = 'com.betsanddice'
@@ -49,7 +62,29 @@ dependencies {
     //implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '4.0.2'
 }
 
-
 test {
+    jvmArgs "-Xshare:off"
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        csv.required = false
+        html.outputLocation =  layout.buildDirectory.dir('jacocoHtml')
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.7
+            }
+        }
+    }
 }
