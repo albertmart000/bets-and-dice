@@ -1,6 +1,42 @@
 version: "3.7"
 
 services:
+
+  consul-server1:
+    image: consul:1.15.2
+    container_name: consul-server1
+    #restart: always
+    volumes:
+      - ./server1.json:/consul/config/server1.json:ro
+      #- ./certs/:/consul/config/certs/:ro
+    networks:
+      - network-betsanddice
+    ports:
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    command: "agent -bootstrap-expect=3"
+
+  consul-server2:
+    image: consul:1.15.2
+    container_name: consul-server2
+    restart: always
+    volumes:
+      - ./server2.json:/consul/config/server2.json:ro
+    networks:
+      - network-betsanddice
+    command: "agent -bootstrap-expect=3"
+
+  consul-server3:
+    image: consul:1.15.2
+    container_name: consul-server3
+    restart: always
+    volumes:
+      - ./server3.json:/consul/config/server3.json:ro
+    networks:
+      - network-betsanddice
+    command: "agent -bootstrap-expect=3"
+
   betsanddice-mongodb:
     container_name: mongodb-betsanddice
     image: mongo:5.0.9
@@ -71,22 +107,22 @@ services:
     networks:
       - network-betsanddice
 
-  betsanddice-stat:
-    image: betsanddice-stat
-    container_name: betsanddice-stat-v1.0-SNAPSHOT
-    restart: always
-    depends_on:
-      - betsanddice-mongodb
-    ports:
-      - "8096:8096"
-    environment:
-      MONGODB_HOST=mongodb: 27017
-      MONGODB_USERNAME: admin_betsanddice
-      MONGODB_PASSWORD: XMOJocgKlmRHz2O
-      MONGODB_CONTAINER_PORT: 27018
-      MONGODB_CRAPS_DATABASE: stats
-    networks:
-      - network-betsanddice
+#  betsanddice-stat:
+#    image: betsanddice-stat
+#    container_name: betsanddice-stat-v1.0-SNAPSHOT
+#    restart: always
+#    depends_on:
+#      - betsanddice-mongodb
+#    ports:
+#      - "8096:8096"
+#    environment:
+#      MONGODB_HOST=mongodb: 27017
+#      MONGODB_USERNAME: admin_betsanddice
+#      MONGODB_PASSWORD: XMOJocgKlmRHz2O
+#      MONGODB_CONTAINER_PORT: 27018
+#      MONGODB_CRAPS_DATABASE: stats
+#    networks:
+#      - network-betsanddice
 
 volumes:
   betsanddice_mongodb_data:
