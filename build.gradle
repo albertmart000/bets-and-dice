@@ -4,7 +4,7 @@ plugins {
 
 sonar {
     properties {
-        property "sonar.projectKey", "bets-and-dice"
+        property "sonar.projectKey", "albertmart000_bets-and-dice"
         property "sonar.organization", "albertmart000"
         property "sonar.host.url", "https://sonarcloud.io"
     }
