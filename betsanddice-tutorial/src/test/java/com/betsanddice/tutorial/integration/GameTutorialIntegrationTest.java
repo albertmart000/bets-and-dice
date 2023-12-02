@@ -97,7 +97,7 @@ class GameTutorialIntegrationTest {
     }
 
     @Test
-    void getOneGameTutorial_InvalidId_GameTutorialNotFoundReturned() {
+    void getOneGameTutorial_InvalidId_GameTutorialNotFoundReturned_Test() {
         String invalidUuid = "ce020780-1a66-bec4-284c8ca80296";
         webTestClient.get()
                 .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", invalidUuid)
@@ -107,7 +107,7 @@ class GameTutorialIntegrationTest {
     }
 
     @Test
-    void getOneGameTutorial_ValidId_GameTutorialReturned() {
+    void getOneGameTutorial_ValidId_GameTutorialReturned_Test() {
         String validUuid = "c8a5440d-6466-463a-bccc-7fefbe9396e4";
         webTestClient.get()
                 .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", validUuid)
@@ -121,7 +121,7 @@ class GameTutorialIntegrationTest {
     }
 
     @Test
-    void getAllUsers_UsersExist_UsersReturned() {
+    void getGameTutorials_GameTutorialExist_GameTutorialsReturned_Test() {
         webTestClient.get()
                 .uri(TUTORIAL_BASE_URL + "/gameTutorials")
                 .exchange()

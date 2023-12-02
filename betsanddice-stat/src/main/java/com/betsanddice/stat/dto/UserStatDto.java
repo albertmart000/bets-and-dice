@@ -16,13 +16,13 @@ import java.util.UUID;
 @Setter
 public class UserStatDto {
 
-    @JsonProperty(value = "id_user_stat", index = 0)
+    @JsonProperty(value = "user_stat_id", index = 0)
     private UUID uuid;
 
-    @JsonProperty(value = "id_user", index = 1)
+    @JsonProperty(value = "user_id", index = 1)
     private UUID userId;
 
-    @JsonProperty(value = "id_game", index = 2)
+    @JsonProperty(value = "game_id", index = 2)
     private UUID gameId;
 
     @JsonProperty(value = "average", index = 3)
