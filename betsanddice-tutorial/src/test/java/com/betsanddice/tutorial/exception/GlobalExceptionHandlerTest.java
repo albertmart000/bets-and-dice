@@ -40,7 +40,7 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void TestHandleMethodArgumentNotValidException() {
+    void handleMethodArgumentNotValidException_Test() {
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.getFieldErrors()).thenReturn(List.of(new FieldError("object", "field", "message")));
         when(methodArgumentNotValidException.getBindingResult()).thenReturn(bindingResult);
@@ -51,7 +51,7 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void TestHandleMethodArgumentNotValidException_Return_DefaultMessage() {
+    void handleMethodArgumentNotValidException_Return_DefaultMessage_Test() {
         BindingResult bindingResult = mock(BindingResult.class);
         FieldError fieldError = mock(FieldError.class);
         when(fieldError.getField()).thenReturn("name");

@@ -6,7 +6,6 @@ import com.betsanddice.tutorial.exception.BadUuidException;
 import com.betsanddice.tutorial.exception.GameTutorialAlreadyExistException;
 import com.betsanddice.tutorial.exception.GameTutorialNotFoundException;
 import com.betsanddice.tutorial.helper.GameTutorialDocumentToDtoConverter;
-import com.betsanddice.tutorial.helper.GameTutorialDtoToDocumentConverter;
 import com.betsanddice.tutorial.repository.GameTutorialRepository;
 import io.micrometer.common.util.StringUtils;
 import org.slf4j.Logger;
@@ -26,14 +25,14 @@ public class GameTutorialServiceImp implements IGameTutorialService {
     private static final Logger log = LoggerFactory.getLogger(GameTutorialServiceImp.class);
     private static final Pattern UUID_FORM = Pattern.compile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", Pattern.CASE_INSENSITIVE);
 
-    @Autowired
     private GameTutorialRepository gameTutorialRepository;
 
-    @Autowired
     private GameTutorialDocumentToDtoConverter documentToDtoConverter;
 
-    @Autowired
-    private GameTutorialDtoToDocumentConverter dtoToDocumentConverter;
+    public GameTutorialServiceImp(GameTutorialRepository gameTutorialRepository, GameTutorialDocumentToDtoConverter documentToDtoConverter) {
+        this.gameTutorialRepository = gameTutorialRepository;
+        this.documentToDtoConverter = documentToDtoConverter;
+    }
 
     public Mono<GameTutorialDto> addGameTutorial(GameTutorialDto gameTutorialDto) {
         return Mono.just(gameTutorialDto)

@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -21,11 +20,14 @@ public class GameTutorialController {
 
     private static final Logger log = LoggerFactory.getLogger(GameTutorialController.class);
 
-    @Autowired
     IGameTutorialService gameTutorialService;
 
-    @Autowired
     private DiscoveryClient discoveryClient;
+
+    public GameTutorialController(IGameTutorialService gameTutorialService, DiscoveryClient discoveryClient) {
+        this.gameTutorialService = gameTutorialService;
+        this.discoveryClient = discoveryClient;
+    }
 
     @Operation(summary = "Testing the App")
     @GetMapping(value = "/test")
