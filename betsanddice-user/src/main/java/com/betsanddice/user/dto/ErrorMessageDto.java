@@ -1,4 +1,4 @@
-package com.betsanddice.user.exception;
+package com.betsanddice.user.dto;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,23 +10,24 @@ import java.util.Map;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class ErrorResponseMessage {
-    private int statusCode;
+public class ErrorMessageDto {
+
     private String message;
+    private int statusCode;
     private Map<String, String> errors = new HashMap<>();
 
-    public ErrorResponseMessage(String message) {
+    public ErrorMessageDto(String message) {
         this.message = message;
     }
 
-    public ErrorResponseMessage(String message, Map<String, String> errors) {
-        this.message = message;
-        this.errors = errors;
-    }
-
-    public ErrorResponseMessage(int statusCode, String message) {
+    public ErrorMessageDto(String message, int statusCode) {
         this.message = message;
         this.statusCode = statusCode;
+    }
+
+    public ErrorMessageDto(String message, Map<String, String> errors) {
+        this.message = message;
+        this.errors = errors;
     }
 
 }

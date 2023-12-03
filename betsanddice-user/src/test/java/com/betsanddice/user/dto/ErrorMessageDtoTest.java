@@ -1,4 +1,4 @@
-package com.betsanddice.tutorial.dto;
+package com.betsanddice.user.dto;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +14,6 @@ import reactor.test.StepVerifier;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 @ExtendWith(SpringExtension.class)
 @WebFluxTest(controllers = ErrorMessageDto.class)
 class ErrorMessageDtoTest {
@@ -25,14 +24,14 @@ class ErrorMessageDtoTest {
     }
 
     @Test
-    void testMessage() {
+    void messageTest() {
         String message = "Expected message";
         ErrorMessageDto errorMessageResponse = new ErrorMessageDto(message);
         Assertions.assertEquals(message, errorMessageResponse.getMessage());
     }
 
     @Test
-    void testNotExpectedMessage() {
+    void notExpectedMessageTest() {
         String message = "Expected message";
         String notExpectedMessage = "Not expected message.";
         ErrorMessageDto errorMessageResponse = new ErrorMessageDto(message);
@@ -40,7 +39,7 @@ class ErrorMessageDtoTest {
     }
 
     @Test
-    void testErrorResponseMessage() {
+    void errorResponseMessageTest() {
         String message = "INTERNAL SERVER ERROR";
         int statusCode = 500;
         HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -57,7 +56,7 @@ class ErrorMessageDtoTest {
     }
 
     @Test
-    void testErrorMessage() {
+    void errorMessageTest() {
         Map<String, String> errors = Map.of("Field1", "DefaultMessage1", "Field2", "DefaultMessage2");
         String message = "Parameter not valid";
         ErrorMessageDto errorMessageResponse = new ErrorMessageDto(message, errors);
@@ -70,5 +69,7 @@ class ErrorMessageDtoTest {
                 })
                 .verifyComplete();
     }
+
+
 
 }
