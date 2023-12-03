@@ -54,6 +54,7 @@ class CrapsGameServiceImpTest {
         verify(crapsGameRepository).findAll();
         verify(documentToDtoConverter).fromDocumentFluxToDtoFlux(any());
     }
+
     @Test
     void testAddCrapsGameToUser() {
         UUID uuidCrapsGame = UUID.fromString("50feba3c-3cbf-48ad-8142-cccf7c6bf3d3");
