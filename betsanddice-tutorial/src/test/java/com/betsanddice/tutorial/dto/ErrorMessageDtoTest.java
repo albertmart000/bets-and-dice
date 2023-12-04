@@ -1,10 +1,8 @@
 package com.betsanddice.tutorial.dto;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -19,20 +17,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @WebFluxTest(controllers = ErrorMessageDto.class)
 class ErrorMessageDtoTest {
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
-    void testMessage() {
+    void messageTest() {
         String message = "Expected message";
         ErrorMessageDto errorMessageResponse = new ErrorMessageDto(message);
         Assertions.assertEquals(message, errorMessageResponse.getMessage());
     }
 
     @Test
-    void testNotExpectedMessage() {
+    void notExpectedMessageTest() {
         String message = "Expected message";
         String notExpectedMessage = "Not expected message.";
         ErrorMessageDto errorMessageResponse = new ErrorMessageDto(message);
@@ -40,7 +33,7 @@ class ErrorMessageDtoTest {
     }
 
     @Test
-    void testErrorResponseMessage() {
+    void errorResponseMessageTest() {
         String message = "INTERNAL SERVER ERROR";
         int statusCode = 500;
         HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -57,7 +50,7 @@ class ErrorMessageDtoTest {
     }
 
     @Test
-    void testErrorMessage() {
+    void errorMessageTest() {
         Map<String, String> errors = Map.of("Field1", "DefaultMessage1", "Field2", "DefaultMessage2");
         String message = "Parameter not valid";
         ErrorMessageDto errorMessageResponse = new ErrorMessageDto(message, errors);

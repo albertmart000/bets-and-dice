@@ -23,18 +23,20 @@ public class ResourceHelper {
         resource = new ClassPathResource(this.resourcePath);
     }
 
-    public Optional<String> readResourceAsString (){
+    public Optional<String> readResourceAsString() {
 
-        Optional<String> result = null;
+        Optional<String> result = Optional.empty();
         try {
             result = Optional.of(FileUtils.readFileToString(resource.getFile(), StandardCharsets.UTF_8));
         } catch (IOException ex) {
             log.error(getResourceErrorMessage("loading/reading").concat(ex.getMessage()));
         }
         return result;
+
+
     }
 
-    private String getResourceErrorMessage(String action){
+    private String getResourceErrorMessage(String action) {
         String resourceIdentifier = Objects.requireNonNullElseGet(resourcePath, () -> resource.getDescription());
         return "Exception when " + action + " " + resourceIdentifier + " resource: \n";
     }

@@ -20,6 +20,6 @@ class ResourceHelperTest {
     void failedReadResourceTest () {
         String invalidPath = "somename/some.json";
         ResourceHelper resourceHelper = new ResourceHelper(invalidPath);
-        assertEquals(null, resourceHelper.readResourceAsString());
+        assertEquals(Optional.empty(), resourceHelper.readResourceAsString());
     }
 }

@@ -1,10 +1,8 @@
 package com.betsanddice.user.dto;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -14,14 +12,10 @@ import reactor.test.StepVerifier;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @ExtendWith(SpringExtension.class)
 @WebFluxTest(controllers = ErrorMessageDto.class)
 class ErrorMessageDtoTest {
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     void messageTest() {
@@ -69,7 +63,5 @@ class ErrorMessageDtoTest {
                 })
                 .verifyComplete();
     }
-
-
 
 }
