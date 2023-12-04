@@ -21,7 +21,12 @@ class ErrorMessageDtoTest {
     void messageTest() {
         String message = "Expected message";
         ErrorMessageDto errorMessageResponse = new ErrorMessageDto(message);
+        ErrorMessageDto errorMessageResponse1 = new ErrorMessageDto(message);
+
         Assertions.assertEquals(message, errorMessageResponse.getMessage());
+
+        Assertions.assertEquals(errorMessageResponse.hashCode(), errorMessageResponse1.hashCode());
+        Assertions.assertTrue(errorMessageResponse.equals(errorMessageResponse1) && errorMessageResponse1.equals(errorMessageResponse));
     }
 
     @Test
@@ -39,11 +44,15 @@ class ErrorMessageDtoTest {
         HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
 
         ErrorMessageDto errorMessageResponse = new ErrorMessageDto(message, statusCode);
+        ErrorMessageDto errorMessageResponse1 = new ErrorMessageDto(message, statusCode);
 
-        StepVerifier.create(Mono.just(errorMessageResponse))
+        Assertions.assertEquals(errorMessageResponse.hashCode(), errorMessageResponse1.hashCode());
+        Assertions.assertTrue(errorMessageResponse.equals(errorMessageResponse1) && errorMessageResponse1.equals(errorMessageResponse));
+
+        StepVerifier.create(Mono.just(errorMessageResponse1))
                 .expectNextMatches(resp -> {
-                    assertEquals(internalServerError.value(), errorMessageResponse.getStatusCode());
-                    assertEquals("INTERNAL SERVER ERROR", errorMessageResponse.getMessage());
+                    assertEquals(internalServerError.value(), errorMessageResponse1.getStatusCode());
+                    assertEquals("INTERNAL SERVER ERROR", errorMessageResponse1.getMessage());
                     return true;
                 })
                 .verifyComplete();
@@ -54,6 +63,9 @@ class ErrorMessageDtoTest {
         Map<String, String> errors = Map.of("Field1", "DefaultMessage1", "Field2", "DefaultMessage2");
         String message = "Parameter not valid";
         ErrorMessageDto errorMessageResponse = new ErrorMessageDto(message, errors);
+        ErrorMessageDto errorMessageResponse1 = new ErrorMessageDto(message, errors);
+        Assertions.assertEquals(errorMessageResponse.hashCode(), errorMessageResponse1.hashCode());
+        Assertions.assertTrue(errorMessageResponse.equals(errorMessageResponse1) && errorMessageResponse1.equals(errorMessageResponse));
 
         StepVerifier.create(Mono.just(errorMessageResponse))
                 .expectNextMatches(resp -> {

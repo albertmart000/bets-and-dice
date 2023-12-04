@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,11 +20,8 @@ public class CrapsGameController {
 
     ICrapsGameService crapsGameService;
 
-    private DiscoveryClient discoveryClient;
-
-    public CrapsGameController(ICrapsGameService crapsGameService, DiscoveryClient discoveryClient) {
+    public CrapsGameController(ICrapsGameService crapsGameService) {
         this.crapsGameService = crapsGameService;
-        this.discoveryClient = discoveryClient;
     }
 
     @Operation(summary = "Testing the App")
