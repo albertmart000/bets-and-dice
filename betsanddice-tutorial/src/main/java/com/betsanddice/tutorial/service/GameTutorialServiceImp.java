@@ -73,7 +73,7 @@ public class GameTutorialServiceImp implements IGameTutorialService {
         return documentToDtoConverter.fromDocumentFluxToDtoFlux(gameTutorialsList);
     }
 
-    private Mono<UUID> validateUuid(String id) {
+    Mono<UUID> validateUuid(String id) {
         boolean validUuid = !StringUtils.isEmpty(id) && UUID_FORM.matcher(id).matches();
 
         if (!validUuid) {

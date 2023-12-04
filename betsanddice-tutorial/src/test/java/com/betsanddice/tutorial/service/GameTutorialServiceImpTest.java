@@ -141,4 +141,46 @@ class GameTutorialServiceImpTest {
         verify(converter).fromDocumentFluxToDtoFlux(any());
     }
 
+    @Test
+    void validateUuid_ValidUuid_ReturnsMonoWithUuid_Test() {
+        String validUuid = "550e8400-e29b-41d4-a716-446655440000";
+
+        Mono<UUID> resultMono = gameTutorialService.validateUuid(validUuid);
+
+        StepVerifier.create(resultMono)
+                .expectNextMatches(uuid -> uuid.toString().equals(validUuid))
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    void validateUuid_InvalidUuid_ReturnsErrorMono_Test() {
+        String invalidUuid = "invalid-uuid";
+
+        Mono<UUID> resultMono = gameTutorialService.validateUuid(invalidUuid);
+
+        StepVerifier.create(resultMono)
+                .expectError(BadUuidException.class)
+                .verify();
+    }
+
+    @Test
+    void validateUuid_EmptyUuid_ReturnsErrorMono_Test() {
+        String emptyUuid = "";
+
+        Mono<UUID> resultMono = gameTutorialService.validateUuid(emptyUuid);
+
+        StepVerifier.create(resultMono)
+                .expectError(BadUuidException.class)
+                .verify();
+    }
+
+    @Test
+    void validateUuid_NullUuid_ReturnsErrorMono_Test() {
+        Mono<UUID> resultMono = gameTutorialService.validateUuid(null);
+
+        StepVerifier.create(resultMono)
+                .expectError(BadUuidException.class)
+                .verify();
+    }
 }

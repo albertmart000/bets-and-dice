@@ -2,7 +2,6 @@ package com.betsanddice.user.helper;
 
 import com.betsanddice.user.document.UserDocument;
 import com.betsanddice.user.dto.UserDto;
-import com.betsanddice.user.exception.ConverterException;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -19,7 +18,7 @@ public class UserDocumentToDtoConverter {
 
     static final DateTimeFormatter CUSTOM_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public UserDto fromDocumentToDto(UserDocument document) throws ConverterException {
+    public UserDto fromDocumentToDto(UserDocument document) {
 
         ModelMapper mapper = new ModelMapper();
         Converter<LocalDateTime, String> fromLocalDateTimeToString = new AbstractConverter<>() {

@@ -30,10 +30,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorMessageDto> handleUserNotFoundException(UserNotFoundException ex) {
         return ResponseEntity.badRequest().body(new ErrorMessageDto(ex.getMessage()));
     }
-    @ExceptionHandler(ConverterException.class)
-    public ResponseEntity<ErrorMessageDto> handleConverterException(UserNotFoundException ex) {
-        return ResponseEntity.badRequest().body(new ErrorMessageDto(ex.getMessage()));
-    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorMessageDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
