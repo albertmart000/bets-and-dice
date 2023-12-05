@@ -1,5 +1,6 @@
 package com.betsanddice.user.exception;
 
+import com.betsanddice.user.dto.ErrorMessageDto;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ class GlobalExceptionHandlerTest {
     @MockBean
     private MethodArgumentNotValidException methodArgumentNotValidException;
     @MockBean
-    private ErrorResponseMessage errorResponseMessage;
+    private ErrorMessageDto errorMessageDto;
 
     @BeforeEach
     void setUp() {
@@ -44,20 +45,20 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void testHandleResponseStatusException() {
+    void handleResponseStatusException_Test() {
         String REQUEST = "Invalid request";
         HttpStatus BAD_REQUEST = HttpStatus.BAD_REQUEST;
 
         when(responseStatusException.getStatusCode()).thenReturn(BAD_REQUEST);
-        when(responseStatusException.getReason()).thenReturn(REQUEST);
-        when(errorResponseMessage.getStatusCode()).thenReturn(BAD_REQUEST.value());
-        when(errorResponseMessage.getMessage()).thenReturn(REQUEST);
+        when(responseStatusException.getMessage()).thenReturn(REQUEST);
+        when(errorMessageDto.getStatusCode()).thenReturn(BAD_REQUEST.value());
+        when(errorMessageDto.getMessage()).thenReturn(REQUEST);
 
-        ErrorResponseMessage expectedErrorMessage = new ErrorResponseMessage(BAD_REQUEST.value(), REQUEST);
+        ErrorMessageDto expectedErrorMessage = new ErrorMessageDto(REQUEST, BAD_REQUEST.value());
         expectedErrorMessage.setStatusCode(BAD_REQUEST.value());
         expectedErrorMessage.setMessage(REQUEST);
 
-        ResponseEntity<ErrorResponseMessage> response = globalExceptionHandler.handleResponseStatusException(responseStatusException);
+        ResponseEntity<ErrorMessageDto> response = globalExceptionHandler.handleResponseStatusException(responseStatusException);
 
         StepVerifier.create(Mono.just(response))
                 .expectNextMatches(resp -> {
@@ -69,19 +70,19 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void TestHandleMethodArgumentNotValidException() {
+    void handleMethodArgumentNotValidException_Test() {
 
         BindingResult bindingResult = Mockito.mock(BindingResult.class);
         when(bindingResult.getFieldErrors()).thenReturn(List.of(new FieldError("object", "field", "errorMessage")));
         when(methodArgumentNotValidException.getBindingResult()).thenReturn(bindingResult);
 
-        ResponseEntity<ErrorResponseMessage> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
+        ResponseEntity<ErrorMessageDto> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
 
         MatcherAssert.assertThat(responseEntity, notNullValue());
     }
 
     @Test
-    void TestHandleMethodArgumentNotValidException_Return_ErrorMessage() {
+    void handleMethodArgumentNotValidException_Return_ErrorMessage_Test() {
 
         BindingResult bindingResult = Mockito.mock(BindingResult.class);
         FieldError fieldError = Mockito.mock(FieldError.class);
@@ -91,7 +92,7 @@ class GlobalExceptionHandlerTest {
         when(bindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
         when(methodArgumentNotValidException.getBindingResult()).thenReturn(bindingResult);
 
-        ResponseEntity<ErrorResponseMessage> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
+        ResponseEntity<ErrorMessageDto> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
 
         MatcherAssert.assertThat(responseEntity, notNullValue());
     }

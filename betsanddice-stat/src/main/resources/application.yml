@@ -6,31 +6,31 @@ spring:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   jmx:
     enabled: true
+  data:
+    mongodb:
+      uri: mongodb://admin_betsanddice:XMOJocgKlmRHz2O@mongodb-betsanddice:27017/stats?authSource=admin
+     # uri: mongodb://admin_stat:XMOJocgKlmRHz2O@localhost:27017/stats?authSource=admin
+      uuid-representation: standard
 
-   #data:
-    # mongodb:
-       #uri: mongodb://admin_user:XMOJocgKlmRHz2O@localhost:27017/craps?authSource=admin
-       #uuid-representation: standard
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui-custom.html"
+    operationsSorted: method
+  api-docs:
+    enable: true
+    path: "/api-docs"
 
-  springdoc:
-    swagger-ui:
-      path: "/swagger-ui-custom.html"
-      operationsSorted: method
-    api-docs:
-      enable: true
-      path: "/api-docs"
+server:
+  port: 8096
 
-    server:
-      port: 8096
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  security:
+    enabled: false
 
-    management:
-      endpoints:
-        web:
-          exposure:
-            include: "*"
-      security:
-        enabled: false
-
-    url:
-      connection_timeout: 30000
-      maxBytesInMemory: 30000000
+url:
+  connection_timeout: 30000
+  maxBytesInMemory: 30000000
