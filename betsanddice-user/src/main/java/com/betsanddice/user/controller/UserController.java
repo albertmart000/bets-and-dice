@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,12 +23,16 @@ import java.util.Optional;
 public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    private static final String NO_SERVICE = "No Services";
 
-    @Autowired
     IUserService userService;
 
-    @Autowired
     private DiscoveryClient discoveryClient;
+
+    public UserController(IUserService userService, DiscoveryClient discoveryClient) {
+        this.userService = userService;
+        this.discoveryClient = discoveryClient;
+    }
 
     @Operation(summary = "Testing the App")
     @GetMapping(value = "/test")
@@ -53,11 +56,11 @@ public class UserController {
 
         log.info("~~~~~~~~~~~~~~~~~~~~~~");
         log.info("Scanning micros:");
-        log.info((userService.isPresent() ? userService.get() : "No Services")
+        log.info((userService.orElse(NO_SERVICE))
                 .concat(System.lineSeparator())
-                .concat(crapsService.isPresent() ? crapsService.get() : "No Services")
+                .concat(crapsService.orElse(NO_SERVICE))
                 .concat(System.lineSeparator())
-                .concat(tutorialService.isPresent() ? tutorialService.get() : "No Services"));
+                .concat(tutorialService.orElse(NO_SERVICE)));
         log.info("~~~~~~~~~~~~~~~~~~~~~~");
 
         return "Hello from Bets And Dice!!!";

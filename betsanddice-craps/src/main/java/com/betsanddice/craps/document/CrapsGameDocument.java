@@ -25,9 +25,6 @@ public class CrapsGameDocument {
     @Field(name = "id_user")
     private UUID userId;
 
-/*  @Field(name = "user_nickname")
-    private String userNickname;*/
-
     @Field(name = "date")
     private LocalDateTime date;
 

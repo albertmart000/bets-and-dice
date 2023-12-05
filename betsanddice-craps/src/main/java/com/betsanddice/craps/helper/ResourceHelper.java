@@ -25,7 +25,7 @@ public class ResourceHelper {
 
     public Optional<String> readResourceAsString (){
 
-        Optional<String> result = null;
+        Optional<String> result = Optional.empty();
         try {
             result = Optional.of(FileUtils.readFileToString(resource.getFile(), StandardCharsets.UTF_8));
         } catch (IOException ex) {

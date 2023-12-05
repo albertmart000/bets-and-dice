@@ -2,6 +2,7 @@ package com.betsanddice.user.service;
 
 import com.betsanddice.user.document.UserDocument;
 import com.betsanddice.user.dto.UserDto;
+import com.betsanddice.user.exception.BadUuidException;
 import com.betsanddice.user.exception.UserNotFoundException;
 import com.betsanddice.user.helper.UserDocumentToDtoConverter;
 import com.betsanddice.user.repository.UserRepository;
@@ -88,6 +89,49 @@ class UserServiceImpTest {
 
         verify(userRepository).findAll();
         verify(converter).fromDocumentFluxToDtoFlux(any());
+    }
+
+    @Test
+    void validateUuid_ValidUuid_ReturnsMonoWithUuid_Test() {
+        String validUuid = "550e8400-e29b-41d4-a716-446655440000";
+
+        Mono<UUID> resultMono = userService.validateUuid(validUuid);
+
+        StepVerifier.create(resultMono)
+                .expectNextMatches(uuid -> uuid.toString().equals(validUuid))
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    void validateUuid_InvalidUuid_ReturnsErrorMono_Test() {
+        String invalidUuid = "invalid-uuid";
+
+        Mono<UUID> resultMono = userService.validateUuid(invalidUuid);
+
+        StepVerifier.create(resultMono)
+                .expectError(BadUuidException.class)
+                .verify();
+    }
+
+    @Test
+    void validateUuid_EmptyUuid_ReturnsErrorMono_Test() {
+        String emptyUuid = "";
+
+        Mono<UUID> resultMono = userService.validateUuid(emptyUuid);
+
+        StepVerifier.create(resultMono)
+                .expectError(BadUuidException.class)
+                .verify();
+    }
+
+    @Test
+    void validateUuid_NullUuid_ReturnsErrorMono_Test() {
+        Mono<UUID> resultMono = userService.validateUuid(null);
+
+        StepVerifier.create(resultMono)
+                .expectError(BadUuidException.class)
+                .verify();
     }
 
 }

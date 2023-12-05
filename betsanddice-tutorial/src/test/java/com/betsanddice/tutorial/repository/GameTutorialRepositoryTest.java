@@ -42,7 +42,6 @@ class GameTutorialRepositoryTest {
 
     @BeforeEach
     void setUp() {
-
         gameTutorialRepository.deleteAll().block();
 
         GameTutorialDocument gameTutorialDocument1 = new GameTutorialDocument(uuidGameTutorialDocument1, "Craps",

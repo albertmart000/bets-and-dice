@@ -1,4 +1,4 @@
-package com.betsanddice.tutorial.helper;
+package com.betsanddice.stat.helper;
 
 import jakarta.validation.constraints.NotNull;
 import org.apache.commons.io.FileUtils;

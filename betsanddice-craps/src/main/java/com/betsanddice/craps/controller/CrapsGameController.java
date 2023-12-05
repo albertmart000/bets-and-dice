@@ -8,8 +8,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,11 +18,11 @@ public class CrapsGameController {
 
     private static final Logger log = LoggerFactory.getLogger(CrapsGameController.class);
 
-    @Autowired
     ICrapsGameService crapsGameService;
 
-    @Autowired
-    private DiscoveryClient discoveryClient;
+    public CrapsGameController(ICrapsGameService crapsGameService) {
+        this.crapsGameService = crapsGameService;
+    }
 
     @Operation(summary = "Testing the App")
     @GetMapping(value = "/test")

@@ -1,4 +1,4 @@
-package com.betsanddice.tutorial.dto;
+package com.betsanddice.user.dto;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 @WebFluxTest(controllers = ErrorMessageDto.class)
 class ErrorMessageDtoTest {
+
     private ErrorMessageDto errorMessageDto;
     private ErrorMessageDto errorMessageDto1;
 
@@ -49,6 +50,7 @@ class ErrorMessageDtoTest {
         errorMessageDtoWithMapErrors = new ErrorMessageDto(PARAMETER_NOT_VALID, errors);
 
     }
+
     @Test
     void errorMessageTest() {
         Assertions.assertEquals(EXPECTED_MESSAGE, errorMessageDto.getMessage());

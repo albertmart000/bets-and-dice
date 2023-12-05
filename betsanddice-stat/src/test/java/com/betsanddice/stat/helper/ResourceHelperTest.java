@@ -1,4 +1,4 @@
-package com.betsanddice.tutorial.helper;
+package com.betsanddice.stat.helper;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ResourceHelperTest {
-
     @Test
     @DisplayName("Read a resource as String test")
     void readResourceAsStringTest (){
@@ -23,5 +22,4 @@ class ResourceHelperTest {
         ResourceHelper resourceHelper = new ResourceHelper(invalidPath);
         assertEquals(Optional.empty(), resourceHelper.readResourceAsString());
     }
-
 }
