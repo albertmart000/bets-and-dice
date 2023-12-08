@@ -1,10 +1,10 @@
 #!/bin/sh
 #  Start parameters:
 #  1.-fileConfig
-#  Example: ./betsanddice-tutorial/build_Docker.sh conf/.env.dev
+#  Example: ./betsanddice-tutorial/build_Docker.sh .env.dev
 
 # Init variables
-fileConfig=conf/.env.dev;
+fileConfig=.env.dev;
 now="$(date +'%d-%m-%Y %H:%M:%S:%3N')"
 # shellcheck disable=SC2034
 # shellcheck disable=SC2006
@@ -48,4 +48,3 @@ docker build -t="${REGISTRY_NAME}":betsanddice-tutorial-"${TUTORIAL_TAG}" .
 #then
 #docker push "${REGISTRY_NAME}":betsanddice-tutorial-"${TUTORIAL_TAG}" .
 #fi
-
