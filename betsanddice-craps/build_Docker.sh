@@ -1,7 +1,7 @@
 #!/bin/sh
 #  Start parameters:
 #  1.-fileConfig
-#  Example: ./betsanddice-user/build_Docker.sh conf/.env.dev
+#  Example: ./betsanddice-craps/build_Docker.sh conf/.env.dev
 
 # Init variables
 fileConfig=conf/.env.dev;
@@ -37,15 +37,15 @@ then
   fi
 
 #./gradlew :itachallenge-mock:clean &&
-./gradlew :betsanddice-user:build
+./gradlew :betsanddice-craps:build
 
 # shellcheck disable=SC2164
-cd betsanddice-user
+cd betsanddice-craps
 
-docker build -t="${REGISTRY_NAME}":betsanddice-user-"${USER_TAG}" .
+docker build -t="${REGISTRY_NAME}":betsanddice-craps-"${CRAPS_TAG}" .
 
 #if [ "${ENV}" = "dev" ]
 #then
-#docker push "${REGISTRY_NAME}":betsanddice-user-"${USER_TAG}" .
+#docker push "${REGISTRY_NAME}":betsanddice-craps-"${CRAPS_TAG}" .
 #fi
 
