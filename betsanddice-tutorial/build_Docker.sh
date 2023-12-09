@@ -44,7 +44,7 @@ cd betsanddice-tutorial
 
 docker build -t="${REGISTRY_NAME}":betsanddice-tutorial-"${TUTORIAL_TAG}" .
 
-#if [ "${ENV}" = "dev" ]
-#then
-#docker push "${REGISTRY_NAME}":betsanddice-tutorial-"${TUTORIAL_TAG}" .
-#fi
+if [ "${ENV}" = "dev" ]
+then
+docker push "${REGISTRY_NAME}":betsanddice-tutorial-"${TUTORIAL_TAG}"
+fi

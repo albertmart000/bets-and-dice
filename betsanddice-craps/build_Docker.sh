@@ -44,8 +44,8 @@ cd betsanddice-craps
 
 docker build -t="${REGISTRY_NAME}":betsanddice-craps-"${CRAPS_TAG}" .
 
-#if [ "${ENV}" = "dev" ]
-#then
-#docker push "${REGISTRY_NAME}":betsanddice-craps-"${CRAPS_TAG}" .
-#fi
+if [ "${ENV}" = "dev" ]
+then
+docker push "${REGISTRY_NAME}":betsanddice-craps-"${CRAPS_TAG}"
+fi
 

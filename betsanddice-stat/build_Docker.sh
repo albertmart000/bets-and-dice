@@ -44,7 +44,7 @@ cd betsanddice-stat
 
 docker build -t="${REGISTRY_NAME}":betsanddice-stat-"${STAT_TAG}" .
 
-#if [ "${ENV}" = "dev" ]
-#then
-#docker push "${REGISTRY_NAME}":betsanddice-stat-"${STAT_TAG}" .
-#fi
+if [ "${ENV}" = "dev" ]
+then
+docker push "${REGISTRY_NAME}":betsanddice-stat-"${STAT_TAG}"
+fi

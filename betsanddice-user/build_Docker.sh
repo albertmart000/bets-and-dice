@@ -44,7 +44,7 @@ cd betsanddice-user
 
 docker build -t="${REGISTRY_NAME}":betsanddice-user-"${USER_TAG}" .
 
-#if [ "${ENV}" = "dev" ]
-#then
-#docker push "${REGISTRY_NAME}":betsanddice-user-"${USER_TAG}" .
-#fi
+if [ "${ENV}" = "dev" ]
+then
+docker push "${REGISTRY_NAME}":betsanddice-user-"${USER_TAG}"
+fi
