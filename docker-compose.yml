@@ -21,7 +21,7 @@ services:
       - network-betsanddice
 
   betsanddice-user:
-    image: betsanddice-user
+    image: albertmart000/betsanddice:betsanddice-user-v1.0-SNAPSHOT
     container_name: betsanddice-user-v1.0-SNAPSHOT
     restart: always
     depends_on:
@@ -38,7 +38,7 @@ services:
       - network-betsanddice
 
   betsanddice-craps:
-    image: betsanddice-craps
+    image: albertmart000/betsanddice:betsanddice-craps-v1.0-SNAPSHOT
     container_name: betsanddice-craps-v1.0-SNAPSHOT
     restart: always
     depends_on:
@@ -55,7 +55,7 @@ services:
       - network-betsanddice
 
   betsanddice-tutorial:
-    image: betsanddice-tutorial
+    image: albertmart000/betsanddice:betsanddice-tutorial-v1.0-SNAPSHOT
     container_name: betsanddice-tutorial-v1.0-SNAPSHOT
     restart: always
     depends_on:
@@ -72,7 +72,7 @@ services:
       - network-betsanddice
 
   betsanddice-stat:
-    image: betsanddice-stat
+    image: albertmart000/betsanddice:betsanddice-stat-v1.0-SNAPSHOT
     container_name: betsanddice-stat-v1.0-SNAPSHOT
     restart: always
     depends_on:
