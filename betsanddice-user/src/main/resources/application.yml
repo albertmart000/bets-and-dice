@@ -1,19 +1,22 @@
 spring:
   application:
     name: betsanddice-user
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
-      - org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+#  autoconfigure:
+#    exclude:
+#      - org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
+#      - org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration
+#      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   jmx:
     enabled: true
-  data:
-    mongodb:
-      #uri: mongodb://admin_user:XMOJocgKlmRHz2O@mongodb-betsanddice-user:27017/users?authSource=admin
-      #uri: mongodb://admin_user:XMOJocgKlmRHz2O@localhost:27017/users?authSource=admin
-      uri: mongodb://admin_betsanddice:XMOJocgKlmRHz2O@mongodb-betsanddice:27017/users?authSource=admin
-      uuid-representation: standard
+#  data:
+#    mongodb:
+#      #uri: mongodb://admin_user:XMOJocgKlmRHz2O@mongodb-betsanddice-user:27017/users?authSource=admin
+#      #uri: mongodb://admin_user:XMOJocgKlmRHz2O@localhost:27017/users?authSource=admin
+#      uri: mongodb://admin_betsanddice:XMOJocgKlmRHz2O@mongodb-betsanddice:27017/users?authSource=admin
+#      uuid-representation: standard
+  output:
+  ansi:
+    enabled: DETECT
 
 springdoc:
   swagger-ui:
@@ -34,6 +37,18 @@ management:
   security:
     enabled: false
 
-url:
-  connection_timeout: 30000
-  maxBytesInMemory: 30000000
+logging:
+  level:
+    root: INFO
+    "[org.springframework]": ERROR
+    "[com.betsanddice]": INFO
+  pattern:
+    # console: Spring's default
+    file: "%date %5level %-40.40logger{39} [%thread] %msg%n"
+#  file:
+#    name: betsanddice-user.log
+
+
+#url:
+#  connection_timeout: 30000
+#  maxBytesInMemory: 30000000

@@ -1,16 +1,20 @@
 spring:
   application:
     name: betsanddice-tutorial
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+#  autoconfigure:
+#    exclude:
+#      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   jmx:
     enabled: true
-  data:
-    mongodb:
-      #uri: mongodb://admin_tutorial:XMOJocgKlmRHz2O@localhost:27017/tutorials?authSource=admin
-      uri: mongodb://admin_betsanddice:XMOJocgKlmRHz2O@mongodb-betsanddice:27017/tutorials?authSource=admin
-      uuid-representation: standard
+#  data:
+#    mongodb:
+#      #uri: mongodb://admin_tutorial:XMOJocgKlmRHz2O@localhost:27017/tutorials?authSource=admin
+#      uri: mongodb://admin_betsanddice:XMOJocgKlmRHz2O@mongodb-betsanddice:27017/tutorials?authSource=admin
+#      uuid-representation: standard
+
+output:
+  ansi:
+    enabled: DETECT
 
 springdoc:
   swagger-ui:
@@ -21,7 +25,8 @@ springdoc:
     path: "/api-docs"
 
 server:
-  port: 8098
+  #port: 8098
+  port: 8094
 
 management:
   endpoints:
@@ -31,6 +36,17 @@ management:
   security:
     enabled: false
 
-url:
-  connection_timeout: 30000
-  maxBytesInMemory: 30000000
+logging:
+  level:
+    root: INFO
+    "[org.springframework]": ERROR
+    "[com.betsanddice]": INFO
+  pattern:
+    # console: Spring's default
+    file: "%date %5level %-40.40logger{39} [%thread] %msg%n"
+#  file:
+#    name: betsanddice-tutorial.log
+
+#url:
+#  connection_timeout: 30000
+#  maxBytesInMemory: 30000000

@@ -1,16 +1,19 @@
 spring:
   application:
     name: betsanddice-stat
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+#  autoconfigure:
+#    exclude:
+#      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   jmx:
     enabled: true
-  data:
-    mongodb:
-      uri: mongodb://admin_betsanddice:XMOJocgKlmRHz2O@mongodb-betsanddice:27017/stats?authSource=admin
-     # uri: mongodb://admin_stat:XMOJocgKlmRHz2O@localhost:27017/stats?authSource=admin
-      uuid-representation: standard
+#  data:
+#    mongodb:
+#      uri: mongodb://admin_betsanddice:XMOJocgKlmRHz2O@mongodb-betsanddice:27017/stats?authSource=admin
+#     # uri: mongodb://admin_stat:XMOJocgKlmRHz2O@localhost:27017/stats?authSource=admin
+#      uuid-representation: standard
+output:
+  ansi:
+    enabled: DETECT
 
 springdoc:
   swagger-ui:
@@ -21,7 +24,8 @@ springdoc:
     path: "/api-docs"
 
 server:
-  port: 8096
+  port: 8094
+  #port: 8096
 
 management:
   endpoints:
@@ -31,6 +35,17 @@ management:
   security:
     enabled: false
 
-url:
-  connection_timeout: 30000
-  maxBytesInMemory: 30000000
+logging:
+  level:
+    root: INFO
+    "[org.springframework]": ERROR
+    "[com.betsanddice]": INFO
+  pattern:
+    # console: Spring's default
+    file: "%date %5level %-40.40logger{39} [%thread] %msg%n"
+#  file:
+#    name: betsanddice-stat.log
+
+#url:
+#  connection_timeout: 30000
+#  maxBytesInMemory: 30000000
