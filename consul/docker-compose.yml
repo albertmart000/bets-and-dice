@@ -1,6 +1,57 @@
-version: "3.7"
+version: '3.7'
 
 services:
+  consul-server1:
+    image: consul:1.15.2
+    container_name: consul-server1
+    restart: always
+    volumes:
+      - ./server1.json:/consul/config/server1.json:ro
+    networks:
+      - network-betsanddice
+#      consul-net:
+#        ipv4_address: 172.24.2.0
+    ports:
+      - '8500:8500'
+      - '8600:8600/tcp'
+      - '8600:8600/udp'
+    command: 'agent -bootstrap-expect=3'
+
+  consul-server2:
+    image: consul:1.15.2
+    container_name: consul-server2
+    restart: always
+    volumes:
+      - ./server2.json:/consul/config/server2.json:ro
+    networks:
+      - network-betsanddice
+#      consul-net:
+#        ipv4_address: 172.24.2.1
+    command: "agent -bootstrap-expect=3"
+
+  consul-server3:
+    image: consul:1.15.2
+    container_name: consul-server3
+    restart: always
+    volumes:
+      - ./server3.json:/consul/config/server3.json:ro
+    networks:
+      - network-betsanddice
+#      consul-net:
+#        ipv4_address: 172.24.2.2
+    command: "agent -bootstrap-expect=3"
+
+      #consul-client-mongodb:
+      # image: consul:1.12.3
+      #container_name: consul-client-mongodb
+      #restart: always
+      #volumes:
+      #- ./consul-client-mongodb.json:/consul/config/client.json:ro
+    #networks:
+    #consul-net:
+    # ipv4_address: 172.24.2.3
+    #command: "agent"
+
   betsanddice-mongodb:
     container_name: mongodb-betsanddice
     image: mongo:5.0.9
@@ -13,19 +64,19 @@ services:
       - "27018:27017"
     volumes:
       - betsanddice_mongodb_data:/data/db
-      #- data-mongo-bets-user:/var/lib/docker/volumes/data-mongo-bets-user/_data
-      #- betsanddice_mongodb_data:/var/lib/mongodb
       #- ../betsandice-user/src/main/resources/mongodb-init:/docker-entrypoint-initdb.d
       #- ../betsandice-user/src/main/resources/mongodb-test-data:/tmp/data/
+      #- data-mongo-bets-user:/var/lib/docker/volumes/data-mongo-bets-user/_data
+      #- betsanddice_mongodb_data:/var/lib/mongodb
     networks:
       - network-betsanddice
+#      consul-net:
+#        ipv4_address: 172.24.2.11
 
   betsanddice-user:
     image: albertmart000/betsanddice:betsanddice-user-v1.0-SNAPSHOT
     container_name: betsanddice-user-v1.0-SNAPSHOT
     restart: always
-    depends_on:
-      - betsanddice-mongodb
     ports:
       - "8094:8094"
     environment:
@@ -36,15 +87,15 @@ services:
       MONGODB_USER_DATABASE: users
     networks:
       - network-betsanddice
+#      consul-net:
+#        ipv4_address: 172.24.2.6
 
   betsanddice-craps:
     image: albertmart000/betsanddice:betsanddice-craps-v1.0-SNAPSHOT
     container_name: betsanddice-craps-v1.0-SNAPSHOT
     restart: always
-    depends_on:
-      - betsanddice-mongodb
     ports:
-      - "8095:8095"
+      - "7775:8095"
     environment:
       MONGODB_HOST=mongodb: 27017
       MONGODB_USERNAME: admin_betsanddice
@@ -53,6 +104,8 @@ services:
       MONGODB_CRAPS_DATABASE: craps
     networks:
       - network-betsanddice
+#      consul-net:
+#        ipv4_address: 172.24.2.7
 
   betsanddice-tutorial:
     image: albertmart000/betsanddice:betsanddice-tutorial-v1.0-SNAPSHOT
@@ -61,7 +114,7 @@ services:
     depends_on:
       - betsanddice-mongodb
     ports:
-      - "8098:8098"
+      - "7776:8098"
     environment:
       MONGODB_HOST=mongodb: 27017
       MONGODB_USERNAME: admin_betsanddice
@@ -70,6 +123,8 @@ services:
       MONGODB_TUTORIAL_DATABASE: tutorials
     networks:
       - network-betsanddice
+#      consul-net:
+#        ipv4_address: 172.24.2.8
 
   betsanddice-stat:
     image: albertmart000/betsanddice:betsanddice-stat-v1.0-SNAPSHOT
@@ -78,7 +133,7 @@ services:
     depends_on:
       - betsanddice-mongodb
     ports:
-      - "8096:8096"
+      - "7778:8096"
     environment:
       MONGODB_HOST=mongodb: 27017
       MONGODB_USERNAME: admin_betsanddice
@@ -87,9 +142,30 @@ services:
       MONGODB_CRAPS_DATABASE: stats
     networks:
       - network-betsanddice
+#      consul-net:
+#        ipv4_address: 172.24.2.9
+
+  betsanddice-nginx: #docker run -it -p 80:80 albertmart000/betsanddice:nginx-frontend-v1.0-SNAPSHOT
+    container_name: nginx-betsanddice
+    #image: albertmart000/betsanddice:nginx-frontend-v1.0-SNAPSHOT
+    image: nginx
+    restart: always
+    ports:
+      - "90:80"
+    networks:
+      - network-betsanddice
+
+#      consul-net:
+#        ipv4_address: 172.24.2.11
 
 volumes:
   betsanddice_mongodb_data:
 
 networks:
   network-betsanddice:
+#  consul-net:
+#    driver: bridge
+#    ipam:
+#      driver: default
+#      config:
+#        - subnet: 172.24.2.0/16

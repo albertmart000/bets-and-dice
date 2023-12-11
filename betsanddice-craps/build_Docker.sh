@@ -1,10 +1,10 @@
 #!/bin/sh
 #  Start parameters:
 #  1.-fileConfig
-#  Example: ./betsanddice-craps/build_Docker.sh conf/.env.dev
+#  Example: ./betsanddice-user/build_Docker.sh conf/.env.dev
 
 # Init variables
-fileConfig=.env.dev;
+fileConfig=$1;
 #fileConfig=conf/.env.dev;
 now="$(date +'%d-%m-%Y %H:%M:%S:%3N')"
 # shellcheck disable=SC2034

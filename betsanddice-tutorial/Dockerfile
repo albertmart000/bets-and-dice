@@ -2,7 +2,7 @@ FROM bellsoft/liberica-openjdk-alpine:17.0.1
 RUN apk add -U consul
 ADD ["build/libs/betsanddice-tutorial-1.0-SNAPSHOT.jar", "/opt/betsanddice-tutorial/"]
 ENTRYPOINT ["java", "-jar", "/opt/betsanddice-tutorial/betsanddice-tutorial-1.0-SNAPSHOT.jar"]
-EXPOSE 7777
+EXPOSE 7776
 
 #FROM openjdk:17-jdk-alpine AS build_image
 #WORKDIR /app/betsanddice-tutorial

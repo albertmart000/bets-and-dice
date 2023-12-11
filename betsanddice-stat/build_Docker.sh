@@ -7,8 +7,6 @@
 #fileConfig=conf/.env.dev;
 fileConfig=$1;
 now="$(date +'%d-%m-%Y %H:%M:%S:%3N')"
-# shellcheck disable=SC2034
-# shellcheck disable=SC2006
 base_dir=`pwd`
 
 # Load environment variables
