@@ -4,7 +4,7 @@
 #  Example: ./betsanddice-tutorial/build_Docker.sh .env.dev
 
 # Init variables
-fileConfig=.env.dev;
+fileConfig=./betsanddice-tutorial/.env.dev
 now="$(date +'%d-%m-%Y %H:%M:%S:%3N')"
 # shellcheck disable=SC2034
 # shellcheck disable=SC2006
