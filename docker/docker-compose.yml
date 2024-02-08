@@ -84,12 +84,13 @@ services:
       MONGODB_USERNAME: admin_betsanddice
       MONGODB_PASSWORD: XMOJocgKlmRHz2O
       MONGODB_CONTAINER_PORT: 27018
-      MONGODB_CRAPS_DATABASE: stats
+      MONGODB_STAT_DATABASE: stats
     networks:
       - network-betsanddice
 
 volumes:
   betsanddice_mongodb_data:
+    name: betsanddice_mongodb_data
 
 networks:
   network-betsanddice:
