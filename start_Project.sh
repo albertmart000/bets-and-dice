@@ -2,8 +2,15 @@
 
 # Build images micros
 
-microservices=("betsanddice-user" "betsanddice-stat" "betsanddice-tutorial" "betsanddice-craps")
-for micro in "${microservices[@]}"; do
+directories=("betsanddice-user" "betsanddice-stat" "betsanddice-tutorial" "betsanddice-craps")
+
+for dir in "${directories[@]}"; do
     # shellcheck disable=SC2164
-    (cd "$micro" && bash build_Docker.sh)
+    (cd "$dir" && bash build_Docker.sh)
+
 done
+
+docker image prune -f
+# shellcheck disable=SC2164
+cd docker
+docker-compose up -d
