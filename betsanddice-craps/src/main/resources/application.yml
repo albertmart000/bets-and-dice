@@ -9,9 +9,9 @@ spring:
   data:
     mongodb:
       #uri para bbdd local:
-      #uri: mongodb://admin_craps:XMOJocgKlmRHz2O@mongodb-betsanddice-craps:27017/craps?authSource=admin
+      uri: mongodb://admin_craps:XMOJocgKlmRHz2O@localhost:27017/craps?authSource=admin
       #uri para bbdd docker:
-      uri: mongodb://admin_betsanddice:XMOJocgKlmRHz2O@mongodb-betsanddice:27017/craps?authSource=admin
+      #uri: mongodb://admin_betsanddice:XMOJocgKlmRHz2O@mongodb-betsanddice:27017/craps?authSource=admin
       uuid-representation: standard
 
 springdoc:
