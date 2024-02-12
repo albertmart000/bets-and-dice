@@ -8,8 +8,10 @@ spring:
     enabled: true
   data:
     mongodb:
-      uri: mongodb://admin_betsanddice:XMOJocgKlmRHz2O@mongodb-betsanddice:27017/stats?authSource=admin
-     # uri: mongodb://admin_stat:XMOJocgKlmRHz2O@localhost:27017/stats?authSource=admin
+      #uri para bbdd local:
+      #uri: mongodb://admin_stat:XMOJocgKlmRHz2O@mongodb-betsanddice-user:27017/stats?authSource=admin
+      #uri para bbdd docker:
+      uri: mongodb://admin_betsanddice:XMOJocgKlmRHz2O@mongodb-betsanddice:27017/craps?authSource=admin
       uuid-representation: standard
 
 springdoc:

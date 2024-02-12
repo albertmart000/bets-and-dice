@@ -6,8 +6,6 @@
 # Init variables
 fileConfig=.env.dev;
 now="$(date +'%d-%m-%Y %H:%M:%S:%3N')"
-# shellcheck disable=SC2034
-# shellcheck disable=SC2006
 base_dir=`pwd`
 
 # Load environment variables
@@ -17,7 +15,6 @@ then
   echo " Loading config from $fileConfig"
   echo ""
 
-  # shellcheck disable=SC2034
   while IFS='=' read -r key value
   do
     key=$(echo "$key" | tr '.' '_')
@@ -39,13 +36,9 @@ then
 #./gradlew :itachallenge-mock:clean &&
 ./gradlew :betsanddice-craps:build
 
-# shellcheck disable=SC2164
-cd betsanddice-craps
-
 docker build -t="${REGISTRY_NAME}":betsanddice-craps-"${CRAPS_TAG}" .
 
 if [ "${ENV}" = "dev" ]
 then
 docker push "${REGISTRY_NAME}":betsanddice-craps-"${CRAPS_TAG}"
 fi
-
