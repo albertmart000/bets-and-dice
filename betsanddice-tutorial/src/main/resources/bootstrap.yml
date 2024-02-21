@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: betsanddice-tutorial
+  cloud:
+    consul:
+      enabled: false
+      host: 127.0.0.1
+      port: 8500
+      config:
+        enabled: true
+      discovery:
+        instanceId: id:${spring.application.name}:${random.value}
+        serviceName: ${spring.application.name}
+        enabled: true
+        register: true
+        register-health-check: true
+        deregister: true
+        port: 8098
+        prefer-ip-address: true
+        healthCheckPath: /actuator/health
+        healthCheckInterval: 10s
