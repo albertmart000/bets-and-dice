@@ -5,7 +5,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -13,20 +12,16 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "user-stats")
-public class UserStatDocument {
+@Document(collection = "user-stats-by-game")
+public class UserStatByGameDocument {
 
     @Id
     @Field(name = "_id")
     private UUID uuid;
 
-    @Field(name = "id_user")
+    @Field(name = "user_id")
     private UUID userId;
 
-    @Field(name = "level")
-    private String level;
-
-    @Field(name = "cash")
-    private BigDecimal cash;
-
+    @Field(name = "game_id")
+    private UUID gameId;
 }
