@@ -1,5 +1,6 @@
 package com.betsanddice.stat.repository;
 
+import com.betsanddice.stat.document.UserStatByGameDocument;
 import com.betsanddice.stat.document.UserStatDocument;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 
 @DataMongoTest
@@ -40,15 +42,18 @@ class UserStatRepositoryTest {
         UUID uuidUserStat1 = UUID.fromString("c73a00ef-bfb1-458a-9c9d-5b1cdfca4a01");
         UUID uuidUserStat2 = UUID.fromString("76628e83-b879-4186-8263-3325236a5fa5");
 
-        UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
+        UUID uuidUser1 = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
+        UUID uuidUser2 = UUID.fromString("fecf3dfe-df69-46de-ae5b-2a5989aa0c1f");
 
-        UUID uuidGame1 = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
-        UUID uuidGame2 = UUID.fromString("9cc65b00-8412-46e7-ba6f-ead17a9fe167");
+        UUID uuidUserStatByGame1 = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
+        UUID uuidUserStatByGame2 = UUID.fromString("9cc65b00-8412-46e7-ba6f-ead17a9fe167");
+        UUID uuidUserStatByGame3 = UUID.fromString("1346c0f4-db9b-4fdb-afd0-4b161e85405d");
 
-        double average = 3.5;
+        UserStatByGameDocument userStatByGameDocument = new UserStatByGameDocument(uuidUserStatByGame1, uuidUserStatByGame2, uuidUserStatByGame3);
+        List<UserStatByGameDocument> userGames = List.of(userStatByGameDocument);
 
-        UserStatDocument userStatDocument1 = new UserStatDocument(uuidUserStat1, uuidUser, uuidGame1, average);
-        UserStatDocument userStatDocument2 = new UserStatDocument(uuidUserStat2, uuidUser, uuidGame2, average);
+        UserStatDocument userStatDocument1 = new UserStatDocument(uuidUserStat1, uuidUser1, "Intermediate", 50, userGames);
+        UserStatDocument userStatDocument2 = new UserStatDocument(uuidUserStat2, uuidUser2, "Intermediate", 50, userGames);
 
         userStatRepository.saveAll(Flux.just(userStatDocument1, userStatDocument2)).blockLast();
     }
