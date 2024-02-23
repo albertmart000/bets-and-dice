@@ -11,13 +11,13 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "game-stats")
+@Document(collection="game-stats")
 public class GameStatDocument {
 
     @Id
-    @Field(name = "_id")
+    @Field(name="_id")
     private UUID uuid;
 
-    @Field(name = "game_id")
+    @Field(name="game_id")
     private UUID gameId;
 }

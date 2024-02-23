@@ -19,19 +19,19 @@ import java.util.UUID;
 public class CrapsGameDocument {
 
     @Id
-    @Field(name = "_id")
+    @Field(name="_id")
     private UUID uuid;
 
-    @Field(name = "id_user")
+    @Field(name="id_user")
     private UUID userId;
 
-    @Field(name = "date")
+    @Field(name="date")
     private LocalDateTime date;
 
-    @Field(name =  "attempts")
+    @Field(name="attempts")
     private Integer attempts;
 
-    @Field(name = "dice_rolls")
+    @Field(name="dice_rolls")
     private List<DiceRollDto> diceRollsList;
 
 }
