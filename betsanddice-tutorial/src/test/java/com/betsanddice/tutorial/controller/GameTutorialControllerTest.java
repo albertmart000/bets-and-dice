@@ -35,6 +35,9 @@ class GameTutorialControllerTest {
     UUID uuidGameTutorialDocument1 = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
     UUID uuidGameTutorialDocument2 = UUID.fromString("9cc65b00-8412-46e7-ba6f-ead17a9fe167");
 
+    UUID uuidGameDocument1 = UUID.fromString("7f9dcc63-6daf-4ba2-b3c7-e0b59534f856");
+    UUID uuidGameDocument2 = UUID.fromString("bf71596f-0dff-4ce7-b6d6-e348fbf914ed");
+
     GameTutorialDto gameTutorialDto1 = new GameTutorialDto();
     GameTutorialDto gameTutorialDto2 = new GameTutorialDto();
     GameTutorialDto[] expectedGameTutorials = {gameTutorialDto1, gameTutorialDto2};
@@ -45,9 +48,9 @@ class GameTutorialControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        gameTutorialDto1 = new GameTutorialDto(uuidGameTutorialDocument1, "Craps",
+        gameTutorialDto1 = new GameTutorialDto(uuidGameTutorialDocument1, uuidGameDocument1, "Craps",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmo…");
-        gameTutorialDto2 = new GameTutorialDto(uuidGameTutorialDocument2, "SixDice",
+        gameTutorialDto2 = new GameTutorialDto(uuidGameTutorialDocument2, uuidGameDocument2,"SixDice",
                 "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusan…");
 
         gameTutorialDtoToAdd = new GameTutorialDto("Craps",
@@ -98,7 +101,8 @@ class GameTutorialControllerTest {
     @Test
     void addGameTutorialTest() {
         UUID uuidGameTutorialDocument = UUID.fromString("660e1b18-0c0a-4262-a28a-85de9df6ac5f");
-        GameTutorialDto gameTutorialDto = new GameTutorialDto(uuidGameTutorialDocument, gameTutorialDtoToAdd.getGameName(),
+        UUID uuidGameDocument = UUID.fromString("c9de85c0-541e-48e6-b8ac-a9b2541231e3");
+        GameTutorialDto gameTutorialDto = new GameTutorialDto(uuidGameTutorialDocument, uuidGameDocument, gameTutorialDtoToAdd.getGameName(),
                 gameTutorialDtoToAdd.getRules());
 
         when(gameTutorialService.addGameTutorial(gameTutorialDto)).thenAnswer(x -> (Mono.just(gameTutorialDto)));

@@ -40,13 +40,16 @@ class GameTutorialRepositoryTest {
     UUID uuidGameTutorialDocument1 = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
     UUID uuidGameTutorialDocument2 = UUID.fromString("9cc65b00-8412-46e7-ba6f-ead17a9fe167");
 
+    UUID uuidGameDocument1 = UUID.fromString("7f9dcc63-6daf-4ba2-b3c7-e0b59534f856");
+    UUID uuidGameDocument2 = UUID.fromString("bf71596f-0dff-4ce7-b6d6-e348fbf914ed");
+
     @BeforeEach
     void setUp() {
         gameTutorialRepository.deleteAll().block();
 
-        GameTutorialDocument gameTutorialDocument1 = new GameTutorialDocument(uuidGameTutorialDocument1, "Craps",
+        GameTutorialDocument gameTutorialDocument1 = new GameTutorialDocument(uuidGameTutorialDocument1, uuidGameDocument1, "Craps",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit...");
-        GameTutorialDocument gameTutorialDocument2 = new GameTutorialDocument(uuidGameTutorialDocument2, "SixDice",
+        GameTutorialDocument gameTutorialDocument2 = new GameTutorialDocument(uuidGameTutorialDocument2, uuidGameDocument2,"SixDice",
                 "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium...");
 
         gameTutorialRepository.saveAll(Flux.just(gameTutorialDocument1, gameTutorialDocument2 )).blockLast();

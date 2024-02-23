@@ -19,6 +19,9 @@ public class GameTutorialDocument {
     @Field(name = "_id")
     private UUID uuid;
 
+    @Field(name = "game_id")
+    private UUID gameId;
+
     @Field(name = "game_name")
     private String gameName;
 

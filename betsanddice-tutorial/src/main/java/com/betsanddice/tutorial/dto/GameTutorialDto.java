@@ -15,13 +15,16 @@ import java.util.UUID;
 @Getter
 @Setter
 public class GameTutorialDto {
-    @JsonProperty(value = "game_id", index = 0)
+    @JsonProperty(value = "game_tutorial_id", index = 0)
+    private UUID gameTutorialId;
+
+    @JsonProperty(value = "game_id", index = 1)
     private UUID gameId;
 
-    @JsonProperty(value = "game_name", index = 1)
+    @JsonProperty(value = "game_name", index = 2)
     private String gameName;
 
-    @JsonProperty(value = "rules", index = 2)
+    @JsonProperty(value = "rules", index = 3)
     private String rules;
 
     public GameTutorialDto(String gameName, String rules) {

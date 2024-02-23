@@ -32,8 +32,8 @@ class GameTutorialServiceImpTest {
     @InjectMocks
     private GameTutorialServiceImp gameTutorialService;
 
-    UUID gameTutorialUuid = UUID.fromString("1682b3e9-056a-45b7-a0e9-eaf1e11775ad");
-
+    UUID uuidGameTutorial = UUID.fromString("1682b3e9-056a-45b7-a0e9-eaf1e11775ad");
+    UUID uuidGameDocument = UUID.fromString("c9de85c0-541e-48e6-b8ac-a9b2541231e3");
     GameTutorialDto gameTutorialDtoToAdd = new GameTutorialDto();
     GameTutorialDto gameTutorialDto = new GameTutorialDto();
     GameTutorialDocument gameTutorialDocument = new GameTutorialDocument();
@@ -43,8 +43,8 @@ class GameTutorialServiceImpTest {
         MockitoAnnotations.openMocks(this);
 
         gameTutorialDtoToAdd = new GameTutorialDto("nonExistingGameName", "rules");
-        gameTutorialDto = new GameTutorialDto(gameTutorialUuid, "nonExistingGameName", "rules");
-        gameTutorialDocument = new GameTutorialDocument(gameTutorialUuid, "nonExistingGameName", "rules");
+        gameTutorialDto = new GameTutorialDto(uuidGameTutorial, uuidGameDocument,"nonExistingGameName", "rules");
+        gameTutorialDocument = new GameTutorialDocument(uuidGameTutorial, uuidGameDocument,"nonExistingGameName", "rules");
 
     }
 
@@ -79,17 +79,17 @@ class GameTutorialServiceImpTest {
 
     @Test
     void getGameTutorialByUuid_ValidUuid_GameTutorialFound() {
-        when(gameTutorialRepository.findByUuid(gameTutorialUuid)).thenReturn(Mono.just(gameTutorialDocument));
+        when(gameTutorialRepository.findByUuid(uuidGameTutorial)).thenReturn(Mono.just(gameTutorialDocument));
         when(converter.fromDocumentToDto(gameTutorialDocument)).thenReturn(gameTutorialDto);
 
-        Mono<GameTutorialDto> resultDto = gameTutorialService.getGameTutorialByUuid(gameTutorialUuid.toString());
+        Mono<GameTutorialDto> resultDto = gameTutorialService.getGameTutorialByUuid(uuidGameTutorial.toString());
 
         StepVerifier.create(resultDto)
                 .expectNext(gameTutorialDto)
                 .expectComplete()
                 .verify();
 
-        verify(gameTutorialRepository).findByUuid(gameTutorialUuid);
+        verify(gameTutorialRepository).findByUuid(uuidGameTutorial);
         verify(converter).fromDocumentToDto(gameTutorialDocument);
     }
 
@@ -109,15 +109,15 @@ class GameTutorialServiceImpTest {
 
     @Test
     void getGameTutorialByUuid_NonExistentUuid_ErrorThrown() {
-        when(gameTutorialRepository.findByUuid(gameTutorialUuid)).thenReturn(Mono.empty());
+        when(gameTutorialRepository.findByUuid(uuidGameTutorial)).thenReturn(Mono.empty());
 
-        Mono<GameTutorialDto> result = gameTutorialService.getGameTutorialByUuid(gameTutorialUuid.toString());
+        Mono<GameTutorialDto> result = gameTutorialService.getGameTutorialByUuid(uuidGameTutorial.toString());
 
         StepVerifier.create(result)
                 .expectError(GameTutorialNotFoundException.class)
                 .verify();
 
-        verify(gameTutorialRepository).findByUuid(gameTutorialUuid);
+        verify(gameTutorialRepository).findByUuid(uuidGameTutorial);
         verifyNoInteractions(converter);
     }
 
