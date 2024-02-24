@@ -102,17 +102,7 @@ class GameTutorialIntegrationTest {
     }
 
     @Test
-    void getOneGameTutorial_InvalidId_GameTutorialNotFoundReturned_Test() {
-        String invalidUuid = "ce020780-1a66-bec4-284c8ca80296";
-        webTestClient.get()
-                .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", invalidUuid)
-                .exchange()
-                .expectStatus()
-                .isEqualTo(BAD_REQUEST);
-    }
-
-    @Test
-    void getOneGameTutorial_ValidId_GameTutorialReturned_Test() {
+    void getOneGameTutorial_ValidUuid_GameTutorialReturned_Test() {
         String validUuid = "c8a5440d-6466-463a-bccc-7fefbe9396e4";
         webTestClient.get()
                 .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", validUuid)
@@ -126,6 +116,40 @@ class GameTutorialIntegrationTest {
     }
 
     @Test
+    void getOneGameTutorial_InvalidUuid_GameTutorialNotFoundReturned_Test() {
+        String invalidUuid = "ce020780-1a66-bec4-284c8ca80296";
+        webTestClient.get()
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", invalidUuid)
+                .exchange()
+                .expectStatus()
+                .isEqualTo(BAD_REQUEST);
+    }
+
+    @Test
+    void getOneGameTutorial_ValidGameId_GameTutorialReturned_Test() {
+        String validUuid = "7f9dcc63-6daf-4ba2-b3c7-e0b59534f856";
+        webTestClient.get()
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials/game/{gameUuid}", validUuid)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(GameTutorialDto.class)
+                .value(dto -> {
+                    assert dto != null;
+                });
+    }
+
+    @Test
+    void getOneGameTutorial_InvalidGameId_GameTutorialNotFoundReturned_Test() {
+        String invalidUuid = "ce020780-1a66-bec4-284c8ca80296";
+        webTestClient.get()
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials/game/{gameUuid}", invalidUuid)
+                .exchange()
+                .expectStatus()
+                .isEqualTo(BAD_REQUEST);
+    }
+
+    @Test
     void getGameTutorials_GameTutorialExist_GameTutorialsReturned_Test() {
         webTestClient.get()
                 .uri(TUTORIAL_BASE_URL + "/gameTutorials")
@@ -134,5 +158,4 @@ class GameTutorialIntegrationTest {
                 .expectBodyList(GameTutorialDto.class)
                 .hasSize(2);
     }
-
 }
