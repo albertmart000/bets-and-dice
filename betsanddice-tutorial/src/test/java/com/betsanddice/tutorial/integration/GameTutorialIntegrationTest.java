@@ -54,6 +54,9 @@ class GameTutorialIntegrationTest {
     UUID uuidGameTutorial1 = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
     UUID uuidGameTutorial2 = UUID.fromString("9cc65b00-8412-46e7-ba6f-ead17a9fe167");
 
+    UUID uuidGameDocument1 = UUID.fromString("7f9dcc63-6daf-4ba2-b3c7-e0b59534f856");
+    UUID uuidGameDocument2 = UUID.fromString("bf71596f-0dff-4ce7-b6d6-e348fbf914ed");
+
     GameTutorialDto gameTutorialDtoByName = new GameTutorialDto();
 
     @BeforeEach
@@ -61,8 +64,8 @@ class GameTutorialIntegrationTest {
 
         gameTutorialRepository.deleteAll().block();
 
-        GameTutorialDocument gameTutorial1 = new GameTutorialDocument(uuidGameTutorial1, "Craps", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur...");
-        GameTutorialDocument gameTutorial2 = new GameTutorialDocument(uuidGameTutorial2, "SixDice", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt...");
+        GameTutorialDocument gameTutorial1 = new GameTutorialDocument(uuidGameTutorial1, uuidGameDocument1,"Craps", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur...");
+        GameTutorialDocument gameTutorial2 = new GameTutorialDocument(uuidGameTutorial2, uuidGameDocument2,"SixDice", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt...");
 
         gameTutorialRepository.saveAll(Flux.just(gameTutorial1, gameTutorial2)).blockLast();
     }
@@ -81,8 +84,10 @@ class GameTutorialIntegrationTest {
     @Test
     void addGameTutorialTest() {
         UUID uuidGameTutorialDocument = UUID.fromString("660e1b18-0c0a-4262-a28a-85de9df6ac5f");
+        UUID uuidGameDocument = UUID.fromString("c9de85c0-541e-48e6-b8ac-a9b2541231e3");
+
         gameTutorialDtoByName = new GameTutorialDto("Name", "rules");
-        GameTutorialDto gameTutorialDto = new GameTutorialDto(uuidGameTutorialDocument, gameTutorialDtoByName.getGameName(),
+        GameTutorialDto gameTutorialDto = new GameTutorialDto(uuidGameTutorialDocument, uuidGameDocument, gameTutorialDtoByName.getGameName(),
                 gameTutorialDtoByName.getRules());
 
         webTestClient.post()
@@ -97,17 +102,7 @@ class GameTutorialIntegrationTest {
     }
 
     @Test
-    void getOneGameTutorial_InvalidId_GameTutorialNotFoundReturned_Test() {
-        String invalidUuid = "ce020780-1a66-bec4-284c8ca80296";
-        webTestClient.get()
-                .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", invalidUuid)
-                .exchange()
-                .expectStatus()
-                .isEqualTo(BAD_REQUEST);
-    }
-
-    @Test
-    void getOneGameTutorial_ValidId_GameTutorialReturned_Test() {
+    void getOneGameTutorial_ValidUuid_GameTutorialReturned_Test() {
         String validUuid = "c8a5440d-6466-463a-bccc-7fefbe9396e4";
         webTestClient.get()
                 .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", validUuid)
@@ -121,6 +116,40 @@ class GameTutorialIntegrationTest {
     }
 
     @Test
+    void getOneGameTutorial_InvalidUuid_GameTutorialNotFoundReturned_Test() {
+        String invalidUuid = "ce020780-1a66-bec4-284c8ca80296";
+        webTestClient.get()
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", invalidUuid)
+                .exchange()
+                .expectStatus()
+                .isEqualTo(BAD_REQUEST);
+    }
+
+    @Test
+    void getOneGameTutorial_ValidGameId_GameTutorialReturned_Test() {
+        String validUuid = "7f9dcc63-6daf-4ba2-b3c7-e0b59534f856";
+        webTestClient.get()
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials/game/{gameUuid}", validUuid)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(GameTutorialDto.class)
+                .value(dto -> {
+                    assert dto != null;
+                });
+    }
+
+    @Test
+    void getOneGameTutorial_InvalidGameId_GameTutorialNotFoundReturned_Test() {
+        String invalidUuid = "ce020780-1a66-bec4-284c8ca80296";
+        webTestClient.get()
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials/game/{gameUuid}", invalidUuid)
+                .exchange()
+                .expectStatus()
+                .isEqualTo(BAD_REQUEST);
+    }
+
+    @Test
     void getGameTutorials_GameTutorialExist_GameTutorialsReturned_Test() {
         webTestClient.get()
                 .uri(TUTORIAL_BASE_URL + "/gameTutorials")
@@ -129,5 +158,4 @@ class GameTutorialIntegrationTest {
                 .expectBodyList(GameTutorialDto.class)
                 .hasSize(2);
     }
-
 }

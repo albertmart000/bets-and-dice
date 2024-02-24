@@ -2,8 +2,6 @@ package com.betsanddice.tutorial.dto;
 
 import com.betsanddice.tutorial.helper.ResourceHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.util.DefaultIndenter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,35 +26,39 @@ class GameTutorialDtoTest {
     private ObjectMapper mapper;
 
     private final String gameTutorialJsonPath = "json/gameTutorialSerialized.json";
-    private GameTutorialDto gameTutorialDtoToSerialize;
-    private GameTutorialDto gameTutorialDtoFromDeserialize;
+
+    private GameTutorialDto gameTutorialDto;
 
     @BeforeEach
     void setUp() {
         UUID uuidGameTutorial = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
-        String rules = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur...";
+        UUID uuidGameDocument = UUID.fromString("7f9dcc63-6daf-4ba2-b3c7-e0b59534f856");
 
-        gameTutorialDtoToSerialize = new GameTutorialDto(uuidGameTutorial,"Craps", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur...");
-        gameTutorialDtoFromDeserialize = new GameTutorialDto(uuidGameTutorial,"Craps", rules);
+        gameTutorialDto = buildGameTutorialDto(uuidGameTutorial, uuidGameDocument, "Craps", "rules");
     }
 
     @Test
     @DisplayName("Serialization GameTutorialDto test")
     @SneakyThrows({JsonProcessingException.class})
     void rightSerializationTest() {
-        String jsonResult = mapper
-                .writer(new DefaultPrettyPrinter().withArrayIndenter(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE))
-                .writeValueAsString(gameTutorialDtoToSerialize);
+        GameTutorialDto dtoSerializable = gameTutorialDto;
+        String jsonResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dtoSerializable);
         String jsonExpected = new ResourceHelper(gameTutorialJsonPath).readResourceAsString().orElse(null);
-        assertEquals(jsonExpected, jsonResult);
+        assertEquals(jsonExpected,jsonResult);
     }
 
     @Test
     @DisplayName("Deserialization GameTutorialDto test")
     @SneakyThrows(IOException.class)
     void rightDeserializationTest() {
-        String crapsGameJsonSource = new ResourceHelper(gameTutorialJsonPath).readResourceAsString().orElse(null);
-        GameTutorialDto dtoResult = mapper.readValue(crapsGameJsonSource, GameTutorialDto.class);
-        assertThat(dtoResult).usingRecursiveComparison().isEqualTo(gameTutorialDtoFromDeserialize);
+        String jsonDeserializable = new ResourceHelper(gameTutorialJsonPath).readResourceAsString().orElse(null);
+        GameTutorialDto dtoResult = mapper.readValue(jsonDeserializable, GameTutorialDto.class);
+        GameTutorialDto dtoExpected = gameTutorialDto;
+        assertThat(dtoResult).usingRecursiveComparison().isEqualTo(dtoExpected);
     }
+
+    static GameTutorialDto buildGameTutorialDto(UUID uuidGameTutorial, UUID uuidGameDocument, String gameName, String rules){
+        return new GameTutorialDto(uuidGameTutorial, uuidGameDocument, gameName, rules);
+    }
+
 }

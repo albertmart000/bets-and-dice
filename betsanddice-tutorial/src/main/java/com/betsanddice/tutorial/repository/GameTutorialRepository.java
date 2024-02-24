@@ -12,9 +12,13 @@ public interface GameTutorialRepository extends ReactiveMongoRepository<GameTuto
 
     Mono<Boolean> existsByUuid(UUID uuid);
 
+    Mono<Boolean> existsByGameId(UUID gameId);
+
     Mono<Boolean> existsByGameName(String gameName);
 
     Mono<GameTutorialDocument> findByUuid(UUID uuid);
+
+    Mono<GameTutorialDocument> findByGameId(UUID gameId);
 
     Mono<GameTutorialDocument> findByGameName(String gameName);
 
