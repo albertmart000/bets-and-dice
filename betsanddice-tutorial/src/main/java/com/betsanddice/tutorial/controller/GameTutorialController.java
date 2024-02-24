@@ -48,16 +48,30 @@ public class GameTutorialController {
 
     @GetMapping(path = "/gameTutorials/{gameTutorialUuid}")
     @Operation(
-            operationId = "Get the information from a chosen Game.",
-            summary = "Get to see the Game Data.",
+            operationId = "Get the information from a chosen Tutorial Id.",
+            summary = "Get to see the Tutorial Data.",
+            description = "Sending the Id Tutorial  through the URI to retrieve it from the database.",
+            responses = {
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = GameTutorialDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "404", description = "The Tutorial with given Id was not found.", content = {@Content(schema = @Schema())})
+            }
+    )
+    public Mono<GameTutorialDto> getGameTutorialByUuid(@PathVariable("gameTutorialUuid") String uuid) {
+        return gameTutorialService.getGameTutorialByUuid(uuid);
+    }
+
+    @GetMapping(path = "/gameTutorials/{gameUuid}")
+    @Operation(
+            operationId = "Get the Tutorial from a chosen Game.",
+            summary = "Get to see the Game Tutorial.",
             description = "Sending the Id Game through the URI to retrieve it from the database.",
             responses = {
                     @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = GameTutorialDto.class), mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404", description = "The Game with given Id was not found.", content = {@Content(schema = @Schema())})
             }
     )
-    public Mono<GameTutorialDto> getGameTutorialByUuid(@PathVariable("gameTutorialUuid") String uuid) {
-        return gameTutorialService.getGameTutorialByUuid(uuid);
+    public Mono<GameTutorialDto> getGameTutorialByGameUuid(@PathVariable("gameUuid") String uuid) {
+        return gameTutorialService.getGameTutorialByGameId(uuid);
     }
 
     @GetMapping("/gameTutorials")

@@ -61,11 +61,17 @@ class GameTutorialRepositoryTest {
         Assertions.assertNotNull(gameTutorialRepository);
     }
 
-
     @DisplayName("Exists by UUID Test")
     @Test
     void existsByUuidTest() {
         Boolean exists = gameTutorialRepository.existsByUuid(uuidGameTutorialDocument1).block();
+        Assertions.assertEquals(true, exists);
+    }
+
+    @DisplayName("Exists by GameId Test")
+    @Test
+    void existsByGameIdTest() {
+        Boolean exists = gameTutorialRepository.existsByGameId(uuidGameDocument1).block();
         Assertions.assertEquals(true, exists);
     }
 
@@ -76,9 +82,37 @@ class GameTutorialRepositoryTest {
         Assertions.assertEquals(true, exists);
     }
 
+    @DisplayName("Find by UUID Test")
+    @Test
+    void findByUuidTest() {
+        Mono<GameTutorialDocument> gameTutorialDocument1 = gameTutorialRepository.findByUuid(uuidGameTutorialDocument1);
+        gameTutorialDocument1.blockOptional().ifPresentOrElse(
+                gameTutorialDocument -> Assertions.assertEquals(uuidGameTutorialDocument1, gameTutorialDocument.getUuid()),
+                () -> fail("Game Tutorial not found: " + uuidGameTutorialDocument1));
+
+        Mono<GameTutorialDocument> gameTutorialDocument2 = gameTutorialRepository.findByUuid(uuidGameTutorialDocument2);
+        gameTutorialDocument2.blockOptional().ifPresentOrElse(
+                gameTutorialDocument -> Assertions.assertEquals(uuidGameTutorialDocument2, gameTutorialDocument.getUuid()),
+                () -> fail("Game Tutorial not found: " + uuidGameTutorialDocument2));
+    }
+
+    @DisplayName("Find by GameId Test")
+    @Test
+    void findByGameIdTest() {
+        Mono<GameTutorialDocument> gameTutorialDocument1 = gameTutorialRepository.findByGameId(uuidGameDocument1);
+        gameTutorialDocument1.blockOptional().ifPresentOrElse(
+                gameTutorialDocument -> Assertions.assertEquals(uuidGameDocument1, gameTutorialDocument.getGameId()),
+                () -> fail("Game Tutorial not found: " + uuidGameDocument1));
+
+        Mono<GameTutorialDocument> gameTutorialDocument2 = gameTutorialRepository.findByGameId(uuidGameDocument2);
+        gameTutorialDocument2.blockOptional().ifPresentOrElse(
+                gameTutorialDocument -> Assertions.assertEquals(uuidGameDocument2, gameTutorialDocument.getGameId()),
+                () -> fail("Game Tutorial not found: " + uuidGameDocument2));
+    }
+
     @DisplayName("Find by GameName Test")
     @Test
-    void findByChallengeTitleTest() {
+    void findByGameNameTest() {
 
         Mono<GameTutorialDocument> gameTutorialDocument1 = gameTutorialRepository.findByGameName("Craps");
         gameTutorialDocument1.blockOptional().ifPresentOrElse(
@@ -89,21 +123,6 @@ class GameTutorialRepositoryTest {
         gameTutorialDocument2.blockOptional().ifPresentOrElse(
                 gameTutorialDocument -> Assertions.assertEquals("SixDice", gameTutorialDocument.getGameName()),
                 () -> fail("Game with name SixDice not found."));
-    }
-
-    @DisplayName("Find by UUID Test")
-    @Test
-    void findByUuidTest() {
-
-        Mono<GameTutorialDocument> gameTutorialDocument1 = gameTutorialRepository.findByUuid(uuidGameTutorialDocument1);
-        gameTutorialDocument1.blockOptional().ifPresentOrElse(
-                gameTutorialDocument -> Assertions.assertEquals(uuidGameTutorialDocument1, gameTutorialDocument.getUuid()),
-                () -> fail("Game Tutorial not found: " + uuidGameTutorialDocument1));
-
-        Mono<GameTutorialDocument> gameTutorialDocument2 = gameTutorialRepository.findByUuid(uuidGameTutorialDocument2);
-        gameTutorialDocument2.blockOptional().ifPresentOrElse(
-                gameTutorialDocument -> Assertions.assertEquals(uuidGameTutorialDocument2, gameTutorialDocument.getUuid()),
-                () -> fail("Game Tutorial not found: " + uuidGameTutorialDocument2));
     }
 
     @DisplayName("Find All Test")

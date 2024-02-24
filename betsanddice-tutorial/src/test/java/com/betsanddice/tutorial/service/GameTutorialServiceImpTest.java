@@ -122,6 +122,54 @@ class GameTutorialServiceImpTest {
     }
 
     @Test
+    void getGameTutorialByGameId_ValidUuid_GameTutorialFound() {
+        when(gameTutorialRepository.findByGameId(uuidGameDocument)).thenReturn(Mono.just(gameTutorialDocument));
+        when(converter.fromDocumentToDto(gameTutorialDocument)).thenReturn(gameTutorialDto);
+
+        Mono<GameTutorialDto> resultDto = gameTutorialService.getGameTutorialByGameId(uuidGameDocument.toString());
+
+        StepVerifier.create(resultDto)
+                .expectNext(gameTutorialDto)
+                .expectComplete()
+                .verify();
+
+        verify(gameTutorialRepository).findByGameId(uuidGameDocument);
+        verify(converter).fromDocumentToDto(gameTutorialDocument);
+    }
+
+    @Test
+    void getGameTutorialByGameId_InvalidUuid_ErrorThrown() {
+        String invalidId = "invalid-uuid";
+
+        Mono<GameTutorialDto> result = gameTutorialService.getGameTutorialByGameId(invalidId);
+
+        StepVerifier.create(result)
+                .expectError(BadUuidException.class)
+                .verify();
+
+        verifyNoInteractions(gameTutorialRepository);
+        verifyNoInteractions(converter);
+    }
+
+    @Test
+    void getGameTutorialByGameId_NonExistentUuid_ErrorThrown() {
+        when(gameTutorialRepository.findByGameId(uuidGameDocument)).thenReturn(Mono.empty());
+
+        Mono<GameTutorialDto> result = gameTutorialService.getGameTutorialByGameId(uuidGameDocument.toString());
+
+        StepVerifier.create(result)
+                .expectError(GameTutorialNotFoundException.class)
+                .verify();
+
+        verify(gameTutorialRepository).findByGameId(uuidGameDocument);
+        verifyNoInteractions(converter);
+    }
+
+
+
+
+
+    @Test
     void getAllGameTutorials_GameTutorialsExist_GamesTutorialsReturned() {
         GameTutorialDto gameTutorialDto1 = new GameTutorialDto();
         GameTutorialDto gameTutorialDto2 = new GameTutorialDto();
