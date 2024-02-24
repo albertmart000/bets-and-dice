@@ -60,7 +60,7 @@ public class GameTutorialController {
         return gameTutorialService.getGameTutorialByUuid(uuid);
     }
 
-    @GetMapping(path = "/gameTutorials/{gameUuid}")
+    @GetMapping(path = "/gameTutorials/game/{gameUuid}")
     @Operation(
             operationId = "Get the Tutorial from a chosen Game.",
             summary = "Get to see the Game Tutorial.",

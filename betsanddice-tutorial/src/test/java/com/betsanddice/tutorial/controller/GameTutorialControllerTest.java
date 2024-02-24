@@ -68,7 +68,7 @@ class GameTutorialControllerTest {
     }
 
     @Test
-    void getOneGameTutorial_ValidId_GameTutorialReturned() {
+    void getOneGameTutorial_ValidUuid_GameTutorialReturned() {
         String gameTutorialUuid = "valid-game-tutorial-uuid";
         GameTutorialDto expectedGameTutorialDto = new GameTutorialDto();
 
@@ -77,6 +77,24 @@ class GameTutorialControllerTest {
 
         webTestClient.get()
                 .uri(TUTORIAL_BASE_URL + "/gameTutorials/{gameTutorialUuid}", gameTutorialUuid)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(GameTutorialDto.class)
+                .value(dto -> {
+                    assert dto != null;
+                });
+    }
+
+    @Test
+    void getOneGameTutorial_ValidGameId_GameTutorialReturned() {
+        String gameGameId = "valid-game-uuid";
+        GameTutorialDto expectedGameTutorialDto = new GameTutorialDto();
+
+        when(gameTutorialService.getGameTutorialByGameId(gameGameId))
+                .thenReturn(Mono.just(expectedGameTutorialDto));
+
+        webTestClient.get()
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials/game/{gameUuid}", gameGameId)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(GameTutorialDto.class)
