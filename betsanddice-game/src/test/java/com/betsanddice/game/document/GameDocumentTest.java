@@ -11,23 +11,15 @@ class GameDocumentTest {
     @Test
     void getUuidTest() {
         UUID uuid = UUID.randomUUID();
-        GameDocument gameDocument = new GameDocument(uuid, null, null, null,
+        GameDocument gameDocument = new GameDocument(uuid,null, null,
                 null);
         assertEquals(uuid, gameDocument.getUuid());
     }
 
     @Test
-    void getGameIdTest() {
-        UUID uuid = UUID.randomUUID();
-        GameDocument gameDocument = new GameDocument(null, uuid, null, null,
-                null);
-        assertEquals(uuid, gameDocument.getGameId());
-    }
-
-    @Test
     void getGameNameTest() {
         String gameName = "gameName";
-        GameDocument gameDocument = new GameDocument(null, null, gameName, null,
+        GameDocument gameDocument = new GameDocument(null, gameName, null,
                 null);
         assertEquals(gameName, gameDocument.getGameName());
     }
@@ -35,7 +27,7 @@ class GameDocumentTest {
     @Test
     void getTutorialIdTest() {
         UUID uuid = UUID.randomUUID();
-        GameDocument gameDocument = new GameDocument(null, null, null, uuid,
+        GameDocument gameDocument = new GameDocument(null,null, uuid,
                 null);
         assertEquals(uuid, gameDocument.getTutorialId());
     }
@@ -43,7 +35,7 @@ class GameDocumentTest {
     @Test
     void getStatIdTest() {
         UUID uuid = UUID.randomUUID();
-        GameDocument gameDocument = new GameDocument(null, null, null, null,
+        GameDocument gameDocument = new GameDocument(null,null, null,
                 uuid);
         assertEquals(uuid, gameDocument.getStatId());
     }
