@@ -1,8 +1,6 @@
 package com.betsanddice.game.controller;
 
-import com.betsanddice.game.dto.CrapsGameDto;
 import com.betsanddice.game.dto.GameDto;
-import com.betsanddice.game.service.ICrapsGameService;
 import com.betsanddice.game.service.IGameService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -42,7 +40,7 @@ public class GameController {
             responses = {
                     @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = GameDto.class), mediaType = "application/json")}),
             })
-    public Flux<CrapsGameDto> getAllCrapsGames() {
+    public Flux<GameDto> getAllCrapsGames() {
         return gameService.getAllGames();
     }
 
