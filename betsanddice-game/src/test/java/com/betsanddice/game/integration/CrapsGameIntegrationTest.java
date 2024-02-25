@@ -33,7 +33,7 @@ import static org.hamcrest.Matchers.equalTo;
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class CrapsGameIntegrationTest {
 
-    private final String CRAPS_BASE_URL = "/betsanddice/api/v1/craps";
+    private final String CRAPS_BASE_URL = "/betsanddice/api/v1/game/craps";
 
     @Container
     static MongoDBContainer container = new MongoDBContainer("mongo")
