@@ -1,0 +1,29 @@
+[
+  {
+    "_id": {
+      "$uuid": "990b9699-75cf-42b5-aa0f-cf3a2169c770"
+    },
+    "game_name": "Craps",
+    "id_tutorial": {
+      "$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"
+    },
+    "id_stat": {
+      "$uuid": "a686a601-2b91-47cc-ba25-ef02c76d3b9e"
+    }
+  },
+
+
+
+  {
+    "_id": {
+      "$uuid": "9cc65b00-8412-46e7-ba6f-ead17a9fe167"
+    },
+    "game_name": "SixDice",
+    "id_tutorial": {
+      "$uuid": "847b92b2-418d-4d71-adbd-61aae04c4c14"
+    },
+    "id_stat": {
+      "$uuid": "4a9081e3-6384-4036-b687-4d79fdfcaec6"
+    }
+  }
+]
