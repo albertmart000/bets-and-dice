@@ -13,7 +13,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping(value = "/betsanddice/api/v1/craps")
+@RequestMapping(value = "/betsanddice/api/v1/game/craps")
 public class CrapsGameController {
 
     private static final Logger log = LoggerFactory.getLogger(CrapsGameController.class);

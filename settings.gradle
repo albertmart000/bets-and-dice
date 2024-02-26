@@ -4,6 +4,3 @@ include 'betsanddice-game'
 include 'betsanddice-stat'
 include 'betsanddice-tutorial'
 include 'betsanddice-user'
-include 'betsanddice-craps'
-
-
