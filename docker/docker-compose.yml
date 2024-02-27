@@ -37,9 +37,9 @@ services:
     networks:
       - network-betsanddice
 
-  betsanddice-craps:
-    image: albertmart000/betsanddice:betsanddice-craps-v1.0-SNAPSHOT
-    container_name: betsanddice-craps-v1.0-SNAPSHOT
+  betsanddice-game:
+    image: albertmart000/betsanddice:betsanddice-game-v1.0-SNAPSHOT
+    container_name: betsanddice-game-v1.0-SNAPSHOT
     restart: always
     depends_on:
       - betsanddice-mongodb
@@ -50,7 +50,7 @@ services:
       MONGODB_USERNAME: admin_betsanddice
       MONGODB_PASSWORD: XMOJocgKlmRHz2O
       MONGODB_CONTAINER_PORT: 27018
-      MONGODB_CRAPS_DATABASE: craps
+      MONGODB_CRAPS_DATABASE: game
     networks:
       - network-betsanddice
 
