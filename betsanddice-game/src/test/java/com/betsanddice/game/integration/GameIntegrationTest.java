@@ -22,6 +22,7 @@ import java.time.Duration;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
@@ -77,6 +78,30 @@ class GameIntegrationTest {
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .value(String::toString, equalTo("Hello from Game!!!"));
+    }
+
+    @Test
+    void getOneGame_ValidUuid_GameReturned_Test() {
+        String VALID_UUID = "50feba3c-3cbf-48ad-8142-cccf7c6bf3d3";
+        webTestClient.get()
+                .uri(GAME_BASE_URL + "/games/{gameUuid}", VALID_UUID)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(GameDto.class)
+                .value(dto -> {
+                    assert dto != null;
+                });
+    }
+
+    @Test
+    void getOneGame_InvalidUuid_GameNotFoundReturned() {
+        String INVALID_UUID = "dcacb291-b4aa-4029-8e9b-284c8ca80296";
+        webTestClient.get()
+                .uri(GAME_BASE_URL + "/games/{gameUuid}", INVALID_UUID)
+                .exchange()
+                .expectStatus()
+                .isEqualTo(BAD_REQUEST);
     }
 
     @Test

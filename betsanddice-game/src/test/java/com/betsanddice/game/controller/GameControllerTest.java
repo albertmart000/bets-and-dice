@@ -12,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
@@ -60,6 +61,24 @@ class GameControllerTest {
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .isEqualTo("Hello from Game!!!");
+    }
+
+    @Test
+    void getOneGame_ValidUuid_GameReturned() {
+        String gameUuid = "valid-game-uuid";
+        GameDto expectedGameDto = new GameDto();
+
+        when(gameService.getGameByUuid(gameUuid))
+                .thenReturn(Mono.just(expectedGameDto));
+
+        webTestClient.get()
+                .uri(GAME_BASE_URL + "/games/{gameUuid}", gameUuid)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(GameDto.class)
+                .value(dto -> {
+                    assert dto != null;
+                });
     }
 
     @Test

@@ -45,7 +45,6 @@ class GameTutorialServiceImpTest {
         gameTutorialDtoToAdd = new GameTutorialDto("nonExistingGameName", "rules");
         gameTutorialDto = new GameTutorialDto(uuidGameTutorial, uuidGameDocument,"nonExistingGameName", "rules");
         gameTutorialDocument = new GameTutorialDocument(uuidGameTutorial, uuidGameDocument,"nonExistingGameName", "rules");
-
     }
 
     @Test
