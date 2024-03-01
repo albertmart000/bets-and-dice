@@ -60,8 +60,8 @@ public class GameTutorialServiceImp implements IGameTutorialService {
     public Mono<GameTutorialDto> getGameTutorialByUuid(String uuid) {
         return validateUuid(uuid)
                 .flatMap(gameTutorialUuid -> gameTutorialRepository.findByUuid(gameTutorialUuid)
-                        .map(gameTutorialDocument -> documentToDtoConverter.fromDocumentToDto(gameTutorialDocument))
                         .switchIfEmpty(Mono.error(new GameTutorialNotFoundException("GameTutorial with id " + gameTutorialUuid + " not found")))
+                        .map(gameTutorialDocument -> documentToDtoConverter.fromDocumentToDto(gameTutorialDocument))
                         .doOnSuccess(gameTutorialDto -> log.info("GameTutorial found with ID: {}", gameTutorialUuid))
                         .doOnError(error -> log.error("Error occurred while retrieving game: {}", error.getMessage()))
                 );
@@ -71,8 +71,8 @@ public class GameTutorialServiceImp implements IGameTutorialService {
     public Mono<GameTutorialDto> getGameTutorialByGameId(String gameId) {
         return validateUuid(gameId)
                 .flatMap(gameUuid -> gameTutorialRepository.findByGameId(gameUuid)
-                        .map(gameTutorialDocument -> documentToDtoConverter.fromDocumentToDto(gameTutorialDocument))
                         .switchIfEmpty(Mono.error(new GameTutorialNotFoundException("GameTutorial with id " + gameUuid + " not found")))
+                        .map(gameTutorialDocument -> documentToDtoConverter.fromDocumentToDto(gameTutorialDocument))
                         .doOnSuccess(gameTutorialDto -> log.info("GameTutorial found with ID: {}", gameUuid))
                         .doOnError(error -> log.error("Error occurred while retrieving game: {}", error.getMessage()))
                 );
