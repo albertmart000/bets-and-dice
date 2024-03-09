@@ -1,11 +1,13 @@
 package com.betsanddice.game.service;
 
+import com.betsanddice.game.clients.ITutorialClient;
 import com.betsanddice.game.document.GameDocument;
 import com.betsanddice.game.dto.GameDto;
 import com.betsanddice.game.exception.BadUuidException;
 import com.betsanddice.game.exception.GameNotFoundException;
 import com.betsanddice.game.helper.GameDocumentToDtoConverter;
 import com.betsanddice.game.repository.GameRepository;
+import com.betsanddice.tutorial.dto.GameTutorialDto;
 import io.micrometer.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,22 +24,38 @@ public class GameServiceImp implements IGameService {
     private static final Logger log = LoggerFactory.getLogger(GameServiceImp.class);
     private static final Pattern UUID_FORM = Pattern.compile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", Pattern.CASE_INSENSITIVE);
 
+    private final GameRepository gameRepository;
+    private final GameDocumentToDtoConverter documentToDtoConverter;
+    private final ITutorialClient tutorialClient;
 
-    private GameRepository gameRepository;
-
-    private GameDocumentToDtoConverter documentToDtoConverter;
-
-    public GameServiceImp(GameRepository gameRepository, GameDocumentToDtoConverter documentToDtoConverter) {
+    public GameServiceImp(GameRepository gameRepository, GameDocumentToDtoConverter documentToDtoConverter, ITutorialClient tutorialClient) {
         this.gameRepository = gameRepository;
         this.documentToDtoConverter = documentToDtoConverter;
+        this.tutorialClient = tutorialClient;
     }
 
-    @Override
+//    @Override
+//    public Mono<GameDto> getGameByUuid(String uuid) {
+//        return validateUuid(uuid)
+//                .flatMap(gameUuid -> gameRepository.findByUuid(gameUuid)
+//                        .switchIfEmpty(Mono.error(new GameNotFoundException("Game with id " + gameUuid + " not found")))
+//                        .map(documentToDtoConverter::fromDocumentToDto)
+//                        .doOnSuccess(gameDto -> log.info("Game found with ID: {}", gameUuid))
+//                        .doOnError(error -> log.error("Error occurred while retrieving game: {}", error.getMessage()))
+//                );
+//    }
+
     public Mono<GameDto> getGameByUuid(String uuid) {
+        Mono<GameTutorialDto> gameTutorialDtoMono = tutorialClient.getGameTutorialByGameUuid(uuid);
         return validateUuid(uuid)
                 .flatMap(gameUuid -> gameRepository.findByUuid(gameUuid)
                         .switchIfEmpty(Mono.error(new GameNotFoundException("Game with id " + gameUuid + " not found")))
-                        .map(gameDocument -> documentToDtoConverter.fromDocumentToDto(gameDocument))
+                        .map(documentToDtoConverter::fromDocumentToDto)
+                        .zipWith(gameTutorialDtoMono).log()
+                        .map(tuple -> new GameDto(tuple.getT1().getUuid(),
+                                tuple.getT1().getGameName(),
+                                tuple.getT2(),
+                                tuple.getT1().getStatId()))
                         .doOnSuccess(gameDto -> log.info("Game found with ID: {}", gameUuid))
                         .doOnError(error -> log.error("Error occurred while retrieving game: {}", error.getMessage()))
                 );
@@ -51,7 +69,6 @@ public class GameServiceImp implements IGameService {
 
     Mono<UUID> validateUuid(String id) {
         boolean validUuid = !StringUtils.isEmpty(id) && UUID_FORM.matcher(id).matches();
-
         if (!validUuid) {
             log.warn("Invalid ID format: {}", id);
             return Mono.error(new BadUuidException("Invalid ID format. Please indicate the correct format."));

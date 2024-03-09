@@ -15,7 +15,7 @@ public class GameDocumentToDtoConverter {
 
         mapper.createTypeMap(GameDocument.class, GameDto.class)
                 .addMapping(GameDocument::getUuid, GameDto::setUuid)
-                .addMapping(GameDocument::getTutorialId, GameDto::setTutorialId)
+                .addMapping(GameDocument::getTutorialId, GameDto::setGameTutorialDto)
                 .addMapping(GameDocument::getStatId, GameDto::setStatId);
 
         return mapper.map(document, GameDto.class);

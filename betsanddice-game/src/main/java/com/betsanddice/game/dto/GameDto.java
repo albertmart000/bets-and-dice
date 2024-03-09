@@ -1,5 +1,6 @@
 package com.betsanddice.game.dto;
 
+import com.betsanddice.tutorial.dto.GameTutorialDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -22,8 +23,8 @@ public class GameDto {
     @JsonProperty(value = "game_name", index = 1)
     private String gameName;
 
-    @JsonProperty(value = "tutorial_id", index = 2)
-    private UUID tutorialId;
+    @JsonProperty(value = "tutorial", index = 2)
+    private GameTutorialDto gameTutorialDto;
 
     @JsonProperty(value = "stat_id", index = 3)
     private UUID statId;
