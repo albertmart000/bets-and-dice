@@ -72,23 +72,53 @@ class UserServiceImpTest {
     }
 
     @Test
-    void getAllUsers_UsersExist_UsersReturned() {
+    void getAllChallenges_ChallengesExist_ChallengesReturned() {
+
+        UserDocument userDocument1 = new UserDocument();
+        userDocument1.setUuid(UUID.randomUUID());
+        UserDocument userDocument2 = new UserDocument();
+        userDocument2.setUuid(UUID.randomUUID());
+        UserDocument userDocument3 = new UserDocument();
+        userDocument3.setUuid(UUID.randomUUID());
+        UserDocument userDocument4 = new UserDocument();
+        userDocument4.setUuid(UUID.randomUUID());
+
         UserDto userDto1 = new UserDto();
         UserDto userDto2 = new UserDto();
-        UserDto[] expectedUsers = {userDto1, userDto2};
+        UserDto userDto3 = new UserDto();
+        UserDto userDto4 = new UserDto();
+        UserDto[] expectedUsers = {userDto1, userDto2, userDto3, userDto4};
 
         when(userRepository.findAll()).thenReturn(Flux.just(new UserDocument(), new UserDocument()));
         when(converter.fromDocumentFluxToDtoFlux(any())).thenReturn(Flux.just(userDto1, userDto2));
 
-        Flux<UserDto> result = userService.getAllUsers();
+        int offset = 1;
+        int limit = 2;
+
+        when(userRepository.findAllByUuidNotNull()).thenReturn(Flux.just(userDocument1, userDocument2, userDocument3, userDocument4));
+        when(converter.fromDocumentFluxToDtoFlux(any())).thenReturn(Flux.just(userDto1, userDto2, userDto3, userDto4));
+
+        Flux<UserDto> result = userService.getAllUsers(offset, limit);
+        verify(userRepository).findAllByUuidNotNull();
+        verify(converter).fromDocumentFluxToDtoFlux(any());
 
         StepVerifier.create(result)
-                .expectNext(expectedUsers)
+                .expectSubscription()
+                .expectNextCount(4)
                 .expectComplete()
                 .verify();
 
-        verify(userRepository).findAll();
-        verify(converter).fromDocumentFluxToDtoFlux(any());
+        StepVerifier.create(result.skip(offset).take(limit))
+                .expectSubscription()
+                .expectNext( userDto2, userDto3)
+                .expectComplete()
+                .verify();
+
+        StepVerifier.create(userRepository.findAllByUuidNotNull().skip(offset).take(limit))
+                .expectSubscription()
+                .expectNextCount(2)
+                .expectComplete()
+                .verify();
     }
 
     @Test
@@ -133,5 +163,4 @@ class UserServiceImpTest {
                 .expectError(BadUuidException.class)
                 .verify();
     }
-
 }
