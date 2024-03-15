@@ -22,17 +22,19 @@ public class UserServiceImp implements IUserService {
     private static final Logger log = LoggerFactory.getLogger(UserServiceImp.class);
     private static final Pattern UUID_FORM = Pattern.compile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", Pattern.CASE_INSENSITIVE);
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private UserDocumentToDtoConverter converter;
+    private final UserDocumentToDtoConverter converter;
 
     public UserServiceImp(UserRepository userRepository, UserDocumentToDtoConverter converter) {
         this.userRepository = userRepository;
         this.converter = converter;
     }
 
-    public Flux<UserDto> getAllUsers() {
-        Flux<UserDocument> usersList = userRepository.findAll();
+    public Flux<UserDto> getAllUsers(int offset, int limit) {
+        Flux<UserDocument> usersList = userRepository.findAllByUuidNotNull()
+                .skip(offset)
+                .take(limit);
         return converter.fromDocumentFluxToDtoFlux(usersList);
     }
 
