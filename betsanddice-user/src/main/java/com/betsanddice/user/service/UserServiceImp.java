@@ -43,7 +43,7 @@ public class UserServiceImp implements IUserService {
         return validateUuid(uuid)
                 .flatMap(userUuid -> userRepository.findByUuid(userUuid)
                         .switchIfEmpty(Mono.error(new UserNotFoundException("User with id " + userUuid + " not found")))
-                        .map(user -> converter.fromDocumentToDto(user))
+                        .map(converter::fromDocumentToDto)
                         .doOnSuccess(userDto -> log.info("User found with ID: {}", userUuid))
                         .doOnError(error -> log.error("Error occurred while retrieving user: {}", error.getMessage()))
                 );

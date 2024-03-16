@@ -12,5 +12,5 @@ public interface IGameTutorialService {
 
     Mono<GameTutorialDto> getGameTutorialByGameId(String gameId);
 
-    Flux<GameTutorialDto> getAllGameTutorials();
+    Flux<GameTutorialDto> getAllGameTutorials(int offset, int limit);
 }
