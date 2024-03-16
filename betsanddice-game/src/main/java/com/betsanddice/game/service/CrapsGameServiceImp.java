@@ -57,4 +57,17 @@ public class CrapsGameServiceImp implements ICrapsGameService {
         return diceRollList;
     }
 
+//    @Override
+//    public Player addPlayer(Player player) {
+//        player.setPlayerId(sequenceGeneratorService.generateSequence(Player.SEQUENCE_NAME));
+//        if (player.getName() == null || player.getName().isEmpty()) {
+//            player = playerRepository.save(player);
+//            player.setName("Anonymous");
+//        }
+//        if (playerRepository.existsByName(player.getName())) {
+//            player = playerRepository.save(player);
+//            player.setName(player.getName() + player.getPlayerId());
+//        }
+//        return playerRepository.save(player);
+//    }
 }
