@@ -57,8 +57,6 @@ class GameTutorialIntegrationTest {
     UUID uuidGameDocument1 = UUID.fromString("7f9dcc63-6daf-4ba2-b3c7-e0b59534f856");
     UUID uuidGameDocument2 = UUID.fromString("bf71596f-0dff-4ce7-b6d6-e348fbf914ed");
 
-    GameTutorialDto gameTutorialDtoByName = new GameTutorialDto();
-
     @BeforeEach
     void setUp() {
 
@@ -86,7 +84,7 @@ class GameTutorialIntegrationTest {
         UUID uuidGameTutorialDocument = UUID.fromString("660e1b18-0c0a-4262-a28a-85de9df6ac5f");
         UUID uuidGameDocument = UUID.fromString("c9de85c0-541e-48e6-b8ac-a9b2541231e3");
 
-        gameTutorialDtoByName = new GameTutorialDto("Name", "rules");
+        GameTutorialDto gameTutorialDtoByName = new GameTutorialDto("Name", "rules");
         GameTutorialDto gameTutorialDto = new GameTutorialDto(uuidGameTutorialDocument, uuidGameDocument, gameTutorialDtoByName.getGameName(),
                 gameTutorialDtoByName.getRules());
 
@@ -150,12 +148,24 @@ class GameTutorialIntegrationTest {
     }
 
     @Test
-    void getGameTutorials_GameTutorialExist_GameTutorialsReturned_Test() {
+    void getGameTutorialsByPages_ValidPageParameters_GameTutorialsReturned()  {
+        webTestClient.get()
+                .uri(TUTORIAL_BASE_URL + "/gameTutorials?offset=0&limit=1")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(GameTutorialDto.class)
+                .contains(new GameTutorialDto[]{})
+                .hasSize(1);
+    }
+
+    @Test
+    void getGameTutorialsByPages_NullPageParameters_GameTutorialsReturned() {
         webTestClient.get()
                 .uri(TUTORIAL_BASE_URL + "/gameTutorials")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(GameTutorialDto.class)
+                .contains(new GameTutorialDto[]{})
                 .hasSize(2);
     }
 }

@@ -100,6 +100,7 @@ class CrapsGameIntegrationTest {
 
     @Test
     void addCrapsGameToUserTest() {
+        UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
         webTestClient.post()
                 .uri(CRAPS_BASE_URL + "/crapsGames/{userId}", uuidUser)
                 .accept(MediaType.APPLICATION_JSON)

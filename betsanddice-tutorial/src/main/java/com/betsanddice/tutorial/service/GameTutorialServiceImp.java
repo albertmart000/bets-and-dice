@@ -24,9 +24,9 @@ public class GameTutorialServiceImp implements IGameTutorialService {
     private static final Logger log = LoggerFactory.getLogger(GameTutorialServiceImp.class);
     private static final Pattern UUID_FORM = Pattern.compile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", Pattern.CASE_INSENSITIVE);
 
-    private GameTutorialRepository gameTutorialRepository;
+    private final GameTutorialRepository gameTutorialRepository;
 
-    private GameTutorialDocumentToDtoConverter documentToDtoConverter;
+    private final GameTutorialDocumentToDtoConverter documentToDtoConverter;
 
     public GameTutorialServiceImp(GameTutorialRepository gameTutorialRepository, GameTutorialDocumentToDtoConverter documentToDtoConverter) {
         this.gameTutorialRepository = gameTutorialRepository;
@@ -45,7 +45,7 @@ public class GameTutorialServiceImp implements IGameTutorialService {
                                     BeanUtils.copyProperties(gameTutorialDto, gameTutorialDocument);
                                     gameTutorialDocument.setUuid(UUID.randomUUID());
                                     return Mono.just(gameTutorialDocument)
-                                            .flatMap(gameTutorialDocumentToSave -> gameTutorialRepository.save(gameTutorialDocumentToSave))
+                                            .flatMap(gameTutorialRepository::save)
                                             .map(documentToDtoConverter::fromDocumentToDto);
                                 } else {
                                     return Mono.error(new GameTutorialAlreadyExistException("Game with name " + gameTutorialDto.getGameName() + " already exist."));
@@ -61,7 +61,7 @@ public class GameTutorialServiceImp implements IGameTutorialService {
         return validateUuid(uuid)
                 .flatMap(gameTutorialUuid -> gameTutorialRepository.findByUuid(gameTutorialUuid)
                         .switchIfEmpty(Mono.error(new GameTutorialNotFoundException("GameTutorial with id " + gameTutorialUuid + " not found")))
-                        .map(gameTutorialDocument -> documentToDtoConverter.fromDocumentToDto(gameTutorialDocument))
+                        .map(documentToDtoConverter::fromDocumentToDto)
                         .doOnSuccess(gameTutorialDto -> log.info("GameTutorial found with ID: {}", gameTutorialUuid))
                         .doOnError(error -> log.error("Error occurred while retrieving game: {}", error.getMessage()))
                 );
@@ -72,15 +72,17 @@ public class GameTutorialServiceImp implements IGameTutorialService {
         return validateUuid(gameId)
                 .flatMap(gameUuid -> gameTutorialRepository.findByGameId(gameUuid)
                         .switchIfEmpty(Mono.error(new GameTutorialNotFoundException("GameTutorial with id " + gameUuid + " not found")))
-                        .map(gameTutorialDocument -> documentToDtoConverter.fromDocumentToDto(gameTutorialDocument))
+                        .map(documentToDtoConverter::fromDocumentToDto)
                         .doOnSuccess(gameTutorialDto -> log.info("GameTutorial found with ID: {}", gameUuid))
                         .doOnError(error -> log.error("Error occurred while retrieving game: {}", error.getMessage()))
                 );
     }
 
     @Override
-    public Flux<GameTutorialDto> getAllGameTutorials() {
-        Flux<GameTutorialDocument> gameTutorialsList = gameTutorialRepository.findAll();
+    public Flux<GameTutorialDto> getAllGameTutorials(int offset, int limit)  {
+        Flux<GameTutorialDocument> gameTutorialsList = gameTutorialRepository.findAllByUuidNotNull()
+                .skip(offset)
+                .take(limit);
         return documentToDtoConverter.fromDocumentFluxToDtoFlux(gameTutorialsList);
     }
 

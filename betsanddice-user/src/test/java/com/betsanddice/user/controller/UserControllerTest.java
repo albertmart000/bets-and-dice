@@ -33,6 +33,10 @@ class UserControllerTest {
     @MockBean
     private DiscoveryClient discoveryClient;
 
+    UserDto userDto1 = new UserDto();
+    UserDto userDto2 = new UserDto();
+    UserDto userDto3 = new UserDto();
+
     @Test
     void test() {
         List<ServiceInstance> instances = Arrays.asList(
@@ -69,19 +73,38 @@ class UserControllerTest {
     }
 
     @Test
-    void getAllUsers_UsersExist_UsersReturned() {
-        UserDto userDto1 = new UserDto();
-        UserDto userDto2 = new UserDto();
-        UserDto[] expectedUsers = {userDto1, userDto2};
+    void getAllUsers_ValidPageParameters_UsersReturned() {
+        UserDto[] expectedUsers = {userDto1, userDto2, userDto3};
         Flux<UserDto> expectedUsersFlux = Flux.just(expectedUsers);
 
-        when(userService.getAllUsers()).thenReturn(expectedUsersFlux);
+        String offset = "0";
+        String limit = "3";
+
+        when(userService.getAllUsers(Integer.parseInt(offset), Integer.parseInt(limit)))
+                .thenReturn(expectedUsersFlux);
 
         webTestClient.get()
-                .uri(USER_BASE_URL + "/users")
+                .uri("/betsanddice/api/v1/user/users?offset=0&limit=3")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(UserDto.class);
     }
 
+    @Test
+    void getAllUsers_NullPageParameters_UsersReturned() {
+        UserDto[] expectedUsers = {userDto1, userDto2};
+        Flux<UserDto> expectedUsersFlux = Flux.just(expectedUsers);
+
+        String offset = "0";
+        String limit = "2";
+
+        when(userService.getAllUsers(Integer.parseInt(offset), Integer.parseInt(limit)))
+                .thenReturn(expectedUsersFlux);
+
+        webTestClient.get()
+                .uri("/betsanddice/api/v1/user/users")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(UserDto.class);
+    }
 }

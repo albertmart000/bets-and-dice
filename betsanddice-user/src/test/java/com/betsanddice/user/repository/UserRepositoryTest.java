@@ -43,6 +43,7 @@ class UserRepositoryTest {
 
     UUID uuidUser1 = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
     UUID uuidUser2 = UUID.fromString("26977eee-89f8-11ec-a8a3-0242ac120003");
+    UUID uuidUser3 = UUID.fromString("fd5a1a38-23ce-47e0-a3f5-4a9148eff504");
 
     @BeforeEach
     public void setUp() {
@@ -58,14 +59,18 @@ class UserRepositoryTest {
         List<UUID> statisticsList = List.of(uuidStatistics1, uuidStatistics2);
 
         UserDocument user1 = new UserDocument(uuidUser1, "Morrow", "Montgomery", LocalDate.now(),
-                "Player2", "morrowmontgomery@email.com", "player2", LocalDateTime.now(), "level",
+                "Player1", "morrowmontgomery@email.com", "player1", LocalDateTime.now(), "level",
                 BigDecimal.valueOf(100), gameList, statisticsList);
 
         UserDocument user2 = new UserDocument(uuidUser2, "Morrow", "Montgomery", LocalDate.now(),
                 "Player2", "morrowmontgomery@email.com", "player2", LocalDateTime.now(), "level",
                 BigDecimal.valueOf(100), gameList, statisticsList);
 
-        userRepository.saveAll(Flux.just(user1, user2)).blockLast();
+        UserDocument user3 = new UserDocument(uuidUser3, "Morrow", "Montgomery", LocalDate.now(),
+                "Player3", "morrowmontgomery@email.com", "player3", LocalDateTime.now(), "level",
+                BigDecimal.valueOf(100), gameList, statisticsList);
+
+        userRepository.saveAll(Flux.just(user1, user2, user3)).blockLast();
     }
 
     @DisplayName("Repository not null Test")
@@ -74,13 +79,11 @@ class UserRepositoryTest {
         Assertions.assertNotNull(userRepository);
     }
 
-    @DisplayName("Find All Test")
+    @DisplayName("Exists by UUID Test")
     @Test
-    void findAllTest() {
-        Flux<UserDocument> users = userRepository.findAll();
-        StepVerifier.create(users)
-                .expectNextCount(2)
-                .verifyComplete();
+    void existsByUuidTest() {
+        Boolean exists = userRepository.existsByUuid(uuidUser1).block();
+        Assertions.assertEquals(true, exists);
     }
 
     @DisplayName("Find by UUID Test")
@@ -96,5 +99,30 @@ class UserRepositoryTest {
         user2.blockOptional().ifPresentOrElse(
                 user -> Assertions.assertEquals(user.getUuid(), uuidUser2),
                 () -> fail("User not found: " + uuidUser2));
+    }
+
+    @DisplayName("Find Users for a Page Test")
+    @Test
+    void findAllTest() {
+
+        Flux<UserDocument> usersOffset0Limit1Flux = userRepository.findAllByUuidNotNull().skip(0).take(1);
+        StepVerifier.create(usersOffset0Limit1Flux)
+                .expectNextCount(1)
+                .verifyComplete();
+
+        Flux<UserDocument> usersOffset0Limit2Flux = userRepository.findAllByUuidNotNull().skip(0).take(2);
+        StepVerifier.create(usersOffset0Limit2Flux)
+                .expectNextCount(2)
+                .verifyComplete();
+
+        Flux<UserDocument> usersOffset1Limit1Flux = userRepository.findAllByUuidNotNull().skip(1).take(1);
+        StepVerifier.create(usersOffset1Limit1Flux)
+                .expectNextCount(1)
+                .verifyComplete();
+
+        Flux<UserDocument> usersOffset1Limit2Flux = userRepository.findAllByUuidNotNull().skip(2).take(2);
+        StepVerifier.create(usersOffset1Limit2Flux)
+                .expectNextCount(1)
+                .verifyComplete();
     }
 }

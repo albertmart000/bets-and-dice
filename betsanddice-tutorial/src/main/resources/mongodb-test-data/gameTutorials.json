@@ -9,9 +9,6 @@
     "game_name": "Craps",
     "rules": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur..."
   },
-
-
-
   {
     "_id": {
       "$uuid": "847b92b2-418d-4d71-adbd-61aae04c4c14"
@@ -21,5 +18,25 @@
     },
     "game_name": "SixDice",
     "rules": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt..."
+  },
+  {
+    "_id": {
+      "$uuid": "71bc953b-0307-4877-a859-83619bcad5d9"
+    },
+    "game_id": {
+      "$uuid": "d4c6e4e7-746c-47f4-a2b9-74e93b8d0445"
+    },
+    "game_name": "Poker",
+    "rules": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident..."
+  },
+  {
+    "_id": {
+      "$uuid": "58c01787-6ddc-42e0-b738-a6c1dd7f8424"
+    },
+    "game_id": {
+      "$uuid": "07046379-8e55-49f6-a4ae-45bd066830c6"
+    },
+    "game_name": "Blackjack",
+    "rules": "Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est..."
   }
 ]

@@ -34,7 +34,6 @@ class GameTutorialServiceImpTest {
 
     UUID uuidGameTutorial = UUID.fromString("1682b3e9-056a-45b7-a0e9-eaf1e11775ad");
     UUID uuidGameDocument = UUID.fromString("c9de85c0-541e-48e6-b8ac-a9b2541231e3");
-    GameTutorialDto gameTutorialDtoToAdd = new GameTutorialDto();
     GameTutorialDto gameTutorialDto = new GameTutorialDto();
     GameTutorialDocument gameTutorialDocument = new GameTutorialDocument();
 
@@ -42,13 +41,14 @@ class GameTutorialServiceImpTest {
     void setup() {
         MockitoAnnotations.openMocks(this);
 
-        gameTutorialDtoToAdd = new GameTutorialDto("nonExistingGameName", "rules");
         gameTutorialDto = new GameTutorialDto(uuidGameTutorial, uuidGameDocument,"nonExistingGameName", "rules");
         gameTutorialDocument = new GameTutorialDocument(uuidGameTutorial, uuidGameDocument,"nonExistingGameName", "rules");
     }
 
     @Test
     void addGameTutorial_GameNameNonExist_GameTutorialAdded() {
+        GameTutorialDto gameTutorialDtoToAdd =  new GameTutorialDto("nonExistingGameName", "rules");
+
         when(gameTutorialRepository.findByGameName("nonExistingGameName")).thenReturn(Mono.empty());
         when(gameTutorialRepository.save(any())).thenReturn(Mono.just(gameTutorialDocument));
         when(converter.fromDocumentToDto(any())).thenReturn(gameTutorialDto);
@@ -164,29 +164,77 @@ class GameTutorialServiceImpTest {
         verifyNoInteractions(converter);
     }
 
-
-
-
-
     @Test
-    void getAllGameTutorials_GameTutorialsExist_GamesTutorialsReturned() {
+    void getAllChallenges_ChallengesExist_ChallengesReturned() {
+
+        GameTutorialDocument gameTutorialDocument1 = new GameTutorialDocument();
+        gameTutorialDocument1.setUuid(UUID.randomUUID());
+        GameTutorialDocument gameTutorialDocument2 = new GameTutorialDocument();
+        gameTutorialDocument2.setUuid(UUID.randomUUID());
+        GameTutorialDocument gameTutorialDocument3 = new GameTutorialDocument();
+        gameTutorialDocument3.setUuid(UUID.randomUUID());
+        GameTutorialDocument gameTutorialDocument4 = new GameTutorialDocument();
+        gameTutorialDocument4.setUuid(UUID.randomUUID());
+
         GameTutorialDto gameTutorialDto1 = new GameTutorialDto();
         GameTutorialDto gameTutorialDto2 = new GameTutorialDto();
-        GameTutorialDto[] expectedGameTutorials = {gameTutorialDto1, gameTutorialDto2};
+        GameTutorialDto gameTutorialDto3 = new GameTutorialDto();
+        GameTutorialDto gameTutorialDto4 = new GameTutorialDto();
+
+        //GameTutorialDto[] expectedGameTutorials = {gameTutorialDto1, gameTutorialDto2, gameTutorialDto3, gameTutorialDto4};
 
         when(gameTutorialRepository.findAll()).thenReturn(Flux.just(new GameTutorialDocument(), new GameTutorialDocument()));
         when(converter.fromDocumentFluxToDtoFlux(any())).thenReturn(Flux.just(gameTutorialDto1, gameTutorialDto2));
 
-        Flux<GameTutorialDto> result = gameTutorialService.getAllGameTutorials();
+        int offset = 1;
+        int limit = 2;
+
+        when(gameTutorialRepository.findAllByUuidNotNull()).thenReturn(Flux.just(gameTutorialDocument1, gameTutorialDocument2, gameTutorialDocument3, gameTutorialDocument4));
+        when(converter.fromDocumentFluxToDtoFlux(any())).thenReturn(Flux.just(gameTutorialDto1, gameTutorialDto2, gameTutorialDto3, gameTutorialDto4));
+
+        Flux<GameTutorialDto> result = gameTutorialService.getAllGameTutorials(offset, limit);
+        verify(gameTutorialRepository).findAllByUuidNotNull();
+        verify(converter).fromDocumentFluxToDtoFlux(any());
 
         StepVerifier.create(result)
-                .expectNext(expectedGameTutorials)
+                .expectSubscription()
+                .expectNextCount(4)
                 .expectComplete()
                 .verify();
 
-        verify(gameTutorialRepository).findAll();
-        verify(converter).fromDocumentFluxToDtoFlux(any());
+        StepVerifier.create(result.skip(offset).take(limit))
+                .expectSubscription()
+                .expectNext( gameTutorialDto2, gameTutorialDto3)
+                .expectComplete()
+                .verify();
+
+        StepVerifier.create(gameTutorialRepository.findAllByUuidNotNull().skip(offset).take(limit))
+                .expectSubscription()
+                .expectNextCount(2)
+                .expectComplete()
+                .verify();
     }
+
+
+//    @Test
+//    void getAllGameTutorials_GameTutorialsExist_GamesTutorialsReturned() {
+//        GameTutorialDto gameTutorialDto1 = new GameTutorialDto();
+//        GameTutorialDto gameTutorialDto2 = new GameTutorialDto();
+//        GameTutorialDto[] expectedGameTutorials = {gameTutorialDto1, gameTutorialDto2};
+//
+//        when(gameTutorialRepository.findAll()).thenReturn(Flux.just(new GameTutorialDocument(), new GameTutorialDocument()));
+//        when(converter.fromDocumentFluxToDtoFlux(any())).thenReturn(Flux.just(gameTutorialDto1, gameTutorialDto2));
+//
+//        Flux<GameTutorialDto> result = gameTutorialService.getAllGameTutorials();
+//
+//        StepVerifier.create(result)
+//                .expectNext(expectedGameTutorials)
+//                .expectComplete()
+//                .verify();
+//
+//        verify(gameTutorialRepository).findAll();
+//        verify(converter).fromDocumentFluxToDtoFlux(any());
+//    }
 
     @Test
     void validateUuid_ValidUuid_ReturnsMonoWithUuid_Test() {

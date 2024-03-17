@@ -1,5 +1,6 @@
 package com.betsanddice.user.controller;
 
+import com.betsanddice.user.annotations.ValidGenericPattern;
 import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,10 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -23,11 +21,15 @@ import java.util.Optional;
 public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    private static final String DEFAULT_OFFSET = "0";
+    private static final String DEFAULT_LIMIT = "200";  //if no limit, all elements (avoid exception with default value 200)
+    private static final String LIMIT = "^([1-9]\\d?|1\\d{2}|200)$";  // Integer in range [1, 200]
+    private static final String INVALID_PARAM = "Invalid parameter";
     private static final String NO_SERVICE = "No Services";
 
     IUserService userService;
 
-    private DiscoveryClient discoveryClient;
+    private final DiscoveryClient discoveryClient;
 
     public UserController(IUserService userService, DiscoveryClient discoveryClient) {
         this.userService = userService;
@@ -82,15 +84,16 @@ public class UserController {
 
     @GetMapping("/users")
     @Operation(
-            operationId = "Get all the stored users into the Database.",
-            summary = "Get to see users.",
-            description = "Requesting all the users through the URI from the database.",
+            operationId = "Get only the users on a page.",
+            summary = "Get to see users on a page.",
+            description = "Requesting the users for a page sending page number and the number of items per page through the URI from the database.",
             responses = {
                     @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDto.class), mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404", description = "No users were found.", content = {@Content(schema = @Schema())})
             })
-    public Flux<UserDto> getAllUsers() {
-        return userService.getAllUsers();
+    public Flux<UserDto> getAllUsers(@RequestParam(defaultValue = DEFAULT_OFFSET) @ValidGenericPattern(message = INVALID_PARAM) String offset,
+                                     @RequestParam(defaultValue = DEFAULT_LIMIT) @ValidGenericPattern(pattern = LIMIT, message = INVALID_PARAM) String limit) {
+        return userService.getAllUsers((Integer.parseInt(offset)), Integer.parseInt(limit));
     }
 
 }

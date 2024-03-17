@@ -54,9 +54,6 @@ class UserIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
-    private final String VALID_UUID = "81099a9e-0d59-4571-a04c-31a08a711e3b";
-    private final String INVALID_UUID = "ce020780-1a66-4587-bec4-284c8ca80296";
-
     UUID uuidUser1 = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
     UUID uuidUser2 = UUID.fromString("26977eee-89f8-11ec-a8a3-0242ac120003");
 
@@ -96,16 +93,8 @@ class UserIntegrationTest {
     }
 
     @Test
-    void getOneUser_InvalidId_UserNotFoundReturned() {
-        webTestClient.get()
-                .uri(USER_BASE_URL + "/users/{userUuid}", INVALID_UUID)
-                .exchange()
-                .expectStatus()
-                .isEqualTo(BAD_REQUEST);
-    }
-
-    @Test
     void getOneUser_ValidId_UserReturned() {
+        String VALID_UUID = "81099a9e-0d59-4571-a04c-31a08a711e3b";
         webTestClient.get()
                 .uri(USER_BASE_URL + "/users/{userUuid}", VALID_UUID)
                 .accept(MediaType.APPLICATION_JSON)
@@ -118,12 +107,36 @@ class UserIntegrationTest {
     }
 
     @Test
-    void getAllUsers_UsersExist_UsersReturned() {
+    void getOneUser_InvalidId_UserNotFoundReturned() {
+        String INVALID_UUID = "ce020780-1a66-4587-bec4-284c8ca80296";
         webTestClient.get()
+                .uri(USER_BASE_URL + "/users/{userUuid}", INVALID_UUID)
+                .exchange()
+                .expectStatus()
+                .isEqualTo(BAD_REQUEST);
+    }
+
+    @Test
+    void getUserByPages_ValidPageParameters_UsersReturned() {
+        webTestClient
+                .get()
+                .uri(USER_BASE_URL + "/users?offset=0&limit=1")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(UserDto.class)
+                .contains(new UserDto[]{})
+                .hasSize(1);
+    }
+
+    @Test
+    void getUsersByPages_NullPageParameters_UsersReturned() {
+        webTestClient
+                .get()
                 .uri(USER_BASE_URL + "/users")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(UserDto.class)
+                .contains(new UserDto[]{})
                 .hasSize(2);
     }
 
