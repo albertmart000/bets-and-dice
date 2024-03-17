@@ -33,6 +33,10 @@ class UserControllerTest {
     @MockBean
     private DiscoveryClient discoveryClient;
 
+    UserDto userDto1 = new UserDto();
+    UserDto userDto2 = new UserDto();
+    UserDto userDto3 = new UserDto();
+
     @Test
     void test() {
         List<ServiceInstance> instances = Arrays.asList(
@@ -70,9 +74,6 @@ class UserControllerTest {
 
     @Test
     void getAllUsers_ValidPageParameters_UsersReturned() {
-        UserDto userDto1 = new UserDto();
-        UserDto userDto2 = new UserDto();
-        UserDto userDto3 = new UserDto();
         UserDto[] expectedUsers = {userDto1, userDto2, userDto3};
         Flux<UserDto> expectedUsersFlux = Flux.just(expectedUsers);
 
@@ -91,8 +92,6 @@ class UserControllerTest {
 
     @Test
     void getAllUsers_NullPageParameters_UsersReturned() {
-        UserDto userDto1 = new UserDto();
-        UserDto userDto2 = new UserDto();
         UserDto[] expectedUsers = {userDto1, userDto2};
         Flux<UserDto> expectedUsersFlux = Flux.just(expectedUsers);
 

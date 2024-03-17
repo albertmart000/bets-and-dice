@@ -2,13 +2,10 @@ package com.betsanddice.tutorial.controller;
 
 import com.betsanddice.tutorial.dto.GameTutorialDto;
 import com.betsanddice.tutorial.service.IGameTutorialService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
@@ -29,36 +26,12 @@ class GameTutorialControllerTest {
     @MockBean
     private IGameTutorialService gameTutorialService;
 
-    @MockBean
-    private DiscoveryClient discoveryClient;
-
-    UUID uuidGameTutorialDocument1 = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
-    UUID uuidGameTutorialDocument2 = UUID.fromString("9cc65b00-8412-46e7-ba6f-ead17a9fe167");
-
-    UUID uuidGameDocument1 = UUID.fromString("7f9dcc63-6daf-4ba2-b3c7-e0b59534f856");
-    UUID uuidGameDocument2 = UUID.fromString("bf71596f-0dff-4ce7-b6d6-e348fbf914ed");
-
     GameTutorialDto gameTutorialDto1 = new GameTutorialDto();
     GameTutorialDto gameTutorialDto2 = new GameTutorialDto();
-    GameTutorialDto[] expectedGameTutorials = {gameTutorialDto1, gameTutorialDto2};
-
-    GameTutorialDto gameTutorialDtoToAdd = new GameTutorialDto();
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-
-        gameTutorialDto1 = new GameTutorialDto(uuidGameTutorialDocument1, uuidGameDocument1, "Craps",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmo…");
-        gameTutorialDto2 = new GameTutorialDto(uuidGameTutorialDocument2, uuidGameDocument2,"SixDice",
-                "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusan…");
-
-        gameTutorialDtoToAdd = new GameTutorialDto("Craps",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmo…");
-    }
+    GameTutorialDto gameTutorialDto3 = new GameTutorialDto();
 
     @Test
-    void testHello() {
+    void test() {
         webTestClient.get()
                 .uri(TUTORIAL_BASE_URL + "/test")
                 .exchange()
@@ -104,20 +77,9 @@ class GameTutorialControllerTest {
     }
 
     @Test
-    void getAllGameTutorials_GameTutorialsExist_GamesTutorialsReturned() {
-        Flux<GameTutorialDto> expectedGameTutorialsFlux = Flux.just(expectedGameTutorials);
-
-        when(gameTutorialService.getAllGameTutorials()).thenReturn(expectedGameTutorialsFlux);
-
-        webTestClient.get()
-                .uri(TUTORIAL_BASE_URL + "/gameTutorials")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBodyList(GameTutorialDto.class);
-    }
-
-    @Test
     void addGameTutorialTest() {
+        GameTutorialDto gameTutorialDtoToAdd = new GameTutorialDto();
+
         UUID uuidGameTutorialDocument = UUID.fromString("660e1b18-0c0a-4262-a28a-85de9df6ac5f");
         UUID uuidGameDocument = UUID.fromString("c9de85c0-541e-48e6-b8ac-a9b2541231e3");
         GameTutorialDto gameTutorialDto = new GameTutorialDto(uuidGameTutorialDocument, uuidGameDocument, gameTutorialDtoToAdd.getGameName(),
@@ -135,4 +97,39 @@ class GameTutorialControllerTest {
                 .equals(Mono.just(gameTutorialDto));
     }
 
+    @Test
+    void getAllUsers_ValidPageParameters_UsersReturned() {
+        GameTutorialDto[] expectedGameTutorials = {gameTutorialDto1, gameTutorialDto2, gameTutorialDto3};
+        Flux<GameTutorialDto> expectedGameTutorialsFlux = Flux.just(expectedGameTutorials);
+
+        String offset = "0";
+        String limit = "3";
+
+        when(gameTutorialService.getAllGameTutorials(Integer.parseInt(offset), Integer.parseInt(limit)))
+                .thenReturn(expectedGameTutorialsFlux);
+
+        webTestClient.get()
+                .uri("/betsanddice/api/v1/tutorial/gameTutorials?offset=0&limit=3")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(GameTutorialDto.class);
+    }
+
+    @Test
+    void getAllUsers_NullPageParameters_UsersReturned() {
+        GameTutorialDto[] expectedGameTutorials = {gameTutorialDto1, gameTutorialDto2};
+        Flux<GameTutorialDto> expectedGameTutorialsFlux = Flux.just(expectedGameTutorials);
+
+        String offset = "0";
+        String limit = "2";
+
+        when(gameTutorialService.getAllGameTutorials(Integer.parseInt(offset), Integer.parseInt(limit)))
+                .thenReturn(expectedGameTutorialsFlux);
+
+        webTestClient.get()
+                .uri("/betsanddice/api/v1/tutorial/gameTutorials")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(GameTutorialDto.class);
+    }
 }

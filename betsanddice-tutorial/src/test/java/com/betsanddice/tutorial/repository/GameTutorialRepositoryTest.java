@@ -39,9 +39,11 @@ class GameTutorialRepositoryTest {
 
     UUID uuidGameTutorialDocument1 = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
     UUID uuidGameTutorialDocument2 = UUID.fromString("9cc65b00-8412-46e7-ba6f-ead17a9fe167");
+    UUID uuidGameTutorialDocument3 = UUID.fromString("fb1ed64e-fd21-4a0f-af46-327ad7d1fe5d");
 
     UUID uuidGameDocument1 = UUID.fromString("7f9dcc63-6daf-4ba2-b3c7-e0b59534f856");
     UUID uuidGameDocument2 = UUID.fromString("bf71596f-0dff-4ce7-b6d6-e348fbf914ed");
+    UUID uuidGameDocument3 = UUID.fromString("f9ce5b99-bcf8-4af3-a4c7-db2beb3994b9");
 
     @BeforeEach
     void setUp() {
@@ -51,8 +53,10 @@ class GameTutorialRepositoryTest {
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit...");
         GameTutorialDocument gameTutorialDocument2 = new GameTutorialDocument(uuidGameTutorialDocument2, uuidGameDocument2,"SixDice",
                 "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium...");
+        GameTutorialDocument gameTutorialDocument3 = new GameTutorialDocument(uuidGameTutorialDocument3, uuidGameDocument3,"Poker",
+                "At vero eos et accusamus et iusto odio dignissimos ducimus qui blandit...");
 
-        gameTutorialRepository.saveAll(Flux.just(gameTutorialDocument1, gameTutorialDocument2 )).blockLast();
+        gameTutorialRepository.saveAll(Flux.just(gameTutorialDocument1, gameTutorialDocument2, gameTutorialDocument3 )).blockLast();
     }
 
     @DisplayName("Repository not null Test")
@@ -125,12 +129,28 @@ class GameTutorialRepositoryTest {
                 () -> fail("Game with name SixDice not found."));
     }
 
-    @DisplayName("Find All Test")
+    @DisplayName("Find Game Tutorials for a Page Test")
     @Test
     void findAllTest() {
-        Flux<GameTutorialDocument> gameTutorialDocumentFlux = gameTutorialRepository.findAll();
-        StepVerifier.create(gameTutorialDocumentFlux)
+
+        Flux<GameTutorialDocument> usersOffset0Limit1Flux = gameTutorialRepository.findAllByUuidNotNull().skip(0).take(1);
+        StepVerifier.create(usersOffset0Limit1Flux)
+                .expectNextCount(1)
+                .verifyComplete();
+
+        Flux<GameTutorialDocument> usersOffset0Limit2Flux = gameTutorialRepository.findAllByUuidNotNull().skip(0).take(2);
+        StepVerifier.create(usersOffset0Limit2Flux)
                 .expectNextCount(2)
+                .verifyComplete();
+
+        Flux<GameTutorialDocument> usersOffset1Limit1Flux = gameTutorialRepository.findAllByUuidNotNull().skip(1).take(1);
+        StepVerifier.create(usersOffset1Limit1Flux)
+                .expectNextCount(1)
+                .verifyComplete();
+
+        Flux<GameTutorialDocument> usersOffset1Limit2Flux = gameTutorialRepository.findAllByUuidNotNull().skip(2).take(2);
+        StepVerifier.create(usersOffset1Limit2Flux)
+                .expectNextCount(1)
                 .verifyComplete();
     }
 

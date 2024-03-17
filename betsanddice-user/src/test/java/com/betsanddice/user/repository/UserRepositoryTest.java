@@ -79,6 +79,28 @@ class UserRepositoryTest {
         Assertions.assertNotNull(userRepository);
     }
 
+    @DisplayName("Exists by UUID Test")
+    @Test
+    void existsByUuidTest() {
+        Boolean exists = userRepository.existsByUuid(uuidUser1).block();
+        Assertions.assertEquals(true, exists);
+    }
+
+    @DisplayName("Find by UUID Test")
+    @Test
+    void findByUuidTest() {
+
+        Mono<UserDocument> user1 = userRepository.findByUuid(uuidUser1);
+        user1.blockOptional().ifPresentOrElse(
+                user -> Assertions.assertEquals(user.getUuid(), uuidUser1),
+                () -> fail("User not found: " + uuidUser1));
+
+        Mono<UserDocument> user2 = userRepository.findByUuid(uuidUser2);
+        user2.blockOptional().ifPresentOrElse(
+                user -> Assertions.assertEquals(user.getUuid(), uuidUser2),
+                () -> fail("User not found: " + uuidUser2));
+    }
+
     @DisplayName("Find Users for a Page Test")
     @Test
     void findAllTest() {
@@ -102,20 +124,5 @@ class UserRepositoryTest {
         StepVerifier.create(usersOffset1Limit2Flux)
                 .expectNextCount(1)
                 .verifyComplete();
-    }
-
-    @DisplayName("Find by UUID Test")
-    @Test
-    void findByUuidTest() {
-
-        Mono<UserDocument> user1 = userRepository.findByUuid(uuidUser1);
-        user1.blockOptional().ifPresentOrElse(
-                user -> Assertions.assertEquals(user.getUuid(), uuidUser1),
-                () -> fail("User not found: " + uuidUser1));
-
-        Mono<UserDocument> user2 = userRepository.findByUuid(uuidUser2);
-        user2.blockOptional().ifPresentOrElse(
-                user -> Assertions.assertEquals(user.getUuid(), uuidUser2),
-                () -> fail("User not found: " + uuidUser2));
     }
 }
