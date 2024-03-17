@@ -11,9 +11,6 @@
       "$uuid": "a686a601-2b91-47cc-ba25-ef02c76d3b9e"
     }
   },
-
-
-
   {
     "_id": {
       "$uuid": "9cc65b00-8412-46e7-ba6f-ead17a9fe167"
@@ -24,6 +21,30 @@
     },
     "id_stat": {
       "$uuid": "4a9081e3-6384-4036-b687-4d79fdfcaec6"
+    }
+  },
+  {
+    "_id": {
+      "$uuid": "d4c6e4e7-746c-47f4-a2b9-74e93b8d0445"
+    },
+    "game_name": "Poker",
+    "id_tutorial": {
+      "$uuid": "71bc953b-0307-4877-a859-83619bcad5d9"
+    },
+    "id_stat": {
+      "$uuid": "bfce3a9a-63dd-42e3-a0d1-243483416588"
+    }
+  },
+  {
+    "_id": {
+      "$uuid": "07046379-8e55-49f6-a4ae-45bd066830c6"
+    },
+    "game_name": "Blackjack",
+    "id_tutorial": {
+      "$uuid": "58c01787-6ddc-42e0-b738-a6c1dd7f8424"
+    },
+    "id_stat": {
+      "$uuid": "c15dec22-278c-44b5-843b-024ad0074970"
     }
   }
 ]
