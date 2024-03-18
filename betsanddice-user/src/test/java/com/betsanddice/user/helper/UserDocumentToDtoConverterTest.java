@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class UserDocumentToDtoConverterTest {
 
@@ -53,13 +51,13 @@ class UserDocumentToDtoConverterTest {
                 "Player2", "morrowmontgomery@email.com", "player2", registered,
                 "level", BigDecimal.valueOf(100), gameList, statisticsList);
 
-        userDto1 = getUserDtoMocked(uuidUser1, "Morrow", "Montgomery", "2000-03-03", "Player2",
+        userDto1 = new UserDto(uuidUser1, "Morrow", "Montgomery", "2000-03-03", "Player2",
                 "morrowmontgomery@email.com", "player2", "2023-01-31", "level",
-                100, gameList, statisticsList);
+                BigDecimal.valueOf(100), gameList, statisticsList);
 
-        userDto2 = getUserDtoMocked(uuidUser2, "Morrow", "Montgomery", "2000-03-03", "Player2",
+        userDto2 = new UserDto(uuidUser2, "Morrow", "Montgomery", "2000-03-03", "Player2",
                 "morrowmontgomery@email.com", "player2", "2023-01-31", "level",
-                100, gameList, statisticsList);
+                BigDecimal.valueOf(100), gameList, statisticsList);
     }
 
     @Test
@@ -89,25 +87,6 @@ class UserDocumentToDtoConverterTest {
                 .isEqualTo(expectedDto1);
         assertThat(resultDto.blockLast()).usingRecursiveComparison()
                 .isEqualTo(expectedDto2);
-    }
-
-    private UserDto getUserDtoMocked(UUID user_id, String name, String surname, String birthdate, String nickname,
-                                     String email, String password, String registered, String level, int cash,
-                                     List<UUID> games, List<UUID> statistics) {
-        UserDto userDtoMocked = mock(UserDto.class);
-        when(userDtoMocked.getUuid()).thenReturn(user_id);
-        when(userDtoMocked.getName()).thenReturn(name);
-        when(userDtoMocked.getSurname()).thenReturn(surname);
-        when(userDtoMocked.getBirthdate()).thenReturn(birthdate);
-        when(userDtoMocked.getNickname()).thenReturn(nickname);
-        when(userDtoMocked.getEmail()).thenReturn(email);
-        when(userDtoMocked.getPassword()).thenReturn(password);
-        when(userDtoMocked.getRegistrationDate()).thenReturn(registered);
-        when(userDtoMocked.getLevel()).thenReturn(level);
-        when(userDtoMocked.getCash()).thenReturn(BigDecimal.valueOf(cash));
-        when(userDtoMocked.getGames()).thenReturn(games);
-        when(userDtoMocked.getStatistics()).thenReturn(statistics);
-        return userDtoMocked;
     }
 
 }
