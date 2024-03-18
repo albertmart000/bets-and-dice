@@ -10,8 +10,6 @@ import reactor.core.publisher.Flux;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class GameTutorialDocumentToDtoConverterTest {
 
@@ -36,9 +34,8 @@ class GameTutorialDocumentToDtoConverterTest {
         gameTutorialDocument1 = new GameTutorialDocument(uuidGameTutorial1, uuidGameDocument1, "Craps", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur...");
         gameTutorialDocument2 = new GameTutorialDocument(uuidGameTutorial2, uuidGameDocument2, "SixDice", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt...");
 
-        gameTutorialDto1 = getGameTutorialDtoMocked(uuidGameTutorial1, uuidGameDocument1,"Craps", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur...");
-        gameTutorialDto2 = getGameTutorialDtoMocked(uuidGameTutorial2, uuidGameDocument2,"SixDice", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt...");
-
+        gameTutorialDto1 = new GameTutorialDto(uuidGameTutorial1, uuidGameDocument1,"Craps", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur...");
+        gameTutorialDto2 = new GameTutorialDto(uuidGameTutorial2, uuidGameDocument2,"SixDice", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt...");
     }
 
     @Test
@@ -54,10 +51,7 @@ class GameTutorialDocumentToDtoConverterTest {
 
     @Test
     @DisplayName("Testing Flux conversion. Test fromDocumentFluxToDtoFlux method.")
-    void fromFluxDocToFluxDto() {
-        GameTutorialDocument gameTutorialDocument1 = this.gameTutorialDocument1;
-        GameTutorialDocument gameTutorialDocument2 = this.gameTutorialDocument2;
-
+    void testConvertFromFluxDocToFluxDto() {
         Flux<GameTutorialDto> resultDto = converter.fromDocumentFluxToDtoFlux(Flux.just(gameTutorialDocument1, gameTutorialDocument2));
 
         GameTutorialDto expectedDto1 = gameTutorialDto1;
@@ -68,14 +62,5 @@ class GameTutorialDocumentToDtoConverterTest {
                 .isEqualTo(expectedDto1);
         assertThat(resultDto.blockLast()).usingRecursiveComparison()
                 .isEqualTo(expectedDto2);
-    }
-
-    private GameTutorialDto getGameTutorialDtoMocked(UUID uuidGameTutorial, UUID uuidGameDocument, String gameName, String rules) {
-        GameTutorialDto gameTutorialDtoMocked = mock(GameTutorialDto.class);
-        when(gameTutorialDtoMocked.getGameTutorialId()).thenReturn(uuidGameTutorial);
-        when(gameTutorialDtoMocked.getGameId()).thenReturn(uuidGameDocument);
-        when(gameTutorialDtoMocked.getGameName()).thenReturn(gameName);
-        when(gameTutorialDtoMocked.getRules()).thenReturn(rules);
-        return gameTutorialDtoMocked;
     }
 }

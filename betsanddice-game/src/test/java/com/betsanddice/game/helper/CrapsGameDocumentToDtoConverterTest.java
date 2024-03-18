@@ -26,7 +26,7 @@ class CrapsGameDocumentToDtoConverterTest {
 
     @BeforeEach
     public void setup() {
-        converter = new DocumentToDtoConverter();
+        converter = new DocumentToDtoConverter<>();
 
         UUID uuidCrapsGame1 = UUID.fromString("50feba3c-3cbf-48ad-8142-cccf7c6bf3d3");
         UUID uuidCrapsGame2 = UUID.fromString("6160a07c-1d0f-4ac0-80b0-ef8f17bcad53");
@@ -60,8 +60,7 @@ class CrapsGameDocumentToDtoConverterTest {
     @Test
     @DisplayName("Testing Flux conversion. Test fromDocumentFluxToDtoFlux method.")
     void fromFluxDocToFluxDto() {
-        Flux<CrapsGameDocument> crapsGameDocumentFlux = Flux.just(crapsGameDocument1, crapsGameDocument2);
-        Flux<CrapsGameDto> resultDto = converter.fromDocumentFluxToDtoFlux(crapsGameDocumentFlux, CrapsGameDto.class);
+        Flux<CrapsGameDto> resultDto = converter.fromDocumentFluxToDtoFlux(Flux.just(crapsGameDocument1, crapsGameDocument2), CrapsGameDto.class);
 
         CrapsGameDto expectedDto1 = crapsGameDto1;
         CrapsGameDto expectedDto2 = crapsGameDto2;

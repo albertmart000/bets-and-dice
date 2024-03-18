@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class DocumentToDtoConverterTest {
+class UserStatDocumentToDtoConverterTest {
 
     private DocumentToDtoConverter<UserStatDocument, UserStatDto> converter;
 
@@ -40,8 +40,8 @@ class DocumentToDtoConverterTest {
         userStatDocument1 = new UserStatDocument(uuidUserStat1, uuidUser, uuidGame1, average);
         userStatDocument2 = new UserStatDocument(uuidUserStat2, uuidUser, uuidGame2, average);
 
-        userStatDto1 = getUserStatDtoMocked(uuidUserStat1, uuidUser, uuidGame1, average);
-        userStatDto2 = getUserStatDtoMocked(uuidUserStat2, uuidUser, uuidGame2, average);
+        userStatDto1 = new UserStatDto(uuidUserStat1, uuidUser, uuidGame1, average);
+        userStatDto2 = new UserStatDto(uuidUserStat2, uuidUser, uuidGame2, average);
     }
 
     @Test
@@ -68,15 +68,6 @@ class DocumentToDtoConverterTest {
                 .isEqualTo(expectedDto1);
         assertThat(resultDto.blockLast()).usingRecursiveComparison()
                 .isEqualTo(expectedDto2);
-    }
-
-    private UserStatDto getUserStatDtoMocked(UUID uuidUserStat, UUID uuidUser, UUID uuidGame, double average) {
-        UserStatDto userStatDtoMocked = mock(UserStatDto.class);
-        when(userStatDtoMocked.getUuid()).thenReturn(uuidUserStat);
-        when(userStatDtoMocked.getUserId()).thenReturn(uuidUser);
-        when(userStatDtoMocked.getGameId()).thenReturn(uuidGame);
-        when(userStatDtoMocked.getAverage()).thenReturn(average);
-        return userStatDtoMocked;
     }
 
 }
