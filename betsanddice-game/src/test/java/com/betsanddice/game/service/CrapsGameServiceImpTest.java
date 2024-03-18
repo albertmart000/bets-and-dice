@@ -3,7 +3,7 @@ package com.betsanddice.game.service;
 import com.betsanddice.game.document.CrapsGameDocument;
 import com.betsanddice.game.dto.CrapsGameDto;
 import com.betsanddice.game.dto.DiceRollDto;
-import com.betsanddice.game.helper.CrapsGameDocumentToDtoConverter;
+import com.betsanddice.game.helper.DocumentToDtoConverter;
 import com.betsanddice.game.repository.CrapsGameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ class CrapsGameServiceImpTest {
     private CrapsGameRepository crapsGameRepository;
 
     @Mock
-    private CrapsGameDocumentToDtoConverter documentToDtoConverter;
+    private DocumentToDtoConverter<CrapsGameDocument, CrapsGameDto> converter = new DocumentToDtoConverter<>();
 
     @InjectMocks
     public CrapsGameServiceImp crapsGameService;
@@ -42,7 +42,7 @@ class CrapsGameServiceImpTest {
         CrapsGameDto[] expectedCrapsGames = {crapsGameDto1, crapsGameDto2};
 
         when(crapsGameRepository.findAll()).thenReturn(Flux.just(new CrapsGameDocument(), new CrapsGameDocument()));
-        when(documentToDtoConverter.fromDocumentFluxToDtoFlux(any())).thenReturn(Flux.just(crapsGameDto1, crapsGameDto2));
+        when(converter.fromDocumentFluxToDtoFlux(any(), any())).thenReturn(Flux.just(crapsGameDto1, crapsGameDto2));
 
         Flux<CrapsGameDto> result = crapsGameService.getAllCrapsGame();
 
@@ -52,7 +52,7 @@ class CrapsGameServiceImpTest {
                 .verify();
 
         verify(crapsGameRepository).findAll();
-        verify(documentToDtoConverter).fromDocumentFluxToDtoFlux(any());
+        verify(converter).fromDocumentFluxToDtoFlux(any(), any());
     }
 
     @Test
@@ -68,7 +68,7 @@ class CrapsGameServiceImpTest {
         CrapsGameDto crapsGameDto = new CrapsGameDto(uuidCrapsGame, uuidUser, "2023-01-31 12:00:00", 2, diceRollsList);
 
         when(crapsGameRepository.save(any())).thenReturn(Mono.empty());
-        when(documentToDtoConverter.fromDocumentToDto(any())).thenReturn(crapsGameDto);
+        when(converter.fromDocumentToDto(any(), any())).thenReturn(crapsGameDto);
 
         Mono<CrapsGameDto> resultMono = crapsGameService.addCrapsGameToUser(String.valueOf(uuidUser));
 
@@ -77,8 +77,7 @@ class CrapsGameServiceImpTest {
                 .expectComplete()
                 .verify();
 
-        verify(crapsGameRepository, times(1)).save(any());
-        verify(documentToDtoConverter, times(1)).fromDocumentToDto(any());
+        verify(crapsGameRepository).save(any());
+        verify(converter).fromDocumentToDto(any(), any());
     }
-
 }

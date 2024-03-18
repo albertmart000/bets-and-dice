@@ -10,21 +10,20 @@ import reactor.core.publisher.Flux;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class GameDocumentToDtoConverterTest {
 
-    private GameDocumentToDtoConverter converter;
+    private DocumentToDtoConverter<GameDocument, GameDto> converter;
 
     private GameDocument gameDocument1;
     private GameDocument gameDocument2;
 
     private GameDto gameDto1;
     private GameDto gameDto2;
+
     @BeforeEach
     public void setUp() {
-        converter = new GameDocumentToDtoConverter();
+        converter = new DocumentToDtoConverter();
 
         UUID uuidGame1 = UUID.fromString("50feba3c-3cbf-48ad-8142-cccf7c6bf3d3");
         UUID uuidGame2 = UUID.fromString("6160a07c-1d0f-4ac0-80b0-ef8f17bcad53");
@@ -35,18 +34,18 @@ class GameDocumentToDtoConverterTest {
         UUID uuidStat1 = UUID.fromString("76cb3a63-bc48-4b68-a291-18140a3794d7");
         UUID uuidStat2 = UUID.fromString("795e8c10-d68a-47a0-8f37-79736d6aa632");
 
-        gameDocument1 = new GameDocument (uuidGame1, "Craps", uuidTutorial1, uuidStat1);
-        gameDocument2 = new GameDocument (uuidGame2, "SixDice", uuidTutorial2, uuidStat2);
+        gameDocument1 = new GameDocument(uuidGame1, "Craps", uuidTutorial1, uuidStat1);
+        gameDocument2 = new GameDocument(uuidGame2, "SixDice", uuidTutorial2, uuidStat2);
 
-        gameDto1 = getGameDtoMocked (uuidGame1, "Craps", uuidTutorial1, uuidStat1);
-        gameDto2 = getGameDtoMocked (uuidGame2, "SixDice", uuidTutorial2, uuidStat2);
+        gameDto1 = new GameDto(uuidGame1, "Craps", uuidTutorial1, uuidStat1);
+        gameDto2 = new GameDto(uuidGame2, "SixDice", uuidTutorial2, uuidStat2);
     }
 
     @Test
     @DisplayName("Conversion from GameDocument to GameDto. Testing 'fromDocumentToDto' method.")
     void testConvertFromDocumentToDto() {
         GameDocument gameDocumentMocked = gameDocument1;
-        GameDto resultDto = converter.fromDocumentToDto(gameDocumentMocked);
+        GameDto resultDto = converter.fromDocumentToDto(gameDocumentMocked, GameDto.class);
         GameDto expectedDto = gameDto1;
 
         assertThat(expectedDto).usingRecursiveComparison()
@@ -56,10 +55,8 @@ class GameDocumentToDtoConverterTest {
     @Test
     @DisplayName("Testing Flux conversion. Test fromDocumentFluxToDtoFlux method.")
     void fromFluxDocToFluxDto() {
-        GameDocument gameDocument1 = this.gameDocument1;
-        GameDocument gameDocument2 = this.gameDocument2;
-
-        Flux<GameDto> resultDto = converter.fromDocumentFluxToDtoFlux(Flux.just(gameDocument1, gameDocument2));
+        Flux<GameDocument> gameDocumentFlux = Flux.just(gameDocument1, gameDocument2);
+        Flux<GameDto> resultDto = converter.fromDocumentFluxToDtoFlux(gameDocumentFlux, GameDto.class);
 
         GameDto expectedDto1 = gameDto1;
         GameDto expectedDto2 = gameDto2;
@@ -71,13 +68,4 @@ class GameDocumentToDtoConverterTest {
                 .isEqualTo(expectedDto2);
     }
 
-    private GameDto getGameDtoMocked(UUID uuidGame, String gameName, UUID uuidTutorial,
-                                     UUID uuidStat){
-        GameDto gameDtoMocked = mock(GameDto.class);
-        when(gameDtoMocked.getUuid()).thenReturn(uuidGame);
-        when(gameDtoMocked.getGameName()).thenReturn(gameName);
-        when(gameDtoMocked.getTutorialId()).thenReturn(uuidTutorial);
-        when(gameDtoMocked.getStatId()).thenReturn(uuidStat);
-        return gameDtoMocked;
-    }
 }
