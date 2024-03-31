@@ -20,23 +20,6 @@ services:
     networks:
       - network-betsanddice
 
-  betsanddice-user:
-    image: albertmart000/betsanddice:betsanddice-user-v1.0-SNAPSHOT
-    container_name: betsanddice-user-v1.0-SNAPSHOT
-    restart: always
-    depends_on:
-      - betsanddice-mongodb
-    ports:
-      - "8094:8094"
-    environment:
-      MONGODB_HOST=mongodb: 27017
-      MONGODB_USERNAME: admin_betsanddice
-      MONGODB_PASSWORD: XMOJocgKlmRHz2O
-      MONGODB_CONTAINER_PORT: 27018
-      MONGODB_USER_DATABASE: users
-    networks:
-      - network-betsanddice
-
   betsanddice-game:
     image: albertmart000/betsanddice:betsanddice-game-v1.0-SNAPSHOT
     container_name: betsanddice-game-v1.0-SNAPSHOT
@@ -51,6 +34,23 @@ services:
       MONGODB_PASSWORD: XMOJocgKlmRHz2O
       MONGODB_CONTAINER_PORT: 27018
       MONGODB_CRAPS_DATABASE: game
+    networks:
+      - network-betsanddice
+
+  betsanddice-user:
+    image: albertmart000/betsanddice:betsanddice-user-v1.0-SNAPSHOT
+    container_name: betsanddice-user-v1.0-SNAPSHOT
+    restart: always
+    depends_on:
+      - betsanddice-mongodb
+    ports:
+      - "8094:8094"
+    environment:
+      MONGODB_HOST=mongodb: 27017
+      MONGODB_USERNAME: admin_betsanddice
+      MONGODB_PASSWORD: XMOJocgKlmRHz2O
+      MONGODB_CONTAINER_PORT: 27018
+      MONGODB_USER_DATABASE: users
     networks:
       - network-betsanddice
 
