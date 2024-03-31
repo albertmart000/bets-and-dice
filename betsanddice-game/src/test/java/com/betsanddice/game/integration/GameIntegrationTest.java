@@ -77,7 +77,7 @@ class GameIntegrationTest {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
-                .value(String::toString, equalTo("Hello from Game!!!"));
+                .value(String::toString, equalTo("Hello from Bets And Dice!!!"));
     }
 
     @Test
