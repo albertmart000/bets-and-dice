@@ -5,10 +5,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -44,16 +42,7 @@ public class UserDocument {
     @Field(name="registered")
     private LocalDateTime registrationDate;
 
-    @Field(name = "level")
-    private String level;
-
-    @Field(name = "cash")
-    private BigDecimal cash;
-
-    @Field(name = "games")
-    private List<UUID> games;
-
-    @Field(name = "statistics")
-    private List<UUID> statistics;
+    @Field(name = "role")
+    private Role role;
 
 }

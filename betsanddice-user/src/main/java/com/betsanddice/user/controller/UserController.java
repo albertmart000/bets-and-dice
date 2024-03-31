@@ -9,12 +9,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/betsanddice/api/v1/user")
@@ -22,50 +19,21 @@ public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private static final String DEFAULT_OFFSET = "0";
-    private static final String DEFAULT_LIMIT = "200";  //if no limit, all elements (avoid exception with default value 200)
+    private static final String DEFAULT_LIMIT = "200";
     private static final String LIMIT = "^([1-9]\\d?|1\\d{2}|200)$";  // Integer in range [1, 200]
     private static final String INVALID_PARAM = "Invalid parameter";
-    private static final String NO_SERVICE = "No Services";
 
     IUserService userService;
 
-    private final DiscoveryClient discoveryClient;
-
-    public UserController(IUserService userService, DiscoveryClient discoveryClient) {
+    public UserController(IUserService userService) {
         this.userService = userService;
-        this.discoveryClient = discoveryClient;
     }
 
     @Operation(summary = "Testing the App")
     @GetMapping(value = "/test")
     public String test() {
         log.info("** Greetings from the logger **");
-
-        Optional<String> userService = discoveryClient.getInstances("betsanddice-user")
-                .stream()
-                .findAny()
-                .map(Object::toString);
-
-        Optional<String> crapsService = discoveryClient.getInstances("betsanddice-craps")
-                .stream()
-                .findAny()
-                .map(Object::toString);
-
-        Optional<String> tutorialService = discoveryClient.getInstances("betsanddice-tutorial")
-                .stream()
-                .findAny()
-                .map(Object::toString);
-
-        log.info("~~~~~~~~~~~~~~~~~~~~~~");
-        log.info("Scanning micros:");
-        log.info((userService.orElse(NO_SERVICE))
-                .concat(System.lineSeparator())
-                .concat(crapsService.orElse(NO_SERVICE))
-                .concat(System.lineSeparator())
-                .concat(tutorialService.orElse(NO_SERVICE)));
-        log.info("~~~~~~~~~~~~~~~~~~~~~~");
-
-        return "Hello from Bets And Dice!!!";
+        return "Hello from User!!!";
     }
 
     @GetMapping(path = "/users/{userId}")
@@ -79,7 +47,7 @@ public class UserController {
             }
     )
     public Mono<UserDto> getOneUser(@PathVariable("userId") String id) {
-        return userService.getUserByUuid(id);
+        return userService.getUserById(id);
     }
 
     @GetMapping("/users")

@@ -7,5 +7,5 @@ import reactor.core.publisher.Mono;
 public interface IUserService {
     Flux<UserDto> getAllUsers(int offset, int limit);
 
-    Mono<UserDto> getUserByUuid(String uuid);
+    Mono<UserDto> getUserById(String id);
 }

@@ -15,7 +15,7 @@ class UserDocumentTest {
     void getUuidTest() {
         UUID uuid = UUID.randomUUID();
         UserDocument userDocument = new UserDocument(uuid, null, null, null, null,
-                null, null, null, null, null, null, null);
+                null, null, null, null);
         assertEquals(uuid, userDocument.getUuid());
     }
 
@@ -23,15 +23,15 @@ class UserDocumentTest {
     void getNameTest() {
         String name = "name";
         UserDocument userDocument = new UserDocument(null, name, null, null, null,
-                null, null, null, null, null, null, null);
+                null, null, null, null);
         assertEquals(name, userDocument.getFirstName());
     }
 
     @Test
-    void geSurNameTest() {
+    void getSurNameTest() {
         String surname = "surname";
         UserDocument userDocument = new UserDocument(null, null, surname, null, null,
-                null, null, null, null, null, null, null);
+                null, null, null, null);
         assertEquals(surname, userDocument.getSurname());
     }
 
@@ -40,7 +40,7 @@ class UserDocumentTest {
         LocalDate birthdate = LocalDate.now();
 
         UserDocument userDocument = new UserDocument(null, null, null, birthdate, null,
-                null, null, null, null, null, null, null);
+                null, null, null, null);
         assertEquals(birthdate, userDocument.getBirthdate());
     }
 
@@ -48,7 +48,7 @@ class UserDocumentTest {
     void getNickNameTest() {
         String nickname = "nickname";
         UserDocument userDocument = new UserDocument(null, null, null, null, nickname,
-                null, null, null, null, null, null, null);
+                null, null, null, null);
         assertEquals(nickname, userDocument.getNickname());
     }
 
@@ -56,7 +56,7 @@ class UserDocumentTest {
     void getEmailTest() {
         String email = "email";
         UserDocument userDocument = new UserDocument(null, null, null, null, null,
-                email, null, null, null, null, null, null);
+                email, null, null, null);
         assertEquals(email, userDocument.getEmail());
     }
 
@@ -64,7 +64,7 @@ class UserDocumentTest {
     void getPasswordTest() {
         String password = "password";
         UserDocument userDocument = new UserDocument(null, null, null, null, null,
-                null, password, null, null, null, null, null);
+                null, password, null, null);
         assertEquals(password, userDocument.getPassword());
     }
 
@@ -72,35 +72,15 @@ class UserDocumentTest {
     void getRegisteredTest() {
         LocalDateTime registrationDate = now();
         UserDocument userDocument = new UserDocument(null, null, null, null, null,
-                null, null, registrationDate, null, null, null, null);
+                null, null, registrationDate, null);
         assertEquals(registrationDate, userDocument.getRegistrationDate());
     }
 
     @Test
-    void getLevelTest() {
-        String level = "level";
+    void getRoleTest() {
+        Role role = Role.ADMIN;
         UserDocument userDocument = new UserDocument(null, null, null, null, null,
-                null, null, null, level, null, null, null);
-        assertEquals(level, userDocument.getLevel());
-    }
-
-    @Test
-    void getGameTest() {
-        UUID uuidGame1 = UUID.randomUUID();
-        UUID uuidGame2 = UUID.randomUUID();
-        List<UUID> gameList = List.of(uuidGame1, uuidGame2);
-        UserDocument userDocument = new UserDocument(null, null, null, null, null,
-                null, null, null, null, null, gameList, null);
-        assertEquals(gameList, userDocument.getGames());
-    }
-
-    @Test
-    void getStatisticsTest() {
-        UUID uuidStatistics1 = UUID.randomUUID();
-        UUID uuidStatistics2 = UUID.randomUUID();
-        List<UUID> statisticsList = List.of(uuidStatistics1, uuidStatistics2);
-        UserDocument userDocument = new UserDocument(null, null, null, null, null,
-                null,null, null, null, null, null, statisticsList);
-        assertEquals(statisticsList, userDocument.getStatistics());
+                null, null, null, Role.ADMIN);
+        assertEquals(role, userDocument.getRole());
     }
 }
