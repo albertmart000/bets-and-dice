@@ -1,5 +1,6 @@
 package com.betsanddice.user.repository;
 
+import com.betsanddice.user.document.Role;
 import com.betsanddice.user.document.UserDocument;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,16 +60,13 @@ class UserRepositoryTest {
         List<UUID> statisticsList = List.of(uuidStatistics1, uuidStatistics2);
 
         UserDocument user1 = new UserDocument(uuidUser1, "Morrow", "Montgomery", LocalDate.now(),
-                "Player1", "morrowmontgomery@email.com", "player1", LocalDateTime.now(), "level",
-                BigDecimal.valueOf(100), gameList, statisticsList);
+                "Player1", "user1@email.com", "player1", LocalDateTime.now(), Role.ADMIN);
 
         UserDocument user2 = new UserDocument(uuidUser2, "Morrow", "Montgomery", LocalDate.now(),
-                "Player2", "morrowmontgomery@email.com", "player2", LocalDateTime.now(), "level",
-                BigDecimal.valueOf(100), gameList, statisticsList);
+                "Player2", "user2@email.com", "player2", LocalDateTime.now(), Role.PLAYER);
 
         UserDocument user3 = new UserDocument(uuidUser3, "Morrow", "Montgomery", LocalDate.now(),
-                "Player3", "morrowmontgomery@email.com", "player3", LocalDateTime.now(), "level",
-                BigDecimal.valueOf(100), gameList, statisticsList);
+                "Player3", "user3@email.com", "player3", LocalDateTime.now(), Role.PLAYER);
 
         userRepository.saveAll(Flux.just(user1, user2, user3)).blockLast();
     }

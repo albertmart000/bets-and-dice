@@ -44,7 +44,7 @@ class UserServiceImpTest {
         when(userRepository.findByUuid(userId)).thenReturn(Mono.just(userDocument));
         when(converter.fromDocumentToDto(userDocument)).thenReturn(userDto);
 
-        Mono<UserDto> resultDto = userService.getUserByUuid(userId.toString());
+        Mono<UserDto> resultDto = userService.getUserById(userId.toString());
 
         StepVerifier.create(resultDto)
                 .expectNext(userDto)
@@ -61,7 +61,7 @@ class UserServiceImpTest {
 
         when(userRepository.findByUuid(userId)).thenReturn(Mono.empty());
 
-        Mono<UserDto> resultDto = userService.getUserByUuid(userId.toString());
+        Mono<UserDto> resultDto = userService.getUserById(userId.toString());
 
         StepVerifier.create(resultDto)
                 .expectError(UserNotFoundException.class)
@@ -87,7 +87,6 @@ class UserServiceImpTest {
         UserDto userDto2 = new UserDto();
         UserDto userDto3 = new UserDto();
         UserDto userDto4 = new UserDto();
-        UserDto[] expectedUsers = {userDto1, userDto2, userDto3, userDto4};
 
         when(userRepository.findAll()).thenReturn(Flux.just(new UserDocument(), new UserDocument()));
         when(converter.fromDocumentFluxToDtoFlux(any())).thenReturn(Flux.just(userDto1, userDto2));

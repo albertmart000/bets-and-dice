@@ -39,13 +39,13 @@ class UserControllerTest {
 
     @Test
     void getOneUser_ValidId_UserReturned() {
-        String userUuid = "valid-user-uuid";
+        String userId = "valid-user-id";
         UserDto expectedUserDto = new UserDto();
 
-        when(userService.getUserByUuid(userUuid)).thenReturn(Mono.just(expectedUserDto));
+        when(userService.getUserById(userId)).thenReturn(Mono.just(expectedUserDto));
 
         webTestClient.get()
-                .uri(USER_BASE_URL + "/users/{userUuid}", userUuid)
+                .uri(USER_BASE_URL + "/users/{userId}", userId)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(UserDto.class)

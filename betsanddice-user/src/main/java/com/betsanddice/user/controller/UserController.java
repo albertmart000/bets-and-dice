@@ -47,7 +47,7 @@ public class UserController {
             }
     )
     public Mono<UserDto> getOneUser(@PathVariable("userId") String id) {
-        return userService.getUserByUuid(id);
+        return userService.getUserById(id);
     }
 
     @GetMapping("/users")

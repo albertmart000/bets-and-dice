@@ -57,19 +57,4 @@ public class UserDto {
     @Size(min = 2, message = "Invalid Password: Password should have at least 2 characters")
     private String password;
 
-    @JsonProperty(value = "registered", index = 7)
-    private String registrationDate;
-
-    @JsonProperty(value = "level", index = 8)
-    private String level;
-
-    @JsonProperty(value = "cash", index = 9)
-    private BigDecimal cash;
-
-    @JsonProperty(value = "games", index = 10)
-    private List<UUID> games;
-
-    @JsonProperty(value = "statistics", index = 11)
-    private List<UUID> statistics;
-
 }
