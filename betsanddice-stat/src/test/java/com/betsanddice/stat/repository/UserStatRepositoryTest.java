@@ -1,6 +1,6 @@
 package com.betsanddice.stat.repository;
 
-import com.betsanddice.stat.document.UserStatDocument;
+import com.betsanddice.stat.document.UserGameStatDocument;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
@@ -47,10 +47,10 @@ class UserStatRepositoryTest {
 
         double average = 3.5;
 
-        UserStatDocument userStatDocument1 = new UserStatDocument(uuidUserStat1, uuidUser, uuidGame1, average);
-        UserStatDocument userStatDocument2 = new UserStatDocument(uuidUserStat2, uuidUser, uuidGame2, average);
+        UserGameStatDocument userGameStatDocument1 = new UserGameStatDocument(uuidUserStat1, uuidUser, uuidGame1, average);
+        UserGameStatDocument userGameStatDocument2 = new UserGameStatDocument(uuidUserStat2, uuidUser, uuidGame2, average);
 
-        userStatRepository.saveAll(Flux.just(userStatDocument1, userStatDocument2)).blockLast();
+        userStatRepository.saveAll(Flux.just(userGameStatDocument1, userGameStatDocument2)).blockLast();
     }
 
     @DisplayName("Repository not null Test")
@@ -62,7 +62,7 @@ class UserStatRepositoryTest {
     @DisplayName("Find All Test")
     @Test
     void findAllTest() {
-        Flux<UserStatDocument> userStatDocumentFlux = userStatRepository.findAll();
+        Flux<UserGameStatDocument> userStatDocumentFlux = userStatRepository.findAll();
         StepVerifier.create(userStatDocumentFlux)
                 .expectNextCount(2)
                 .verifyComplete();

@@ -1,7 +1,7 @@
 package com.betsanddice.stat.service;
 
-import com.betsanddice.stat.document.UserStatDocument;
-import com.betsanddice.stat.dto.UserStatDto;
+import com.betsanddice.stat.document.UserGameStatDocument;
+import com.betsanddice.stat.dto.UserGameStatDto;
 import com.betsanddice.stat.helper.DocumentToDtoConverter;
 import com.betsanddice.stat.repository.UserStatRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,7 @@ class UserStatServiceImpTest {
     private UserStatRepository userStatRepository;
 
     @Mock
-    private DocumentToDtoConverter<UserStatDocument, UserStatDto> converter;
+    private DocumentToDtoConverter<UserGameStatDocument, UserGameStatDto> converter;
 
     @InjectMocks
     private UserStatServiceImp userStatService;
@@ -35,14 +35,14 @@ class UserStatServiceImpTest {
 
     @Test
     void getAllUserStats_UserStatsExist_UserStatsReturned_Test() {
-        UserStatDto userStatDto1 = new UserStatDto();
-        UserStatDto userStatDto2 = new UserStatDto();
-        UserStatDto[] expectedGameTutorials = {userStatDto1, userStatDto2};
+        UserGameStatDto userGameStatDto1 = new UserGameStatDto();
+        UserGameStatDto userGameStatDto2 = new UserGameStatDto();
+        UserGameStatDto[] expectedGameTutorials = {userGameStatDto1, userGameStatDto2};
 
-        when(userStatRepository.findAll()).thenReturn(Flux.just(new UserStatDocument(), new UserStatDocument()));
-        when(converter.fromDocumentFluxToDtoFlux(any(), any())).thenReturn(Flux.just(userStatDto1, userStatDto2));
+        when(userStatRepository.findAll()).thenReturn(Flux.just(new UserGameStatDocument(), new UserGameStatDocument()));
+        when(converter.fromDocumentFluxToDtoFlux(any(), any())).thenReturn(Flux.just(userGameStatDto1, userGameStatDto2));
 
-        Flux<UserStatDto> result = userStatService.getAllUserStats();
+        Flux<UserGameStatDto> result = userStatService.getAllUserStats();
 
         StepVerifier.create(result)
                 .expectNext(expectedGameTutorials)

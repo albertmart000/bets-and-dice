@@ -22,14 +22,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class UserStatDtoTest {
+class UserGameStatDtoTest {
 
     @Autowired
     private ObjectMapper mapper;
 
     private final String userStatJsonPath = "json/userStatSerialized.json";
-    private UserStatDto userStatDtoToSerialize;
-    private UserStatDto userStatDtoFromDeserialize;
+    private UserGameStatDto userGameStatDtoToSerialize;
+    private UserGameStatDto userGameStatDtoFromDeserialize;
 
 @BeforeEach
     void setUp(){
@@ -38,8 +38,8 @@ class UserStatDtoTest {
     UUID uuidGame = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
     double average = 3.5;
 
-    userStatDtoToSerialize = new UserStatDto(uuidUserStat, uuidUser, uuidGame, 3.5);
-    userStatDtoFromDeserialize = new UserStatDto(uuidUserStat, uuidUser, uuidGame, average);
+    userGameStatDtoToSerialize = new UserGameStatDto(uuidUserStat, uuidUser, uuidGame, 3.5);
+    userGameStatDtoFromDeserialize = new UserGameStatDto(uuidUserStat, uuidUser, uuidGame, average);
 }
 
     @Test
@@ -48,7 +48,7 @@ class UserStatDtoTest {
     void rightSerializationTest() {
         String jsonResult = mapper
                 .writer(new DefaultPrettyPrinter().withArrayIndenter(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE))
-                .writeValueAsString(userStatDtoToSerialize);
+                .writeValueAsString(userGameStatDtoToSerialize);
         String jsonExpected = new ResourceHelper(userStatJsonPath).readResourceAsString().orElse(null);
         assertEquals(jsonExpected, jsonResult);
     }
@@ -58,7 +58,7 @@ class UserStatDtoTest {
     @SneakyThrows(IOException.class)
     void rightDeserializationTest() {
         String crapsGameJsonSource = new ResourceHelper(userStatJsonPath).readResourceAsString().orElse(null);
-        UserStatDto dtoResult = mapper.readValue(crapsGameJsonSource, UserStatDto.class);
-        assertThat(dtoResult).usingRecursiveComparison().isEqualTo(userStatDtoFromDeserialize);
+        UserGameStatDto dtoResult = mapper.readValue(crapsGameJsonSource, UserGameStatDto.class);
+        assertThat(dtoResult).usingRecursiveComparison().isEqualTo(userGameStatDtoFromDeserialize);
     }
 }

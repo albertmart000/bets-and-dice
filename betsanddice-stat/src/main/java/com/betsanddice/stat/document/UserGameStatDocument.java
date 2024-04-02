@@ -12,19 +12,25 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "user-stats")
-public class UserStatDocument {
+@Document(collection = "user-game-stats")
+public class UserGameStatDocument {
 
     @Id
     @Field(name = "_id")
     private UUID uuid;
 
-    @Field(name = "id_user")
+    @Field(name = "user_id")
     private UUID userId;
 
-    @Field(name = "id_game")
+    @Field(name = "game_id")
     private UUID gameId;
 
-    @Field(name = "average")
-    private double average;
+    @Field(name = "game_name")
+    private String gameName;
+
+    @Field(name = "games_played")
+    private int gamesPlayed;
+
+    @Field(name = "games_won/attempts")
+    private int gamesWonOrAttempts;
 }

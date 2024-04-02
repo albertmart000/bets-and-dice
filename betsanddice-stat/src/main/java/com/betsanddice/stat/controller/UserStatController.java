@@ -1,6 +1,6 @@
 package com.betsanddice.stat.controller;
 
-import com.betsanddice.stat.dto.UserStatDto;
+import com.betsanddice.stat.dto.UserGameStatDto;
 import com.betsanddice.stat.service.IUserStatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -39,10 +39,10 @@ public class UserStatController {
             description = "Requesting all the users stats through the URI from the database.",
 
             responses = {
-                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = UserStatDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = UserGameStatDto.class), mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404", description = "No games were found.", content = {@Content(schema = @Schema())})
             })
-    public Flux<UserStatDto> getAllUserStats() {
+    public Flux<UserGameStatDto> getAllUserStats() {
         return userStatService.getAllUserStats();
     }
 

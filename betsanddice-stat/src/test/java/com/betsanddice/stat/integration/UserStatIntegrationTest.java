@@ -1,6 +1,6 @@
 package com.betsanddice.stat.integration;
 
-import com.betsanddice.stat.document.UserStatDocument;
+import com.betsanddice.stat.document.UserGameStatDocument;
 import com.betsanddice.stat.repository.UserStatRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,10 +62,10 @@ class UserStatIntegrationTest {
 
         double average = 3.5;
 
-        UserStatDocument userStatDocument1 = new UserStatDocument(uuidUserStat1, uuidUser, uuidGame1, average);
-        UserStatDocument userStatDocument2 = new UserStatDocument(uuidUserStat2, uuidUser, uuidGame2, average);
+        UserGameStatDocument userGameStatDocument1 = new UserGameStatDocument(uuidUserStat1, uuidUser, uuidGame1, average);
+        UserGameStatDocument userGameStatDocument2 = new UserGameStatDocument(uuidUserStat2, uuidUser, uuidGame2, average);
 
-        userStatRepository.saveAll(Flux.just(userStatDocument1, userStatDocument2)).blockLast();
+        userStatRepository.saveAll(Flux.just(userGameStatDocument1, userGameStatDocument2)).blockLast();
     }
 
     @Test
@@ -85,7 +85,7 @@ class UserStatIntegrationTest {
                 .uri(STAT_BASE_URL + "/userStats")
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList(UserStatDocument.class)
+                .expectBodyList(UserGameStatDocument.class)
                 .hasSize(2);
     }
 
