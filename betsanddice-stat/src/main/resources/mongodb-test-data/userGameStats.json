@@ -7,9 +7,11 @@
       "$uuid": "706507d4-b89f-41eb-a7eb-41838d08a08f"
     },
     "gameId": {
-      "$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"
+      "$uuid": "990b9699-75cf-42b5-aa0f-cf3a2169c770"
     },
-    "average": 3.5
+    "gameName": "Craps",
+    "gamesPlayed" : 100,
+    "gamesWonOrAttempts": 150
   },
   {
     "_id": {
@@ -19,9 +21,11 @@
       "$uuid": "706507d4-b89f-41eb-a7eb-41838d08a08f"
     },
     "gameId": {
-      "$uuid": "9cc65b00-8412-46e7-ba6f-ead17a9fe167"
+      "$uuid": "d4c6e4e7-746c-47f4-a2b9-74e93b8d0445"
     },
-    "average": 7.1
+    "gameName": "Poker",
+    "gamesPlayed" : 100,
+    "gamesWonOrAttempts": 75
   },
   {
     "_id": {
@@ -31,9 +35,11 @@
       "$uuid": "81099a9e-0d59-4571-a04c-31a08a711e3b"
     },
     "gameId": {
-      "$uuid": "c8a5440d-6466-463a-bccc-7fefbe9396e4"
+      "$uuid": "990b9699-75cf-42b5-aa0f-cf3a2169c770"
     },
-    "average": 4.6
+    "gameName": "Craps",
+    "gamesPlayed" : 75,
+    "gamesWonOrAttempts": 200
   },
   {
     "_id": {
@@ -43,8 +49,10 @@
       "$uuid": "81099a9e-0d59-4571-a04c-31a08a711e3b"
     },
     "gameId": {
-      "$uuid": "9cc65b00-8412-46e7-ba6f-ead17a9fe167"
+      "$uuid": "d4c6e4e7-746c-47f4-a2b9-74e93b8d0445"
     },
-    "average": 5.9
+    "gameName": "Poker",
+    "gamesPlayed" : 150,
+    "gamesWonOrAttempts": 25
   }
 ]
