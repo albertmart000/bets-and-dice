@@ -28,10 +28,10 @@ class CrapsGameDocumentToDtoConverterTest {
     public void setup() {
         converter = new DocumentToDtoConverter<>();
 
-        UUID uuidCrapsGame1 = UUID.fromString("50feba3c-3cbf-48ad-8142-cccf7c6bf3d3");
-        UUID uuidCrapsGame2 = UUID.fromString("6160a07c-1d0f-4ac0-80b0-ef8f17bcad53");
+        UUID crapsGameUuid1 = UUID.fromString("50feba3c-3cbf-48ad-8142-cccf7c6bf3d3");
+        UUID crapsGameUuid2 = UUID.fromString("6160a07c-1d0f-4ac0-80b0-ef8f17bcad53");
 
-        UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
+        UUID userUuid = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
         DiceRollDto diceRollDto1= new DiceRollDto( 1, 2, 3);
         DiceRollDto diceRollDto2= new DiceRollDto( 3, 4, 7);
@@ -39,11 +39,11 @@ class CrapsGameDocumentToDtoConverterTest {
 
         LocalDateTime date = LocalDateTime.of(2023, 1, 31, 12, 0, 0);
 
-        crapsGameDocument1 = new CrapsGameDocument(uuidCrapsGame1, uuidUser, date, 2, diceRollsList);
-        crapsGameDocument2 = new CrapsGameDocument(uuidCrapsGame2, uuidUser, date, 2, diceRollsList);
+        crapsGameDocument1 = new CrapsGameDocument(crapsGameUuid1, userUuid, date, 2, diceRollsList);
+        crapsGameDocument2 = new CrapsGameDocument(crapsGameUuid2, userUuid, date, 2, diceRollsList);
 
-        crapsGameDto1 = new CrapsGameDto(uuidCrapsGame1, uuidUser,"2023-01-31 12:00:00", 2, diceRollsList);
-        crapsGameDto2 = new CrapsGameDto(uuidCrapsGame2, uuidUser,"2023-01-31 12:00:00", 2, diceRollsList);
+        crapsGameDto1 = new CrapsGameDto(crapsGameUuid1, userUuid,"2023-01-31 12:00:00", 2, diceRollsList);
+        crapsGameDto2 = new CrapsGameDto(crapsGameUuid2, userUuid,"2023-01-31 12:00:00", 2, diceRollsList);
     }
 
     @Test

@@ -1,7 +1,7 @@
 package com.betsanddice.stat.controller;
 
-import com.betsanddice.stat.dto.UserStatDto;
-import com.betsanddice.stat.service.IUserStatService;
+import com.betsanddice.stat.dto.UserGameStatDto;
+import com.betsanddice.stat.service.IUserGameStatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,14 +15,14 @@ import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping(value = "/betsanddice/api/v1/stat")
-public class UserStatController {
+public class UserGameStatController {
 
-    private static final Logger log = LoggerFactory.getLogger(UserStatController.class);
+    private static final Logger log = LoggerFactory.getLogger(UserGameStatController.class);
 
-    private final IUserStatService userStatService;
+    private final IUserGameStatService userGameStatService;
 
-    public UserStatController(IUserStatService userStatService) {
-        this.userStatService = userStatService;
+    public UserGameStatController(IUserGameStatService userGameStatService) {
+        this.userGameStatService = userGameStatService;
     }
 
     @Operation(summary = "Testing the App")
@@ -39,11 +39,11 @@ public class UserStatController {
             description = "Requesting all the users stats through the URI from the database.",
 
             responses = {
-                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = UserStatDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = UserGameStatDto.class), mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404", description = "No games were found.", content = {@Content(schema = @Schema())})
             })
-    public Flux<UserStatDto> getAllUserStats() {
-        return userStatService.getAllUserStats();
+    public Flux<UserGameStatDto> getAllUserStats() {
+        return userGameStatService.getAllUserStats();
     }
 
 }

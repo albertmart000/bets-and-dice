@@ -14,11 +14,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.test.util.AssertionErrors.fail;
@@ -50,14 +48,6 @@ class UserRepositoryTest {
     public void setUp() {
 
         userRepository.deleteAll().block();
-
-        UUID uuidGame1 = UUID.fromString("dcacb291-b4aa-4029-8e9b-284c8ca80296");
-        UUID uuidGame2 = UUID.fromString("09fabe32-7362-4bfb-ac05-b7bf854c6e0f");
-        List<UUID> gameList = List.of(uuidGame1, uuidGame2);
-
-        UUID uuidStatistics1 = UUID.fromString("70e9755e-9e83-41d3-853a-665f1f2a2f5c");
-        UUID uuidStatistics2 = UUID.fromString("bb7897b8-517d-4843-8c17-e347aba086ca");
-        List<UUID> statisticsList = List.of(uuidStatistics1, uuidStatistics2);
 
         UserDocument user1 = new UserDocument(uuidUser1, "Morrow", "Montgomery", LocalDate.now(),
                 "Player1", "user1@email.com", "player1", LocalDateTime.now(), Role.ADMIN);

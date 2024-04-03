@@ -1,7 +1,7 @@
 package com.betsanddice.stat.controller;
 
-import com.betsanddice.stat.dto.UserStatDto;
-import com.betsanddice.stat.service.IUserStatService;
+import com.betsanddice.stat.dto.UserGameStatDto;
+import com.betsanddice.stat.service.IUserGameStatService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
@@ -11,8 +11,8 @@ import reactor.core.publisher.Flux;
 
 import static org.mockito.Mockito.when;
 
-@WebFluxTest(UserStatController.class)
-class UserStatControllerTest {
+@WebFluxTest(UserGameStatController.class)
+class UserGameStatControllerTest {
 
     private final String STAT_BASE_URL = "/betsanddice/api/v1/stat";
 
@@ -20,10 +20,10 @@ class UserStatControllerTest {
     private WebTestClient webTestClient;
 
     @MockBean
-    private IUserStatService userStatService;
+    private IUserGameStatService userStatService;
 
-    UserStatDto userStatDto1 = new UserStatDto();
-    UserStatDto userStatDto2 = new UserStatDto();
+    UserGameStatDto userGameStatDto1 = new UserGameStatDto();
+    UserGameStatDto userGameStatDto2 = new UserGameStatDto();
 
     @Test
     void test() {
@@ -37,8 +37,8 @@ class UserStatControllerTest {
 
     @Test
     void getAllUserStats_UserStatsExist_UserStatsReturned_Test() {
-        UserStatDto[] expectedUserStats = {userStatDto1, userStatDto2};
-        Flux<UserStatDto> expectedUserStatsFlux = Flux.just(expectedUserStats);
+        UserGameStatDto[] expectedUserStats = {userGameStatDto1, userGameStatDto2};
+        Flux<UserGameStatDto> expectedUserStatsFlux = Flux.just(expectedUserStats);
 
         when(userStatService.getAllUserStats()).thenReturn(expectedUserStatsFlux);
 
@@ -46,6 +46,6 @@ class UserStatControllerTest {
                 .uri(STAT_BASE_URL + "/userStats")
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList(UserStatDto.class);
+                .expectBodyList(UserGameStatDto.class);
     }
 }
