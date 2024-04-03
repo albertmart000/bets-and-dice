@@ -30,5 +30,5 @@ public class GameStatDto {
     private int gamesPlayed;
 
     @JsonProperty(value = "users_ranking", index = 4)
-    private List<UserGameStatDto> usersRanking;
+    private List<UUID> usersRanking;
 }

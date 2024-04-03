@@ -27,37 +27,43 @@ class UserGameStatDtoTest {
     @Autowired
     private ObjectMapper mapper;
 
-    private final String userStatJsonPath = "json/userStatSerialized.json";
+    private final String userGameStatJsonPath = "json/userGameStatSerialized.json";
     private UserGameStatDto userGameStatDtoToSerialize;
     private UserGameStatDto userGameStatDtoFromDeserialize;
 
 @BeforeEach
     void setUp(){
-    UUID uuidUserStat = UUID.fromString("c73a00ef-bfb1-458a-9c9d-5b1cdfca4a01");
-    UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
-    UUID uuidGame = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
-    double average = 3.5;
+    UUID userGameStatUuid = UUID.fromString("c73a00ef-bfb1-458a-9c9d-5b1cdfca4a01");
+    UUID userUuid = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
+    UUID gameUuid = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
+    String gameName = "Craps";
+    int gamesPlayed = 50;
+    int gamesWonOrAttempts = 25;
+    double average = 0.5;
+    int ranking = 1;
 
-    userGameStatDtoToSerialize = new UserGameStatDto(uuidUserStat, uuidUser, uuidGame, 3.5);
-    userGameStatDtoFromDeserialize = new UserGameStatDto(uuidUserStat, uuidUser, uuidGame, average);
+    userGameStatDtoToSerialize = new UserGameStatDto(userGameStatUuid, userUuid, gameUuid, gameName,
+            50, 25, 0.5, 1);
+    userGameStatDtoFromDeserialize = new UserGameStatDto(userGameStatUuid, userUuid, gameUuid, gameName,
+            gamesPlayed, gamesWonOrAttempts, average, ranking);
 }
 
     @Test
-    @DisplayName("Serialization UserStatDto test")
+    @DisplayName("Serialization UserGameStatDto test")
     @SneakyThrows({JsonProcessingException.class})
     void rightSerializationTest() {
         String jsonResult = mapper
                 .writer(new DefaultPrettyPrinter().withArrayIndenter(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE))
                 .writeValueAsString(userGameStatDtoToSerialize);
-        String jsonExpected = new ResourceHelper(userStatJsonPath).readResourceAsString().orElse(null);
+        String jsonExpected = new ResourceHelper(userGameStatJsonPath).readResourceAsString().orElse(null);
         assertEquals(jsonExpected, jsonResult);
     }
 
     @Test
-    @DisplayName("Deserialization GameTutorialDto test")
+    @DisplayName("Deserialization UserGameStatDto test")
     @SneakyThrows(IOException.class)
     void rightDeserializationTest() {
-        String crapsGameJsonSource = new ResourceHelper(userStatJsonPath).readResourceAsString().orElse(null);
+        String crapsGameJsonSource = new ResourceHelper(userGameStatJsonPath).readResourceAsString().orElse(null);
         UserGameStatDto dtoResult = mapper.readValue(crapsGameJsonSource, UserGameStatDto.class);
         assertThat(dtoResult).usingRecursiveComparison().isEqualTo(userGameStatDtoFromDeserialize);
     }

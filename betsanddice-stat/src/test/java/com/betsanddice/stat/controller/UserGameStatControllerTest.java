@@ -1,7 +1,7 @@
 package com.betsanddice.stat.controller;
 
 import com.betsanddice.stat.dto.UserGameStatDto;
-import com.betsanddice.stat.service.IUserStatService;
+import com.betsanddice.stat.service.IUserGameStatService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
@@ -11,8 +11,8 @@ import reactor.core.publisher.Flux;
 
 import static org.mockito.Mockito.when;
 
-@WebFluxTest(UserStatController.class)
-class UserStatControllerTest {
+@WebFluxTest(UserGameStatController.class)
+class UserGameStatControllerTest {
 
     private final String STAT_BASE_URL = "/betsanddice/api/v1/stat";
 
@@ -20,7 +20,7 @@ class UserStatControllerTest {
     private WebTestClient webTestClient;
 
     @MockBean
-    private IUserStatService userStatService;
+    private IUserGameStatService userStatService;
 
     UserGameStatDto userGameStatDto1 = new UserGameStatDto();
     UserGameStatDto userGameStatDto2 = new UserGameStatDto();

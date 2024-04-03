@@ -23,7 +23,7 @@ public class UserAllGameStatDto {
     @JsonProperty(value = "user_id", index = 1)
     private UUID userId;
 
-    @JsonProperty(index = 2)
-    private List<UserGameStatDto> userGameStatDtoList;
+    @JsonProperty(value = "user_game_stat_list", index = 2)
+    private List<UUID> userGameStatDtoList;
 
 }

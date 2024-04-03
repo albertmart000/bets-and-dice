@@ -10,7 +10,6 @@ import reactor.core.publisher.Flux;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 class UserGameStatDocumentToDtoConverterTest {
 
@@ -26,21 +25,30 @@ class UserGameStatDocumentToDtoConverterTest {
     void setUp() {
         converter = new DocumentToDtoConverter<>();
 
-        UUID uuidUserStat1 = UUID.fromString("c73a00ef-bfb1-458a-9c9d-5b1cdfca4a01");
-        UUID uuidUserStat2 = UUID.fromString("76628e83-b879-4186-8263-3325236a5fa5");
+        UUID userGameStatUuid1 = UUID.fromString("c73a00ef-bfb1-458a-9c9d-5b1cdfca4a01");
+        UUID userGameStatUuid2 = UUID.fromString("76628e83-b879-4186-8263-3325236a5fa5");
 
-        UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
+        UUID userUuid = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
-        UUID uuidGame1 = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
-        UUID uuidGame2 = UUID.fromString("9cc65b00-8412-46e7-ba6f-ead17a9fe167");
+        UUID gameUuid1 = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
+        UUID gameUuid2 = UUID.fromString("9cc65b00-8412-46e7-ba6f-ead17a9fe167");
 
-        double average = 3.5;
+        String gameName = "game";
+        int gamesPlayed = 50;
+        int gamesWonOrAttempts = 0;
 
-        userGameStatDocument1 = new UserGameStatDocument(uuidUserStat1, uuidUser, uuidGame1, average);
-        userGameStatDocument2 = new UserGameStatDocument(uuidUserStat2, uuidUser, uuidGame2, average);
+        double average = 0.5;
+        int ranking = 1;
 
-        userGameStatDto1 = new UserGameStatDto(uuidUserStat1, uuidUser, uuidGame1, average);
-        userGameStatDto2 = new UserGameStatDto(uuidUserStat2, uuidUser, uuidGame2, average);
+        userGameStatDocument1 = new UserGameStatDocument(userGameStatUuid1, userUuid, gameUuid1, gameName,
+                gamesPlayed, gamesWonOrAttempts);
+        userGameStatDocument2 = new UserGameStatDocument(userGameStatUuid2, userUuid, gameUuid2, gameName,
+                gamesPlayed, gamesWonOrAttempts);
+
+        userGameStatDto1 = new UserGameStatDto(userGameStatUuid1, userUuid, gameUuid1, gameName, gamesPlayed,
+                gamesWonOrAttempts, average, ranking);
+        userGameStatDto2 = new UserGameStatDto(userGameStatUuid2, userUuid, gameUuid2, gameName, gamesPlayed,
+                gamesWonOrAttempts, average, ranking);
     }
 
     @Test
@@ -51,6 +59,7 @@ class UserGameStatDocumentToDtoConverterTest {
         UserGameStatDto expectedDto = userGameStatDto1;
 
         assertThat(expectedDto).usingRecursiveComparison()
+                .ignoringFields("average", "ranking")
                 .isEqualTo(resultDto);
     }
 
@@ -64,8 +73,10 @@ class UserGameStatDocumentToDtoConverterTest {
 
         assertThat(resultDto.count().block()).isEqualTo(Long.valueOf(2));
         assertThat(resultDto.blockFirst()).usingRecursiveComparison()
+                .ignoringFields("average", "ranking")
                 .isEqualTo(expectedDto1);
         assertThat(resultDto.blockLast()).usingRecursiveComparison()
+                .ignoringFields("average", "ranking")
                 .isEqualTo(expectedDto2);
     }
 

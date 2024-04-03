@@ -1,7 +1,7 @@
 package com.betsanddice.stat.integration;
 
 import com.betsanddice.stat.document.UserGameStatDocument;
-import com.betsanddice.stat.repository.UserStatRepository;
+import com.betsanddice.stat.repository.UserGameStatRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -26,7 +26,7 @@ import static org.hamcrest.Matchers.equalTo;
 @AutoConfigureWebTestClient
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-class UserStatIntegrationTest {
+class UserGameStatIntegrationTest {
 
     private final String STAT_BASE_URL = "/betsanddice/api/v1/stat";
 
@@ -46,26 +46,30 @@ class UserStatIntegrationTest {
     private WebTestClient webTestClient;
 
     @Autowired
-    private UserStatRepository userStatRepository;
+    private UserGameStatRepository userGameStatRepository;
 
     @BeforeEach
     void setup() {
-        userStatRepository.deleteAll().block();
+        userGameStatRepository.deleteAll().block();
 
-        UUID uuidUserStat1 = UUID.fromString("c73a00ef-bfb1-458a-9c9d-5b1cdfca4a01");
-        UUID uuidUserStat2 = UUID.fromString("76628e83-b879-4186-8263-3325236a5fa5");
+        UUID userGameStatUuid1 = UUID.fromString("c73a00ef-bfb1-458a-9c9d-5b1cdfca4a01");
+        UUID userGameStatUuid2 = UUID.fromString("76628e83-b879-4186-8263-3325236a5fa5");
 
-        UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
+        UUID userUuid = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
-        UUID uuidGame1 = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
-        UUID uuidGame2 = UUID.fromString("9cc65b00-8412-46e7-ba6f-ead17a9fe167");
+        UUID gameUuid1 = UUID.fromString("c8a5440d-6466-463a-bccc-7fefbe9396e4");
+        UUID gameUuid2 = UUID.fromString("9cc65b00-8412-46e7-ba6f-ead17a9fe167");
 
-        double average = 3.5;
+        String gameName = "game";
+        int gamesPlayed = 50;
+        int gamesWonOrAttempts = 0;
 
-        UserGameStatDocument userGameStatDocument1 = new UserGameStatDocument(uuidUserStat1, uuidUser, uuidGame1, average);
-        UserGameStatDocument userGameStatDocument2 = new UserGameStatDocument(uuidUserStat2, uuidUser, uuidGame2, average);
+        UserGameStatDocument userGameStatDocument1 = new UserGameStatDocument(userGameStatUuid1, userUuid, gameUuid1, gameName,
+                gamesPlayed, gamesWonOrAttempts);
+        UserGameStatDocument userGameStatDocument2 = new UserGameStatDocument(userGameStatUuid2, userUuid, gameUuid2, gameName,
+                gamesPlayed, gamesWonOrAttempts);
 
-        userStatRepository.saveAll(Flux.just(userGameStatDocument1, userGameStatDocument2)).blockLast();
+        userGameStatRepository.saveAll(Flux.just(userGameStatDocument1, userGameStatDocument2)).blockLast();
     }
 
     @Test

@@ -8,7 +8,7 @@ import reactor.core.publisher.Flux;
 import java.util.UUID;
 
 @Repository
-public interface UserStatRepository extends ReactiveMongoRepository<UserGameStatDocument, UUID> {
+public interface UserGameStatRepository extends ReactiveMongoRepository<UserGameStatDocument, UUID> {
 
     Flux<UserGameStatDocument> findAll();
 
