@@ -1,0 +1,40 @@
+package com.betsanddice.user.validator;
+
+import com.betsanddice.user.annotations.ValidUUID;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.regex.Pattern;
+
+public class UUIDValidator implements ConstraintValidator<ValidUUID, String> {
+    @Value("${validation.mongodb_pattern}")
+    private String uuidPattern;
+    private Pattern UUID_PATTERN;
+
+    @Override
+    public void initialize(ValidUUID constraintAnnotation) {
+        this.UUID_PATTERN = Pattern.compile(uuidPattern);
+    }
+
+    @Override
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+        String customMessage = context.getDefaultConstraintMessageTemplate();
+
+        if (value == null) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(customMessage + ": value is null")
+                    .addConstraintViolation();
+            return false;
+        }
+
+        if (!UUID_PATTERN.matcher(value).matches()) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(customMessage + ": " + value)
+                    .addConstraintViolation();
+            return false;
+        }
+
+        return true;
+    }
+}

@@ -1,6 +1,7 @@
 package com.betsanddice.user.controller;
 
 import com.betsanddice.user.annotations.ValidGenericPattern;
+import com.betsanddice.user.annotations.ValidUUID;
 import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,10 +10,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Validated
 @RestController
 @RequestMapping(value = "/betsanddice/api/v1/user")
 public class UserController {
@@ -46,7 +49,7 @@ public class UserController {
                     @ApiResponse(responseCode = "404", description = "The User with given Id was not found.", content = {@Content(schema = @Schema())})
             }
     )
-    public Mono<UserDto> getOneUser(@PathVariable("userId") String id) {
+    public Mono<UserDto> getOneUser(@PathVariable("userId") @ValidUUID (message = "Invalid UUID for user") String id) {
         return userService.getUserById(id);
     }
 

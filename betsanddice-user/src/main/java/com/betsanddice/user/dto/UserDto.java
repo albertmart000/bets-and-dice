@@ -1,5 +1,6 @@
 package com.betsanddice.user.dto;
 
+import com.betsanddice.user.annotations.ValidUUID;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
@@ -21,7 +22,7 @@ import java.util.UUID;
 public class UserDto {
 
     @JsonProperty(value = "user_id", index = 0)
-   // @Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", message = "Invalid ID format. Please indicate the correct format.")
+    @ValidUUID(message = "Invalid ID format. Please indicate the correct format.")
     private UUID uuid;
 
     @JsonProperty(value = "name", index = 1)
