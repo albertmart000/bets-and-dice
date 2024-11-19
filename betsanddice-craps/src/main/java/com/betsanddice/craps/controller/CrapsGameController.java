@@ -6,14 +6,19 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Tag(
+        name = "REST APIs for betsanddice-craps microservice",
+        description = "REST API in bets-and-dice for Craps game"
+)
 @RestController
-@RequestMapping(value = "/betsanddice/api/v1/game/craps")
+@RequestMapping(value = "/betsanddice/api/v1/craps")
 public class CrapsGameController {
 
     private static final Logger log = LoggerFactory.getLogger(CrapsGameController.class);
