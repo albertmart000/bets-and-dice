@@ -1,13 +1,6 @@
 spring:
   application:
     name: betsanddice-user
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
-      - org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-  jmx:
-    enabled: true
   data:
     mongodb:
       #uri para bbdd local:

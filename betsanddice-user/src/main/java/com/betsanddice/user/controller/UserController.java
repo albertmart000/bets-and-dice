@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
@@ -15,9 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Tag(
+        name = "REST APIs for betsanddice-user microservice in bets-and-dice",
+        description = "REST API in bets-and-dice to for user management"
+)
 @Validated
 @RestController
-@RequestMapping(value = "/betsanddice/api/v1/user")
+@RequestMapping(value = "/api/v1/user")
 public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);

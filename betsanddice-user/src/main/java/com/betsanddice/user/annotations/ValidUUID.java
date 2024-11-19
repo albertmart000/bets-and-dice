@@ -1,6 +1,6 @@
 package com.betsanddice.user.annotations;
 
-import com.itachallenge.user.validators.GenericUUIDValidator;
+import com.betsanddice.user.validator.UUIDValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = GenericUUIDValidator.class)
+@Constraint(validatedBy = UUIDValidator.class)
 public @interface ValidUUID {
     String message() default "UUID is invalid";
     Class<?>[] groups() default {};
