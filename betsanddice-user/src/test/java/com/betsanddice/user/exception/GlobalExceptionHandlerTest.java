@@ -23,12 +23,16 @@ import java.util.Objects;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @WebFluxTest(controllers = GlobalExceptionHandlerTest.class)
 class GlobalExceptionHandlerTest {
+
+    private final HttpStatus BAD_REQUEST = HttpStatus.BAD_REQUEST;
+    private final HttpStatus OK_REQUEST = HttpStatus.OK;
 
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
@@ -74,8 +78,30 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void handleMethodArgumentNotValidException_Test() {
+    void testHandleBadUuidException() {
+        BadUuidException badUUIDException = new BadUuidException("Invalid Id format");
 
+        ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleBadUuidException(badUUIDException);
+
+        assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
+        String responseBody = Objects.requireNonNull(responseEntity.getBody()).getMessage();
+        assertTrue(responseBody.contains("Invalid Id format"));
+    }
+
+    @Test
+    void testHandleUserNotFoundException() {
+        UserNotFoundException userNotFoundException = new UserNotFoundException("User not found");
+
+        ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleUserNotFoundException(userNotFoundException);
+
+        assertEquals(OK_REQUEST, responseEntity.getStatusCode());
+        String responseBody = Objects.requireNonNull(responseEntity.getBody()).getMessage();
+        assertTrue(responseBody.contains("User not found"));
+    }
+
+
+    @Test
+    void handleMethodArgumentNotValidException_Test() {
         BindingResult bindingResult = Mockito.mock(BindingResult.class);
         when(bindingResult.getFieldErrors()).thenReturn(List.of(new FieldError("object", "field", "errorMessage")));
         when(methodArgumentNotValidException.getBindingResult()).thenReturn(bindingResult);
@@ -87,7 +113,6 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void handleMethodArgumentNotValidException_Return_ErrorMessage_Test() {
-
         BindingResult bindingResult = Mockito.mock(BindingResult.class);
         FieldError fieldError = Mockito.mock(FieldError.class);
         when(fieldError.getField()).thenReturn("name");
@@ -100,7 +125,6 @@ class GlobalExceptionHandlerTest {
 
         MatcherAssert.assertThat(responseEntity, notNullValue());
     }
-
 }
 
 

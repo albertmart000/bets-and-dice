@@ -33,13 +33,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BadUuidException.class)
-    public ResponseEntity<MessageDto> handleBadUUID(BadUuidException ex) {
+    public ResponseEntity<MessageDto> handleBadUuidException(BadUuidException ex) {
         return ResponseEntity.badRequest().body(new MessageDto(ex.getMessage()));
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<MessageDto> handleUserNotFoundException(UserNotFoundException ex) {
-        return ResponseEntity.badRequest().body(new MessageDto(ex.getMessage()));
+        return ResponseEntity.ok().body(new MessageDto(ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
