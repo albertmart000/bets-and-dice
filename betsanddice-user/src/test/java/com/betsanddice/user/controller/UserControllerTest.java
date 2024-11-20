@@ -1,5 +1,6 @@
 package com.betsanddice.user.controller;
 
+import com.betsanddice.user.dto.GenericResultDto;
 import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.service.IUserService;
 import org.junit.jupiter.api.Test;
@@ -7,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static org.mockito.Mockito.when;
@@ -57,13 +57,16 @@ class UserControllerTest {
     @Test
     void getAllUsers_ValidPageParameters_UsersReturned() {
         UserDto[] expectedUsers = {userDto1, userDto2, userDto3};
-        Flux<UserDto> expectedUsersFlux = Flux.just(expectedUsers);
+        GenericResultDto<UserDto> expectedResult = new GenericResultDto<>();
+        expectedResult.setInfo(0, 3, 3, expectedUsers);
+
+        Mono<GenericResultDto<UserDto>> expectedResultMono = Mono.just(expectedResult);
 
         String offset = "0";
         String limit = "3";
 
         when(userService.getAllUsers(Integer.parseInt(offset), Integer.parseInt(limit)))
-                .thenReturn(expectedUsersFlux);
+                .thenReturn(expectedResultMono);
 
         webTestClient.get()
                 .uri("/betsanddice/api/v1/user/users?offset=0&limit=3")
@@ -75,13 +78,16 @@ class UserControllerTest {
     @Test
     void getAllUsers_NullPageParameters_UsersReturned() {
         UserDto[] expectedUsers = {userDto1, userDto2};
-        Flux<UserDto> expectedUsersFlux = Flux.just(expectedUsers);
+        GenericResultDto<UserDto> expectedResult = new GenericResultDto<>();
+        expectedResult.setInfo(0, 2, 2, expectedUsers);
+
+        Mono<GenericResultDto<UserDto>> expectedResultMono = Mono.just(expectedResult);
 
         String offset = "0";
         String limit = "2";
 
         when(userService.getAllUsers(Integer.parseInt(offset), Integer.parseInt(limit)))
-                .thenReturn(expectedUsersFlux);
+                .thenReturn(expectedResultMono);
 
         webTestClient.get()
                 .uri("/betsanddice/api/v1/user/users")

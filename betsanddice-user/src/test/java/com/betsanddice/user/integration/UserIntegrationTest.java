@@ -1,6 +1,5 @@
 package com.betsanddice.user.integration;
 
-import com.betsanddice.user.document.Role;
 import com.betsanddice.user.document.UserDocument;
 import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.repository.UserRepository;
@@ -55,17 +54,20 @@ class UserIntegrationTest {
 
     UUID userId1 = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
     UUID userId2 = UUID.fromString("26977eee-89f8-11ec-a8a3-0242ac120003");
+    UUID userId3 = UUID.fromString("26977eee-89f8-11ec-a8a3-0242ac333333");
 
     @BeforeEach
     void setUp() {
         userRepository.deleteAll().block();
 
         UserDocument user1 = new UserDocument(userId1, "Morrow", "Montgomery", LocalDate.now(),
-                "Player1", "user1@email.com", "player1", LocalDateTime.now(), Role.PLAYER);
+                "Player1", "user1@email.com", "player1", LocalDateTime.now());
         UserDocument user2 = new UserDocument(userId2, "Morrow", "Montgomery", LocalDate.now(),
-                "Player2", "user2@email.com", "player2", LocalDateTime.now(), Role.PLAYER);
+                "Player2", "user2@email.com", "player2", LocalDateTime.now());
+        UserDocument user3 = new UserDocument(userId3, "Morrow", "Montgomery", LocalDate.now(),
+                "Player3", "user3@email.com", "player3", LocalDateTime.now());
 
-        userRepository.saveAll(Flux.just(user1, user2)).blockLast();
+        userRepository.saveAll(Flux.just(user1, user2, user3)).blockLast();
     }
 
     @Test
@@ -124,7 +126,7 @@ class UserIntegrationTest {
                 .expectStatus().isOk()
                 .expectBodyList(UserDto.class)
                 .contains(new UserDto[]{})
-                .hasSize(2);
+                .hasSize(1);
     }
 
 }
