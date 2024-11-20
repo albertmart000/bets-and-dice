@@ -42,7 +42,4 @@ public class UserDocument {
     @Field(name="registered")
     private LocalDateTime registrationDate;
 
-    @Field(name = "role")
-    private Role role;
-
 }

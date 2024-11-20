@@ -1,6 +1,6 @@
 package com.betsanddice.user.exception;
 
-import com.betsanddice.user.dto.ErrorMessageDto;
+import com.betsanddice.user.dto.MessageDto;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,18 +17,22 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.server.ResponseStatusException;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @WebFluxTest(controllers = GlobalExceptionHandlerTest.class)
 class GlobalExceptionHandlerTest {
+
+    private final HttpStatus BAD_REQUEST = HttpStatus.BAD_REQUEST;
+    private final HttpStatus OK_REQUEST = HttpStatus.OK;
 
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
@@ -37,7 +41,7 @@ class GlobalExceptionHandlerTest {
     @MockBean
     private MethodArgumentNotValidException methodArgumentNotValidException;
     @MockBean
-    private ErrorMessageDto errorMessageDto;
+    private MessageDto errorMessageDto;
 
     @BeforeEach
     void setUp() {
@@ -45,45 +49,70 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void handleResponseStatusException_Test() {
-        String REQUEST = "Invalid request";
-        HttpStatus BAD_REQUEST = HttpStatus.BAD_REQUEST;
+    void testHandleResponseStatusException() {
+        String expectedErrorMessage = "Validation failed";
+        HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
+        ResponseStatusException ex = new ResponseStatusException(expectedStatus, expectedErrorMessage);
 
-        when(responseStatusException.getStatusCode()).thenReturn(BAD_REQUEST);
-        when(responseStatusException.getMessage()).thenReturn(REQUEST);
-        when(errorMessageDto.getStatusCode()).thenReturn(BAD_REQUEST.value());
-        when(errorMessageDto.getMessage()).thenReturn(REQUEST);
+        GlobalExceptionHandler handler = new GlobalExceptionHandler();
 
-        ErrorMessageDto expectedErrorMessage = new ErrorMessageDto(REQUEST, BAD_REQUEST.value());
-        expectedErrorMessage.setStatusCode(BAD_REQUEST.value());
-        expectedErrorMessage.setMessage(REQUEST);
+        ResponseEntity<MessageDto> responseEntity = handler.handleResponseStatusException(ex);
 
-        ResponseEntity<ErrorMessageDto> response = globalExceptionHandler.handleResponseStatusException(responseStatusException);
-
-        StepVerifier.create(Mono.just(response))
-                .expectNextMatches(resp -> {
-                    assertEquals(BAD_REQUEST, response.getStatusCode());
-                    assertEquals(expectedErrorMessage, response.getBody());
-                    return true;
-                })
-                .verifyComplete();
+        assertEquals(expectedStatus, responseEntity.getStatusCode());
+        assertEquals(expectedErrorMessage, responseEntity.getBody().getMessage());
     }
 
     @Test
-    void handleMethodArgumentNotValidException_Test() {
+    void testHandleResponseStatusException_NullDetailMessageArguments() {
+        HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
+        ResponseStatusException ex = mock(ResponseStatusException.class);
+        when(ex.getStatusCode()).thenReturn(expectedStatus);
+        when(ex.getDetailMessageArguments()).thenReturn(null);
 
+        GlobalExceptionHandler handler = new GlobalExceptionHandler();
+
+        ResponseEntity<MessageDto> responseEntity = handler.handleResponseStatusException(ex);
+
+        assertEquals(expectedStatus, responseEntity.getStatusCode());
+        assertEquals("Validation failed", Objects.requireNonNull(responseEntity.getBody()).getMessage());
+    }
+
+    @Test
+    void testHandleBadUuidException() {
+        BadUuidException badUUIDException = new BadUuidException("Invalid Id format");
+
+        ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleBadUuidException(badUUIDException);
+
+        assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
+        String responseBody = Objects.requireNonNull(responseEntity.getBody()).getMessage();
+        assertTrue(responseBody.contains("Invalid Id format"));
+    }
+
+    @Test
+    void testHandleUserNotFoundException() {
+        UserNotFoundException userNotFoundException = new UserNotFoundException("User not found");
+
+        ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleUserNotFoundException(userNotFoundException);
+
+        assertEquals(OK_REQUEST, responseEntity.getStatusCode());
+        String responseBody = Objects.requireNonNull(responseEntity.getBody()).getMessage();
+        assertTrue(responseBody.contains("User not found"));
+    }
+
+
+    @Test
+    void handleMethodArgumentNotValidException_Test() {
         BindingResult bindingResult = Mockito.mock(BindingResult.class);
         when(bindingResult.getFieldErrors()).thenReturn(List.of(new FieldError("object", "field", "errorMessage")));
         when(methodArgumentNotValidException.getBindingResult()).thenReturn(bindingResult);
 
-        ResponseEntity<ErrorMessageDto> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
+        ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
 
         MatcherAssert.assertThat(responseEntity, notNullValue());
     }
 
     @Test
     void handleMethodArgumentNotValidException_Return_ErrorMessage_Test() {
-
         BindingResult bindingResult = Mockito.mock(BindingResult.class);
         FieldError fieldError = Mockito.mock(FieldError.class);
         when(fieldError.getField()).thenReturn("name");
@@ -92,11 +121,10 @@ class GlobalExceptionHandlerTest {
         when(bindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
         when(methodArgumentNotValidException.getBindingResult()).thenReturn(bindingResult);
 
-        ResponseEntity<ErrorMessageDto> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
+        ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
 
         MatcherAssert.assertThat(responseEntity, notNullValue());
     }
-
 }
 
 
