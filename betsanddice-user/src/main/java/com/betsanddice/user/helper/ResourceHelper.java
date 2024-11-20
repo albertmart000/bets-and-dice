@@ -14,8 +14,8 @@ import java.util.Optional;
 
 public class ResourceHelper {
 
-    private Resource resource;
-    private String resourcePath;
+    private final Resource resource;
+    private final String resourcePath;
     private static final Logger log = LoggerFactory.getLogger(ResourceHelper.class);
 
     public ResourceHelper(@NotNull String resourcePath) {
@@ -32,12 +32,10 @@ public class ResourceHelper {
             log.error(getResourceErrorMessage("loading/reading").concat(ex.getMessage()));
         }
         return result;
-
-
     }
 
     private String getResourceErrorMessage(String action) {
-        String resourceIdentifier = Objects.requireNonNullElseGet(resourcePath, () -> resource.getDescription());
+        String resourceIdentifier = Objects.requireNonNullElseGet(resourcePath, resource::getDescription);
         return "Exception when " + action + " " + resourceIdentifier + " resource: \n";
     }
 }

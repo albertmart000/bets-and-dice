@@ -1,6 +1,5 @@
 package com.betsanddice.user.repository;
 
-import com.betsanddice.user.document.Role;
 import com.betsanddice.user.document.UserDocument;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +49,13 @@ class UserRepositoryTest {
         userRepository.deleteAll().block();
 
         UserDocument user1 = new UserDocument(uuidUser1, "Morrow", "Montgomery", LocalDate.now(),
-                "Player1", "user1@email.com", "player1", LocalDateTime.now(), Role.ADMIN);
+                "Player1", "user1@email.com", "player1", LocalDateTime.now());
 
         UserDocument user2 = new UserDocument(uuidUser2, "Morrow", "Montgomery", LocalDate.now(),
-                "Player2", "user2@email.com", "player2", LocalDateTime.now(), Role.PLAYER);
+                "Player2", "user2@email.com", "player2", LocalDateTime.now());
 
         UserDocument user3 = new UserDocument(uuidUser3, "Morrow", "Montgomery", LocalDate.now(),
-                "Player3", "user3@email.com", "player3", LocalDateTime.now(), Role.PLAYER);
+                "Player3", "user3@email.com", "player3", LocalDateTime.now());
 
         userRepository.saveAll(Flux.just(user1, user2, user3)).blockLast();
     }
@@ -93,22 +92,22 @@ class UserRepositoryTest {
     @Test
     void findAllTest() {
 
-        Flux<UserDocument> usersOffset0Limit1Flux = userRepository.findAllByUuidNotNull().skip(0).take(1);
+        Flux<UserDocument> usersOffset0Limit1Flux = userRepository.findAllByUuidNotNullExcludingTestingValues().skip(0).take(1);
         StepVerifier.create(usersOffset0Limit1Flux)
                 .expectNextCount(1)
                 .verifyComplete();
 
-        Flux<UserDocument> usersOffset0Limit2Flux = userRepository.findAllByUuidNotNull().skip(0).take(2);
+        Flux<UserDocument> usersOffset0Limit2Flux = userRepository.findAllByUuidNotNullExcludingTestingValues().skip(0).take(2);
         StepVerifier.create(usersOffset0Limit2Flux)
                 .expectNextCount(2)
                 .verifyComplete();
 
-        Flux<UserDocument> usersOffset1Limit1Flux = userRepository.findAllByUuidNotNull().skip(1).take(1);
+        Flux<UserDocument> usersOffset1Limit1Flux = userRepository.findAllByUuidNotNullExcludingTestingValues().skip(1).take(1);
         StepVerifier.create(usersOffset1Limit1Flux)
                 .expectNextCount(1)
                 .verifyComplete();
 
-        Flux<UserDocument> usersOffset1Limit2Flux = userRepository.findAllByUuidNotNull().skip(2).take(2);
+        Flux<UserDocument> usersOffset1Limit2Flux = userRepository.findAllByUuidNotNullExcludingTestingValues().skip(2).take(2);
         StepVerifier.create(usersOffset1Limit2Flux)
                 .expectNextCount(1)
                 .verifyComplete();

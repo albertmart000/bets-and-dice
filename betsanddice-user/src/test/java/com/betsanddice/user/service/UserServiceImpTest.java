@@ -1,11 +1,13 @@
 package com.betsanddice.user.service;
 
 import com.betsanddice.user.document.UserDocument;
+import com.betsanddice.user.dto.GenericResultDto;
 import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.exception.BadUuidException;
 import com.betsanddice.user.exception.UserNotFoundException;
-import com.betsanddice.user.helper.UserDocumentToDtoConverter;
+import com.betsanddice.user.helper.DocumentToDtoConverter;
 import com.betsanddice.user.repository.UserRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,7 +27,7 @@ class UserServiceImpTest {
     private UserRepository userRepository;
 
     @Mock
-    private UserDocumentToDtoConverter converter;
+    private DocumentToDtoConverter<UserDocument, UserDto> converter;
 
     @InjectMocks
     private UserServiceImp userService;
@@ -42,7 +44,8 @@ class UserServiceImpTest {
         UserDto userDto = new UserDto();
 
         when(userRepository.findByUuid(userId)).thenReturn(Mono.just(userDocument));
-        when(converter.fromDocumentToDto(userDocument)).thenReturn(userDto);
+        when(converter.fromDocumentToDto(userDocument, UserDto.class)).thenReturn(userDto);
+
 
         Mono<UserDto> resultDto = userService.getUserById(userId.toString());
 
@@ -52,23 +55,37 @@ class UserServiceImpTest {
                 .verify();
 
         verify(userRepository).findByUuid(userId);
-        verify(converter).fromDocumentToDto(userDocument);
+        verify(converter).fromDocumentToDto(userDocument, UserDto.class);
+    }
+
+    @Test
+    void getUserById_InvalidId_ErrorThrown() {
+        String invalidId = "invalid-id";
+
+        Mono<UserDto> result = userService.getUserById(invalidId);
+
+        StepVerifier.create(result)
+                .expectError(BadUuidException.class)
+                .verify();
+
+        verifyNoInteractions(userRepository);
+        verifyNoInteractions(converter);
     }
 
     @Test
     void getUserById_NonExistId_ErrorThrown() {
-        UUID userId = UUID.randomUUID();
+        String idString = "4f8a6c91-8a9d-49b0-9f2c-3e67d2b18b7d";
+        UUID id = UUID.fromString(idString);
 
-        when(userRepository.findByUuid(userId)).thenReturn(Mono.empty());
+        when(userRepository.findByUuid(id)).thenReturn(Mono.empty());
 
-        Mono<UserDto> resultDto = userService.getUserById(userId.toString());
+        Mono<UserDto> result = userService.getUserById(idString);
 
-        StepVerifier.create(resultDto)
-                .expectError(UserNotFoundException.class)
-                .verify();
-
-        verify(userRepository).findByUuid(userId);
-        verifyNoInteractions(converter);
+        StepVerifier.create(result)
+                .expectErrorMatches(error ->
+                        error instanceof UserNotFoundException
+                                && error.getMessage().equals("User with id " + id + " not found.")
+                );
     }
 
     @Test
@@ -88,34 +105,32 @@ class UserServiceImpTest {
         UserDto userDto3 = new UserDto();
         UserDto userDto4 = new UserDto();
 
-        when(userRepository.findAll()).thenReturn(Flux.just(new UserDocument(), new UserDocument()));
-        when(converter.fromDocumentFluxToDtoFlux(any())).thenReturn(Flux.just(userDto1, userDto2));
-
         int offset = 1;
         int limit = 2;
 
-        when(userRepository.findAllByUuidNotNull()).thenReturn(Flux.just(userDocument1, userDocument2, userDocument3, userDocument4));
-        when(converter.fromDocumentFluxToDtoFlux(any())).thenReturn(Flux.just(userDto1, userDto2, userDto3, userDto4));
+        when(userRepository.findAllByUuidNotNullExcludingTestingValues())
+                .thenReturn(Flux.just(userDocument1, userDocument2, userDocument3, userDocument4));
+        when(converter.fromDocumentFluxToDtoFlux(any(), any()))
+                .thenReturn(Flux.just(userDto1, userDto2, userDto3, userDto4));
+        when(userRepository.count()).thenReturn(Mono.just(100L));
 
-        Flux<UserDto> result = userService.getAllUsers(offset, limit);
-        verify(userRepository).findAllByUuidNotNull();
-        verify(converter).fromDocumentFluxToDtoFlux(any());
+        Mono<GenericResultDto<UserDto>> result = userService.getAllUsers(offset, limit);
+
+        verify(userRepository).findAllByUuidNotNullExcludingTestingValues();
+        verify(converter).fromDocumentFluxToDtoFlux(any(), any());
 
         StepVerifier.create(result)
                 .expectSubscription()
-                .expectNextCount(4)
-                .expectComplete()
-                .verify();
-
-        StepVerifier.create(result.skip(offset).take(limit))
-                .expectSubscription()
-                .expectNext( userDto2, userDto3)
-                .expectComplete()
-                .verify();
-
-        StepVerifier.create(userRepository.findAllByUuidNotNull().skip(offset).take(limit))
-                .expectSubscription()
-                .expectNextCount(2)
+                .assertNext(resultDto -> {
+                    Assertions.assertEquals(100, resultDto.getCount());
+                    Assertions.assertEquals(offset, resultDto.getOffset());
+                    Assertions.assertEquals(limit, resultDto.getLimit());
+                    Assertions.assertEquals(4, resultDto.getResults().length);
+                    Assertions.assertEquals(userDto1, resultDto.getResults()[0]);
+                    Assertions.assertEquals(userDto2, resultDto.getResults()[1]);
+                    Assertions.assertEquals(userDto3, resultDto.getResults()[2]);
+                    Assertions.assertEquals(userDto4, resultDto.getResults()[3]);
+                })
                 .expectComplete()
                 .verify();
     }

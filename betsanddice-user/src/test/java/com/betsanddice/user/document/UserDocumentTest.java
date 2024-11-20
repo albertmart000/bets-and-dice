@@ -14,7 +14,7 @@ class UserDocumentTest {
     void getUuidTest() {
         UUID uuid = UUID.randomUUID();
         UserDocument userDocument = new UserDocument(uuid, null, null, null, null,
-                null, null, null, null);
+                null, null, null);
         assertEquals(uuid, userDocument.getUuid());
     }
 
@@ -22,7 +22,7 @@ class UserDocumentTest {
     void getNameTest() {
         String name = "name";
         UserDocument userDocument = new UserDocument(null, name, null, null, null,
-                null, null, null, null);
+                null, null, null);
         assertEquals(name, userDocument.getFirstName());
     }
 
@@ -30,7 +30,7 @@ class UserDocumentTest {
     void getSurNameTest() {
         String surname = "surname";
         UserDocument userDocument = new UserDocument(null, null, surname, null, null,
-                null, null, null, null);
+                null, null, null);
         assertEquals(surname, userDocument.getSurname());
     }
 
@@ -39,7 +39,7 @@ class UserDocumentTest {
         LocalDate birthdate = LocalDate.now();
 
         UserDocument userDocument = new UserDocument(null, null, null, birthdate, null,
-                null, null, null, null);
+                null, null, null);
         assertEquals(birthdate, userDocument.getBirthdate());
     }
 
@@ -47,7 +47,7 @@ class UserDocumentTest {
     void getNickNameTest() {
         String nickname = "nickname";
         UserDocument userDocument = new UserDocument(null, null, null, null, nickname,
-                null, null, null, null);
+                null, null, null);
         assertEquals(nickname, userDocument.getNickname());
     }
 
@@ -55,7 +55,7 @@ class UserDocumentTest {
     void getEmailTest() {
         String email = "email";
         UserDocument userDocument = new UserDocument(null, null, null, null, null,
-                email, null, null, null);
+                email, null, null);
         assertEquals(email, userDocument.getEmail());
     }
 
@@ -63,7 +63,7 @@ class UserDocumentTest {
     void getPasswordTest() {
         String password = "password";
         UserDocument userDocument = new UserDocument(null, null, null, null, null,
-                null, password, null, null);
+                null, password, null);
         assertEquals(password, userDocument.getPassword());
     }
 
@@ -71,15 +71,8 @@ class UserDocumentTest {
     void getRegisteredTest() {
         LocalDateTime registrationDate = now();
         UserDocument userDocument = new UserDocument(null, null, null, null, null,
-                null, null, registrationDate, null);
+                null, null, registrationDate);
         assertEquals(registrationDate, userDocument.getRegistrationDate());
     }
 
-    @Test
-    void getRoleTest() {
-        Role role = Role.ADMIN;
-        UserDocument userDocument = new UserDocument(null, null, null, null, null,
-                null, null, null, Role.ADMIN);
-        assertEquals(role, userDocument.getRole());
-    }
 }
