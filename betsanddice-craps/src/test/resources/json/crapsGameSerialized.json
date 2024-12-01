@@ -1,0 +1,16 @@
+{
+  "id_user" : "706507d4-b89f-41eb-a7eb-41838d08a08f",
+  "attempts" : 2,
+  "dice_rolls" : [
+    {
+      "dice_1" : 1,
+      "dice_2" : 2,
+      "result" : 3
+    },
+    {
+      "dice_1" : 3,
+      "dice_2" : 4,
+      "result" : 7
+    }
+  ]
+}

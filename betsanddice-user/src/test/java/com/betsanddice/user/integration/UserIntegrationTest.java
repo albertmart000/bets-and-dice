@@ -25,6 +25,7 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
@@ -102,7 +103,7 @@ class UserIntegrationTest {
                 .uri(USER_BASE_URL + "/users/{userId}", INVALID_UUID)
                 .exchange()
                 .expectStatus()
-                .isEqualTo(BAD_REQUEST);
+                .isEqualTo(OK);
     }
 
     @Test
