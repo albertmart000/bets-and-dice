@@ -22,19 +22,13 @@ import java.util.UUID;
 @Setter
 public class CrapsGameDto {
 
-    @JsonProperty(value = "id_craps_game", index = 0)
-    private UUID uuid;
-
-    @JsonProperty(value = "id_user", index = 1)
+    @JsonProperty(value = "id_user", index = 0)
     private UUID userId;
 
-    @JsonProperty(value = "date", index = 2)
-    private String date;
-
-    @JsonProperty(value = "attempts", index = 3)
+    @JsonProperty(value = "attempts", index = 1)
     private Integer attempts;
 
-    @JsonProperty(value = "dice_rolls", index = 4)
+    @JsonProperty(value = "dice_rolls", index = 2)
     private List<DiceRollDto> diceRollsList;
 
 }
