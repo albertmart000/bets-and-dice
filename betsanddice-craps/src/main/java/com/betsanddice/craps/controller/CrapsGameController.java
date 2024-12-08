@@ -1,7 +1,7 @@
 package com.betsanddice.craps.controller;
 
 import com.betsanddice.craps.dto.CrapsGameDto;
-import com.betsanddice.craps.service.ICrapsService;
+import com.betsanddice.craps.service.ICrapsGameService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,13 +19,13 @@ import reactor.core.publisher.Mono;
 )
 @RestController
 @RequestMapping(value = "/betsanddice/api/v1/craps")
-public class CrapsController {
+public class CrapsGameController {
 
-    private static final Logger log = LoggerFactory.getLogger(CrapsController.class);
+    private static final Logger log = LoggerFactory.getLogger(CrapsGameController.class);
 
-    ICrapsService crapsGameService;
+    ICrapsGameService crapsGameService;
 
-    public CrapsController(ICrapsService crapsGameService) {
+    public CrapsGameController(ICrapsGameService crapsGameService) {
         this.crapsGameService = crapsGameService;
     }
 
@@ -46,8 +46,8 @@ public class CrapsController {
                     @ApiResponse(responseCode = "404", description = "The User with given Id was not found.", content = {@Content(schema = @Schema())})
             })
 
-    public Mono<ResponseEntity<CrapsGameDto>> addCrapsGameToUser(@PathVariable("userId") String userId) {
-        return crapsGameService.addCrapsGameToUser(userId)
+    public Mono<ResponseEntity<CrapsGameDto>> playCrapsGameByUser(@PathVariable("userId") String userId) {
+        return crapsGameService.playCrapsGameByUser(userId)
                 .map(ResponseEntity.ok()::body);
     }
 }

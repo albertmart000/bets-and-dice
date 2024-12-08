@@ -3,8 +3,8 @@ package com.betsanddice.craps.service;
 import com.betsanddice.craps.dto.CrapsGameDto;
 import reactor.core.publisher.Mono;
 
-public interface ICrapsService {
+public interface ICrapsGameService {
 
-    Mono<CrapsGameDto> addCrapsGameToUser(String userId);
+    Mono<CrapsGameDto> playCrapsGameByUser(String userId);
 
 }
