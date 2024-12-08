@@ -16,7 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,19 +33,33 @@ class CrapsGameDtoTest {
 
     private final String crapsGameJsonPath = "json/crapsGameSerialized.json";
 
+    private CrapsGameDto crapsGameDto = new CrapsGameDto();
+
+    private final UUID uuid = UUID.randomUUID();
+    private final UUID userId = UUID.randomUUID();
+    private final String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    private final Integer attempts = 10;
+    private final List<DiceRollDto> diceRollsList = List.of(
+            new DiceRollDto(1, 2, 3),
+            new DiceRollDto(3, 4, 7)
+    );
+
     private CrapsGameDto crapsGameDtoToSerialize;
     private CrapsGameDto crapsGameDtoFromDeserialize;
 
     @BeforeEach
     void setUp() {
+        UUID uuidCrapsGame = UUID.fromString("50feba3c-3cbf-48ad-8142-cccf7c6bf3d3");
         UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
         DiceRollDto diceRollDto1 = new DiceRollDto(1, 2, 3);
         DiceRollDto diceRollDto2 = new DiceRollDto(3, 4, 7);
         List<DiceRollDto> diceRollsDtoList = List.of(diceRollDto1, diceRollDto2);
 
-        crapsGameDtoToSerialize = new CrapsGameDto(uuidUser, 2, diceRollsDtoList);
-        crapsGameDtoFromDeserialize = new CrapsGameDto(uuidUser, 2, diceRollsDtoList);
+        crapsGameDtoToSerialize = new CrapsGameDto(uuidCrapsGame, uuidUser,
+                "2023-01-31 12:46:29", 2, diceRollsDtoList);
+        crapsGameDtoFromDeserialize = new CrapsGameDto(uuidCrapsGame, uuidUser,
+                "2023-01-31 12:46:29", 2, diceRollsDtoList);
     }
 
     @Test
@@ -67,50 +82,49 @@ class CrapsGameDtoTest {
         assertThat(dtoResult).usingRecursiveComparison().isEqualTo(crapsGameDtoFromDeserialize);
     }
 
+    @Test
+    void testGetterAndSetter() {
+        crapsGameDto.setUuid(uuid);
+        crapsGameDto.setUserId(userId);
+        crapsGameDto.setDate(date);
+        crapsGameDto.setAttempts(attempts);
+        crapsGameDto.setDiceRollsList(diceRollsList);
+
+        assertEquals(uuid, crapsGameDto.getUuid());
+        assertEquals(userId, crapsGameDto.getUserId());
+        assertEquals(date, crapsGameDto.getDate());
+        assertEquals(attempts, crapsGameDto.getAttempts());
+        assertEquals(diceRollsList, crapsGameDto.getDiceRollsList());
+    }
 
     @Test
     void testNoArgsConstructor() {
-        CrapsGameDto crapsGameDto = new CrapsGameDto();
         Assertions.assertNotNull(crapsGameDto);
     }
 
     @Test
     void testAllArgsConstructor() {
-        UUID userId = UUID.randomUUID();
-        Integer attempts = 10;
-        List<DiceRollDto> diceRollsList = new ArrayList<>();
-        CrapsGameDto dto = new CrapsGameDto(userId, attempts, diceRollsList);
-        assertEquals(userId, dto.getUserId());
-        assertEquals(attempts, dto.getAttempts());
-        assertEquals(diceRollsList, dto.getDiceRollsList());
+        crapsGameDto = new CrapsGameDto(uuid, userId, date, attempts, diceRollsList);
+        assertEquals(uuid, crapsGameDto.getUuid());
+        assertEquals(userId, crapsGameDto.getUserId());
+        assertEquals(date, crapsGameDto.getDate());
+        assertEquals(attempts, crapsGameDto.getAttempts());
+        assertEquals(diceRollsList, crapsGameDto.getDiceRollsList());
     }
 
     @Test
     void testBuilder() {
-        UUID userId = UUID.randomUUID();
-        Integer attempts = 10;
-        List<DiceRollDto> diceRollsList = new ArrayList<>();
-        CrapsGameDto dto = CrapsGameDto.builder()
+        crapsGameDto = CrapsGameDto.builder()
+                .uuid(uuid)
                 .userId(userId)
+                .date(date)
                 .attempts(attempts)
                 .diceRollsList(diceRollsList)
                 .build();
-        assertEquals(userId, dto.getUserId());
-        assertEquals(attempts, dto.getAttempts());
-        assertEquals(diceRollsList, dto.getDiceRollsList());
-    }
-
-    @Test
-    void testGetterSetter() {
-        CrapsGameDto dto = new CrapsGameDto();
-        UUID userId = UUID.randomUUID();
-        Integer attempts = 10;
-        List<DiceRollDto> diceRollsList = new ArrayList<>();
-        dto.setUserId(userId);
-        dto.setAttempts(attempts);
-        dto.setDiceRollsList(diceRollsList);
-        assertEquals(userId, dto.getUserId());
-        assertEquals(attempts, dto.getAttempts());
-        assertEquals(diceRollsList, dto.getDiceRollsList());
+        assertEquals(uuid, crapsGameDto.getUuid());
+        assertEquals(userId, crapsGameDto.getUserId());
+        assertEquals(date, crapsGameDto.getDate());
+        assertEquals(attempts, crapsGameDto.getAttempts());
+        assertEquals(diceRollsList, crapsGameDto.getDiceRollsList());
     }
 }

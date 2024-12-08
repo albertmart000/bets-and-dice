@@ -1,7 +1,7 @@
 package com.betsanddice.craps.controller;
 
 import com.betsanddice.craps.dto.CrapsGameDto;
-import com.betsanddice.craps.service.ICrapsService;
+import com.betsanddice.craps.service.ICrapsGameService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.when;
 
-@WebFluxTest(CrapsController.class)
+@WebFluxTest(CrapsGameController.class)
 class CrapsControllerTest {
 
     private final String CRAPS_BASE_URL = "/betsanddice/api/v1/craps";
@@ -23,7 +23,7 @@ class CrapsControllerTest {
     private WebTestClient webTestClient;
 
     @MockBean
-    private ICrapsService crapsService;
+    private ICrapsGameService crapsService;
 
     CrapsGameDto crapsGameDto = new CrapsGameDto();
 
@@ -41,7 +41,7 @@ class CrapsControllerTest {
     void AddCrapsGameToUserTest() {
         UUID userId = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
-        when(crapsService.addCrapsGameToUser(String.valueOf(userId)))
+        when(crapsService.playCrapsGameByUser(String.valueOf(userId)))
                 .thenReturn(Mono.just(crapsGameDto));
 
         webTestClient.post()
