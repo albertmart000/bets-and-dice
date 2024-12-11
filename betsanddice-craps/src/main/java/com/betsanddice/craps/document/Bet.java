@@ -1,14 +1,11 @@
 package com.betsanddice.craps.document;
 
-import com.betsanddice.craps.dto.BetDto;
-import com.betsanddice.craps.dto.DiceRollDto;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -16,9 +13,8 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection="craps-games")
-public class CrapsGameDocument {
-
+@Document(collection = "bets")
+public class Bet {
     @Id
     @Field(name = "_id")
     private UUID uuid;
@@ -26,13 +22,9 @@ public class CrapsGameDocument {
     @Field(name = "id_user")
     private UUID userId;
 
-    @Field(name = "date")
-    private LocalDateTime date;
+    @Field(name = "id_game")
+    private UUID gameId;
 
-    @Field(name = "bet")
-    private BetDto betDto;
-
-    @Field(name = "dice_rolls")
-    private List<DiceRollDto> diceRollsList;
-
+    @Field(name = "amount_wagered")
+    private BigDecimal amountWagered;
 }

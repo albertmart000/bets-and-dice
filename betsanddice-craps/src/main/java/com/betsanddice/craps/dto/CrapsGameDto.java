@@ -34,7 +34,9 @@ public class CrapsGameDto {
     @JsonProperty(value = "attempts", index = 3)
     private Integer attempts;
 
-    @JsonProperty(value = "dice_rolls", index = 4)
-    private List<DiceRollDto> diceRollsList;
+    @JsonProperty(value = "bet", index = 4)
+    private BetDto betDto;
 
+    @JsonProperty(value = "dice_rolls", index = 5)
+    private List<DiceRollDto> diceRollsList;
 }

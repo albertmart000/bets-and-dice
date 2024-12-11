@@ -7,4 +7,6 @@ public interface ICrapsGameService {
 
     Mono<CrapsGameDto> playCrapsGameByUser(String userId);
 
+    Mono<CrapsGameDto> playAndBetCrapsGameByUser(String userId, double amountWagered, int myResult);
+
 }
