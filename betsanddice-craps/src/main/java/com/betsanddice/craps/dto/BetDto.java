@@ -21,17 +21,15 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class BetDto {
 
-    @JsonProperty(value = "my_result", index = 0)
-    private int myResult;
+    @JsonProperty(value = "player_result", index = 0)
+    private int playerResult;
 
-    @JsonProperty(value = "amount_wagered", index = 1)
-    private BigDecimal amountWagered;
+    @JsonProperty(value = "amount_bet", index = 1)
+    private BigDecimal amountBet;
 
-    @JsonProperty(value = "player_won", index = 2)
-    private boolean playerWon = true;
+    @JsonProperty(value = "player_wins", index = 2)
+    private boolean playerWins = true;
 
     @JsonProperty(value = "amount_won", index = 3)
     private BigDecimal amountWon;
-
-
 }

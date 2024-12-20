@@ -1,9 +1,9 @@
 package com.betsanddice.craps.service;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
+import com.betsanddice.craps.document.DiceRollDocument;
 import com.betsanddice.craps.dto.BetDto;
 import com.betsanddice.craps.dto.CrapsGameDto;
-import com.betsanddice.craps.dto.DiceRollDto;
 import com.betsanddice.craps.exception.BadUuidException;
 import com.betsanddice.craps.helper.DocumentToDtoConverter;
 import com.betsanddice.craps.repository.CrapsGameRepository;
@@ -51,27 +51,37 @@ public class CrapsGameServiceImp implements ICrapsGameService {
                 .doOnError(error -> log.error("Operation failed with error message: {}", error.getMessage()));
     }
 
-
 //    @Override
-//    public Mono<CrapsGameDto> playCrapsGameByUserWithBet(String uuid, double amountWagered, int myResult) {
+//    public Mono<CrapsGameDto> playAndBetCrapsGameByUser(String uuid, double amountBet, int playerResult) {
 //        return validateUuid(uuid)
 //                .flatMap(userUuid -> generateDiceRollsList()
 //                        .flatMap(diceRollsList -> {
-//                            boolean isWin = myResult <= diceRollsList.size();
-//                            double betCoefficient = calculateBetCoefficient(myResult);
-//                            BigDecimal amountWon = calculateAmountWon(amountWagered, isWin, betCoefficient);
+//                            boolean isWin = playerResult >= diceRollsList.size();
+//                            double betOdd = calculateBetOdds(playerResult);
+//                            BigDecimal amountWon = calculateAmountWon(amountBet, isWin, betOdd);
+//                            //BigDecimal amountWon = BigDecimal.valueOf(amountWagered * (isWon ? betCoefficient : -1));
 //
-//                            BetDto betDto = buildBetDto(myResult, amountWagered, isWin, amountWon);
-//                            CrapsGameDocument crapsGameDocument = buildCrapsGameDocument(String.valueOf(userUuid), diceRollsList);
+//                            BetDocument betDocument = buildBetDocument(playerResult, amountBet);
+//                            Mono<BetDto> betDto = buildBetDto(playerResult, amountBet, isWin, amountWon);
+//                            Mono<CrapsGameDocument> crapsGameDocument = buildCrapsGameDocument(String.valueOf(userUuid), betDocument, diceRollsList);
+//                        };
 //
-//                            return saveAndConvertCrapsGame(crapsGameDocument, betDto);
-//                        }))
-//                .doOnSuccess(crapsGameDto -> log.info("Successfully played CrapsGame with Bet by user with ID: {}", uuid))
+//
+//        return crapsGameRepository.save(crapsGameDocument)
+//                .map(savedDocument -> {
+//                    CrapsGameDto crapsGameDto = converter.fromDocumentToDto(savedDocument, CrapsGameDto.class);
+//                    crapsGameDto.setBetDto(betDto);
+//                    return crapsGameDto;
+//                });
+//
+//
+//
+//        .doOnSuccess(crapsGameDto -> log.info("Successfully played CrapsGame with Bet by user with ID: {}", uuid))
 //                .doOnError(error -> log.error("Operation failed with error message: {}", error.getMessage()));
 //    }
 //
-//    private double calculateBetCoefficient(int myResult) {
-//        return switch (myResult) {
+//    private double calculateBetOdds(int playerResult) {
+//        return switch (playerResult) {
 //            case 1 -> 2.0;
 //            case 3 -> 1.5;
 //            case 5 -> 1.25;
@@ -79,26 +89,48 @@ public class CrapsGameServiceImp implements ICrapsGameService {
 //        };
 //    }
 //
-//    private BigDecimal calculateAmountWon(double amountWagered, boolean isWin, double betCoefficient) {
-//        return BigDecimal.valueOf(amountWagered * (isWin ? betCoefficient : -1));
+//    private Mono<List<DiceRollDocument>> generateDiceRollsList() {
+//        return Flux.<DiceRollDocument>generate(flux -> {
+//                    int dice1 = secureRandom.nextInt(6) + 1;
+//                    int dice2 = secureRandom.nextInt(6) + 1;
+//                    int result = dice1 + dice2;
+//                    flux.next(new DiceRollDocument(dice1, dice2));
+//                    if (result == 7) {
+//                        flux.complete();
+//                    }
+//                })
+//                .collectList();
 //    }
 //
-//    private BetDto buildBetDto(int myResult, double amountWagered, boolean isWin, BigDecimal amountWon) {
-//        return BetDto.builder()
-//                .myResult(myResult)
-//                .amountWagered(BigDecimal.valueOf(amountWagered))
-//                .playerWon(isWin)
+//    private BigDecimal calculateAmountWon(double amountBet, boolean isWin, double betOdd) {
+//        return BigDecimal.valueOf(amountBet * (isWin ? betOdd : -1));
+//    }
+//
+//    private Mono<BetDto> buildBetDto(int playerResult, double amountBet, boolean isWin, BigDecimal amountWon) {
+//        return Mono.just(BetDto.builder()
+//                .playerResult(playerResult)
+//                .amountBet(BigDecimal.valueOf(amountBet))
+//                .playerWins(isWin)
 //                .amountWon(amountWon)
+//                .build());
+//    }
+//
+//    private BetDocument buildBetDocument(int playerResult, double amountBet) {
+//        return  BetDocument.builder()
+//                .playerResult(playerResult)
+//                .amountBet(BigDecimal.valueOf(amountBet))
 //                .build();
 //    }
 //
-//    private CrapsGameDocument buildCrapsGameDocument(String userUuid, List<DiceRollDto> diceRollsList) {
-//        return CrapsGameDocument.builder()
+//    private Mono <CrapsGameDocument> buildCrapsGameDocument(String userUuid, BetDocument betDocument,
+//                                                     List<DiceRollDocument> diceRollsList ) {
+//        return Mono.just(CrapsGameDocument.builder()
 //                .uuid(UUID.randomUUID())
 //                .userId(UUID.fromString(userUuid))
 //                .date(LocalDateTime.now())
+//                .betDocument(betDocument)
 //                .diceRollsList(diceRollsList)
-//                .build();
+//                .build());
 //    }
 //
 //    private Mono<CrapsGameDto> saveAndConvertCrapsGame(CrapsGameDocument crapsGameDocument, BetDto betDto) {
@@ -109,27 +141,26 @@ public class CrapsGameServiceImp implements ICrapsGameService {
 //                    return crapsGameDto;
 //                });
 //    }
-
-
+    
     @Override
-    public Mono<CrapsGameDto> playAndBetCrapsGameByUser(String uuid, double amountWagered, int myResult) {
+    public Mono<CrapsGameDto> playAndBetCrapsGameByUser(String uuid, double amountBet, int playerResult) {
         return validateUuid(uuid)
                 .flatMap(userUuid -> generateDiceRollsList()
                         .flatMap(diceRollsList -> {
-                            boolean isWon = myResult >= diceRollsList.size();
-                            double betCoefficient = switch (myResult) {
+                            boolean isWon = playerResult >= diceRollsList.size();
+                            double betCoefficient = switch (playerResult) {
                                 case 1 -> 2.0;
                                 case 3 -> 1.5;
                                 case 5 -> 1.25;
                                 default -> 0;
                             };
 
-                            BigDecimal amountWon = BigDecimal.valueOf(amountWagered * (isWon ? betCoefficient : -1));
+                            BigDecimal amountWon = BigDecimal.valueOf(amountBet * (isWon ? betCoefficient : -1));
 
                             BetDto betDto = BetDto.builder()
-                                    .myResult(myResult)
-                                    .amountWagered(BigDecimal.valueOf(amountWagered))
-                                    .playerWon(isWon)
+                                    .playerResult(playerResult)
+                                    .amountBet(BigDecimal.valueOf(amountBet))
+                                    .playerWins(isWon)
                                     .amountWon(amountWon)
                                     .build();
 
@@ -151,18 +182,32 @@ public class CrapsGameServiceImp implements ICrapsGameService {
                 .doOnError(error -> log.error("Operation failed with error message: {}", error.getMessage()));
     }
 
-    private Mono<List<DiceRollDto>> generateDiceRollsList() {
-        return Flux.<DiceRollDto>generate(flux -> {
+
+    private Mono<List<DiceRollDocument>> generateDiceRollsList() {
+        return Flux.<DiceRollDocument>generate(flux -> {
                     int dice1 = secureRandom.nextInt(6) + 1;
                     int dice2 = secureRandom.nextInt(6) + 1;
                     int result = dice1 + dice2;
-                    flux.next(new DiceRollDto(dice1, dice2, result));
+                    flux.next(new DiceRollDocument(dice1, dice2));
                     if (result == 7) {
                         flux.complete();
                     }
                 })
                 .collectList();
     }
+
+//    private Mono<List<DiceRollDto>> generateDiceRollsList() {
+//        return Flux.<DiceRollDto>generate(flux -> {
+//                    int dice1 = secureRandom.nextInt(6) + 1;
+//                    int dice2 = secureRandom.nextInt(6) + 1;
+//                    int result = dice1 + dice2;
+//                    flux.next(new DiceRollDto(dice1, dice2, result));
+//                    if (result == 7) {
+//                        flux.complete();
+//                    }
+//                })
+//                .collectList();
+//    }
 
     private Mono<UUID> validateUuid(String id) {
         boolean validUuid = !StringUtils.isEmpty(id) && UUID_FORM.matcher(id).matches();
