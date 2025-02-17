@@ -36,21 +36,6 @@ public class CrapsGameController {
         return "Hello from Craps!!!";
     }
 
-    @PostMapping("/crapsGames/play/{userId}")
-    @Operation(
-            operationId = "Allows the chosen user to play a game of craps game",
-            summary = "Play one game of craps games.",
-            description = "The chosen user plays a game of craps that is stored in the database.",
-            responses = {
-                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = CrapsGameDto.class), mediaType = "application/json")}),
-                    @ApiResponse(responseCode = "404", description = "The User with given Id was not found.", content = {@Content(schema = @Schema())})
-            })
-
-    public Mono<ResponseEntity<CrapsGameDto>> playCrapsGameByUser(@PathVariable("userId") String userId) {
-        return crapsGameService.playCrapsGameByUser(userId)
-                .map(ResponseEntity.ok()::body);
-    }
-
     @PostMapping("/crapsGames/playAndBet/{userId}")
     @Operation(
             operationId = "Allows the chosen user to play and bet a game of craps game",
@@ -62,11 +47,11 @@ public class CrapsGameController {
             })
 
     public Mono<ResponseEntity<CrapsGameDto>> playAndBetCrapsGameByUser(@PathVariable("userId") String userId,
-                                                                         @RequestParam("amount_wagered") double amountWagered,
-                                                                         @RequestParam("my_result") int myResult) {
-        return crapsGameService.playAndBetCrapsGameByUser(userId, amountWagered, myResult)
+                                                                         @RequestParam("amount_wagered") double amountBet,
+                                                                         @RequestParam("expected_dice_sum") int expectedDiceSum,
+                                                                         @RequestParam("expected_attempts") int expectedAttempts) {
+        return crapsGameService.playAndBetCrapsGameByUser(userId, amountBet, expectedDiceSum, expectedAttempts)
                 .map(ResponseEntity.ok()::body);
     }
-
 
 }

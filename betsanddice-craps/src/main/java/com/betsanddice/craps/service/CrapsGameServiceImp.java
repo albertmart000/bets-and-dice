@@ -37,21 +37,6 @@ public class CrapsGameServiceImp implements ICrapsGameService {
     @Autowired
     private DocumentToDtoConverter<CrapsGameDocument, CrapsGameDto> converter = new DocumentToDtoConverter<>();
 
-    public Mono<CrapsGameDto> playCrapsGameByUser(String uuid, int expectedDiceSum) {
-        return validateUuid(uuid)
-                .flatMap(userUuid -> generateDiceRollsList(expectedDiceSum)
-                        .map(diceRollsList -> CrapsGameDocument.builder()
-                                .uuid(UUID.randomUUID())
-                                .userId(userUuid)
-                                .date(LocalDateTime.now())
-                                .diceRollsList(diceRollsList)
-                                .build())
-                        .flatMap(crapsGameDocument -> crapsGameRepository.save(crapsGameDocument))
-                        .map(documentToSave -> converter.fromDocumentToDto(documentToSave, CrapsGameDto.class)))
-                .doOnSuccess(crapsGameDto -> log.info("Successfully played CrapsGame by user with ID: {}", uuid))
-                .doOnError(error -> log.error("Operation failed with error message: {}", error.getMessage()));
-    }
-
     @Override
     public Mono<CrapsGameDto> playAndBetCrapsGameByUser(String userUuid, double amountBet,
                                                         int expectedDiceSum, int expectedAttempts) {
