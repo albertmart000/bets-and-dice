@@ -1,5 +1,7 @@
 package com.betsanddice.craps.dto;
 
+import com.betsanddice.craps.document.BetDocument;
+import com.betsanddice.craps.document.DiceRollDocument;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -31,12 +33,12 @@ public class CrapsGameDto {
     @JsonProperty(value = "date", index = 2)
     private String date;
 
-    @JsonProperty(value = "attempts", index = 3)
-    private Integer attempts;
+    @JsonProperty(value = "bet", index = 3)
+    private BetDocument bet;
 
-    @JsonProperty(value = "bet", index = 4)
-    private BetDto betDto;
+    @JsonProperty(value = "dice_rolls", index = 4)
+    private List<DiceRollDocument> diceRollsList;
 
-    @JsonProperty(value = "dice_rolls", index = 5)
-    private List<DiceRollDto> diceRollsList;
+    @JsonProperty(value = "result_game", index = 5)
+    private ResultDto result;
 }

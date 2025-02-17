@@ -28,7 +28,7 @@ public class CrapsGameDocument {
     private LocalDateTime date;
 
     @Field(name = "bet")
-    private BetDocument betDocument;
+    private BetDocument bet;
 
     @Field(name = "dice_rolls")
     private List<DiceRollDocument> diceRollsList;
