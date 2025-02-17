@@ -5,8 +5,7 @@ import reactor.core.publisher.Mono;
 
 public interface ICrapsGameService {
 
-    Mono<CrapsGameDto> playCrapsGameByUser(String userId);
-
-    Mono<CrapsGameDto> playAndBetCrapsGameByUser(String userId, double amountWagered, int myResult);
+    Mono<CrapsGameDto> playAndBetCrapsGameByUser(String userId, double amountBet, int expectedDiceSum,
+                                                 int attempts);
 
 }

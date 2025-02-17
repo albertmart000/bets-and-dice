@@ -1,8 +1,9 @@
 package com.betsanddice.craps.service;
 
+import com.betsanddice.craps.document.BetDocument;
 import com.betsanddice.craps.document.CrapsGameDocument;
 import com.betsanddice.craps.document.DiceRollDocument;
-import com.betsanddice.craps.dto.BetDto;
+import com.betsanddice.craps.dto.ResultDto;
 import com.betsanddice.craps.dto.CrapsGameDto;
 import com.betsanddice.craps.exception.BadUuidException;
 import com.betsanddice.craps.helper.DocumentToDtoConverter;
@@ -36,9 +37,9 @@ public class CrapsGameServiceImp implements ICrapsGameService {
     @Autowired
     private DocumentToDtoConverter<CrapsGameDocument, CrapsGameDto> converter = new DocumentToDtoConverter<>();
 
-    public Mono<CrapsGameDto> playCrapsGameByUser(String uuid) {
+    public Mono<CrapsGameDto> playCrapsGameByUser(String uuid, int expectedDiceSum) {
         return validateUuid(uuid)
-                .flatMap(userUuid -> generateDiceRollsList()
+                .flatMap(userUuid -> generateDiceRollsList(expectedDiceSum)
                         .map(diceRollsList -> CrapsGameDocument.builder()
                                 .uuid(UUID.randomUUID())
                                 .userId(userUuid)
@@ -47,177 +48,91 @@ public class CrapsGameServiceImp implements ICrapsGameService {
                                 .build())
                         .flatMap(crapsGameDocument -> crapsGameRepository.save(crapsGameDocument))
                         .map(documentToSave -> converter.fromDocumentToDto(documentToSave, CrapsGameDto.class)))
-                .doOnSuccess(crapsGameDocument -> log.info("Successfully played CrapsGame by user with ID: {}", uuid))
+                .doOnSuccess(crapsGameDto -> log.info("Successfully played CrapsGame by user with ID: {}", uuid))
                 .doOnError(error -> log.error("Operation failed with error message: {}", error.getMessage()));
     }
 
-//    @Override
-//    public Mono<CrapsGameDto> playAndBetCrapsGameByUser(String uuid, double amountBet, int playerResult) {
-//        return validateUuid(uuid)
-//                .flatMap(userUuid -> generateDiceRollsList()
-//                        .flatMap(diceRollsList -> {
-//                            boolean isWin = playerResult >= diceRollsList.size();
-//                            double betOdd = calculateBetOdds(playerResult);
-//                            BigDecimal amountWon = calculateAmountWon(amountBet, isWin, betOdd);
-//                            //BigDecimal amountWon = BigDecimal.valueOf(amountWagered * (isWon ? betCoefficient : -1));
-//
-//                            BetDocument betDocument = buildBetDocument(playerResult, amountBet);
-//                            Mono<BetDto> betDto = buildBetDto(playerResult, amountBet, isWin, amountWon);
-//                            Mono<CrapsGameDocument> crapsGameDocument = buildCrapsGameDocument(String.valueOf(userUuid), betDocument, diceRollsList);
-//                        };
-//
-//
-//        return crapsGameRepository.save(crapsGameDocument)
-//                .map(savedDocument -> {
-//                    CrapsGameDto crapsGameDto = converter.fromDocumentToDto(savedDocument, CrapsGameDto.class);
-//                    crapsGameDto.setBetDto(betDto);
-//                    return crapsGameDto;
-//                });
-//
-//
-//
-//        .doOnSuccess(crapsGameDto -> log.info("Successfully played CrapsGame with Bet by user with ID: {}", uuid))
-//                .doOnError(error -> log.error("Operation failed with error message: {}", error.getMessage()));
-//    }
-//
-//    private double calculateBetOdds(int playerResult) {
-//        return switch (playerResult) {
-//            case 1 -> 2.0;
-//            case 3 -> 1.5;
-//            case 5 -> 1.25;
-//            default -> 0;
-//        };
-//    }
-//
-//    private Mono<List<DiceRollDocument>> generateDiceRollsList() {
-//        return Flux.<DiceRollDocument>generate(flux -> {
-//                    int dice1 = secureRandom.nextInt(6) + 1;
-//                    int dice2 = secureRandom.nextInt(6) + 1;
-//                    int result = dice1 + dice2;
-//                    flux.next(new DiceRollDocument(dice1, dice2));
-//                    if (result == 7) {
-//                        flux.complete();
-//                    }
-//                })
-//                .collectList();
-//    }
-//
-//    private BigDecimal calculateAmountWon(double amountBet, boolean isWin, double betOdd) {
-//        return BigDecimal.valueOf(amountBet * (isWin ? betOdd : -1));
-//    }
-//
-//    private Mono<BetDto> buildBetDto(int playerResult, double amountBet, boolean isWin, BigDecimal amountWon) {
-//        return Mono.just(BetDto.builder()
-//                .playerResult(playerResult)
-//                .amountBet(BigDecimal.valueOf(amountBet))
-//                .playerWins(isWin)
-//                .amountWon(amountWon)
-//                .build());
-//    }
-//
-//    private BetDocument buildBetDocument(int playerResult, double amountBet) {
-//        return  BetDocument.builder()
-//                .playerResult(playerResult)
-//                .amountBet(BigDecimal.valueOf(amountBet))
-//                .build();
-//    }
-//
-//    private Mono <CrapsGameDocument> buildCrapsGameDocument(String userUuid, BetDocument betDocument,
-//                                                     List<DiceRollDocument> diceRollsList ) {
-//        return Mono.just(CrapsGameDocument.builder()
-//                .uuid(UUID.randomUUID())
-//                .userId(UUID.fromString(userUuid))
-//                .date(LocalDateTime.now())
-//                .betDocument(betDocument)
-//                .diceRollsList(diceRollsList)
-//                .build());
-//    }
-//
-//    private Mono<CrapsGameDto> saveAndConvertCrapsGame(CrapsGameDocument crapsGameDocument, BetDto betDto) {
-//        return crapsGameRepository.save(crapsGameDocument)
-//                .map(savedDocument -> {
-//                    CrapsGameDto crapsGameDto = converter.fromDocumentToDto(savedDocument, CrapsGameDto.class);
-//                    crapsGameDto.setBetDto(betDto);
-//                    return crapsGameDto;
-//                });
-//    }
-    
     @Override
-    public Mono<CrapsGameDto> playAndBetCrapsGameByUser(String uuid, double amountBet, int playerResult) {
-        return validateUuid(uuid)
-                .flatMap(userUuid -> generateDiceRollsList()
+    public Mono<CrapsGameDto> playAndBetCrapsGameByUser(String userUuid, double amountBet,
+                                                        int expectedDiceSum, int expectedAttempts) {
+        return validateUuid(userUuid)
+                .flatMap(uuid -> generateDiceRollsList(expectedDiceSum)
                         .flatMap(diceRollsList -> {
-                            boolean isWon = playerResult >= diceRollsList.size();
-                            double betCoefficient = switch (playerResult) {
-                                case 1 -> 2.0;
-                                case 3 -> 1.5;
-                                case 5 -> 1.25;
-                                default -> 0;
-                            };
-
-                            BigDecimal amountWon = BigDecimal.valueOf(amountBet * (isWon ? betCoefficient : -1));
-
-                            BetDto betDto = BetDto.builder()
-                                    .playerResult(playerResult)
-                                    .amountBet(BigDecimal.valueOf(amountBet))
-                                    .playerWins(isWon)
-                                    .amountWon(amountWon)
-                                    .build();
-
-                            CrapsGameDocument crapsGameDocument = CrapsGameDocument.builder()
-                                    .uuid(UUID.randomUUID())
-                                    .userId(userUuid)
-                                    .date(LocalDateTime.now())
-                                    .diceRollsList(diceRollsList)
-                                    .build();
-
-                            return crapsGameRepository.save(crapsGameDocument)
-                                    .map(savedDocument -> {
-                                        CrapsGameDto crapsGameDto = converter.fromDocumentToDto(savedDocument, CrapsGameDto.class);
-                                        crapsGameDto.setBetDto(betDto);
+                            ResultDto result = generateResultDto(amountBet, expectedDiceSum, expectedAttempts,
+                                    diceRollsList);
+                            return crapsGameRepository.save(buildCrapsGameDocument(userUuid, amountBet, expectedDiceSum,
+                                            expectedAttempts, diceRollsList))
+                                    .map(crapsGameDocumentToSave -> {
+                                        CrapsGameDto crapsGameDto = converter.fromDocumentToDto(crapsGameDocumentToSave, CrapsGameDto.class);
+                                        crapsGameDto.setResult(result);
                                         return crapsGameDto;
                                     });
                         }))
-                .doOnSuccess(crapsGameDto -> log.info("Successfully played CrapsGame with Bet by user with ID: {}", uuid))
+                .doOnSuccess(crapsGameDto -> log.info("Successfully played CrapsGame with Bet by user with ID: {}", userUuid))
                 .doOnError(error -> log.error("Operation failed with error message: {}", error.getMessage()));
     }
 
-
-    private Mono<List<DiceRollDocument>> generateDiceRollsList() {
+    private Mono<List<DiceRollDocument>> generateDiceRollsList(int expectedDiceSum) {
         return Flux.<DiceRollDocument>generate(flux -> {
                     int dice1 = secureRandom.nextInt(6) + 1;
                     int dice2 = secureRandom.nextInt(6) + 1;
-                    int result = dice1 + dice2;
+                    int diceSum = dice1 + dice2;
                     flux.next(new DiceRollDocument(dice1, dice2));
-                    if (result == 7) {
+                    if (diceSum == expectedDiceSum) {
                         flux.complete();
                     }
                 })
                 .collectList();
     }
 
-//    private Mono<List<DiceRollDto>> generateDiceRollsList() {
-//        return Flux.<DiceRollDto>generate(flux -> {
-//                    int dice1 = secureRandom.nextInt(6) + 1;
-//                    int dice2 = secureRandom.nextInt(6) + 1;
-//                    int result = dice1 + dice2;
-//                    flux.next(new DiceRollDto(dice1, dice2, result));
-//                    if (result == 7) {
-//                        flux.complete();
-//                    }
-//                })
-//                .collectList();
-//    }
+    private double calculateOdd(int expectedDiceSum, int attempts) {
+        if (expectedDiceSum < 2 || expectedDiceSum > 12) {
+            return 0.0;
+        }
+        int favorableCombinations = Math.min(expectedDiceSum - 1, 13 - expectedDiceSum);
+        double probSum = favorableCombinations / 36.0;
+        double probNotSum = Math.pow(1 - probSum, attempts);
+        double probResultAndAttempts = 1 - probNotSum;
+        return (1 / probResultAndAttempts);
+    }
+
+    private ResultDto generateResultDto(double amountBet, int expectedDiceSum, int expectedAttempts, List<DiceRollDocument> diceRolls) {
+        int attempts = diceRolls.size();
+        boolean isWon = expectedDiceSum >= attempts;
+        double bettingOdds = calculateOdd(expectedDiceSum, expectedAttempts);
+        BigDecimal amountReturned = BigDecimal.valueOf(amountBet * (isWon ? bettingOdds : -1));
+
+        return ResultDto.builder()
+                .attempts(attempts)
+                .playerWins(isWon)
+                .bettingOdds(bettingOdds)
+                .amountReturned(amountReturned)
+                .build();
+    }
+
+    private CrapsGameDocument buildCrapsGameDocument(String userUuid, double amountBet, int expectedDiceSum,
+                                                      int expectedAttempts, List<DiceRollDocument> diceRollsList) {
+        BetDocument bet= BetDocument.builder()
+                .expectedDiceSum(expectedDiceSum)
+                .expectedAttempts(expectedAttempts)
+                .amountBet(BigDecimal.valueOf(amountBet))
+                .build();
+
+        return CrapsGameDocument.builder()
+                .uuid(UUID.randomUUID())
+                .userId(UUID.fromString(userUuid))
+                .date(LocalDateTime.now())
+                .bet(bet)
+                .diceRollsList(diceRollsList)
+                .build();
+    }
 
     private Mono<UUID> validateUuid(String id) {
         boolean validUuid = !StringUtils.isEmpty(id) && UUID_FORM.matcher(id).matches();
-
         if (!validUuid) {
             log.warn("Invalid ID format: {}", id);
             return Mono.error(new BadUuidException("Invalid ID format. Please indicate the correct format."));
         }
-
         return Mono.just(UUID.fromString(id));
     }
-
 }
