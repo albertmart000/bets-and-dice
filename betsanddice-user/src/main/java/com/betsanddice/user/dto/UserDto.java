@@ -31,18 +31,18 @@ public class UserDto {
 
     @JsonProperty(value = "name")
     @NotBlank(message = "Name can't be empty.")
-    @Size(min = 2, message = "Invalid Name: Name should have at least 2 characters.")
+    @Size(min = 2, message = "Invalid Name: name should have at least 2 characters.")
     private String name;
 
     @JsonProperty(value = "surname")
     @NotBlank(message = "Surname can't be empty." )
-    @Size(min = 2, message = "Invalid Surname: Surname should have at least 2 characters")
+    @Size(min = 2, message = "Invalid Surname: surname should have at least 2 characters")
     private String surname;
 
     @JsonProperty(value = "birthdate")
     @NotBlank(message = "Birthdate can't be empty." )
-    @Past(message = "Invalid Birthdate: Birthdate should be prior to the current one.")
-    @Pattern(regexp = "yyyy-MM-dd", message = "Invalid Birthdate: Birthdate should be in the format yyyy-MM-dd")
+    @Past(message = "Invalid Birthdate: birthdate should be prior to the current one.")
+    @Pattern(regexp = "yyyy-MM-dd", message = "Invalid Birthdate: birthdate should be in the format yyyy-MM-dd")
     private String birthdate;
 
     @JsonProperty(value = "nickname")
@@ -52,12 +52,12 @@ public class UserDto {
 
     @JsonProperty(value = "email")
     @NotBlank(message = "Email cannot be empty")
-    @Email(message = "Invalid Email: Email should be a valid email address")
+    @Email(message = "Invalid Email: email should be a valid email address")
     private String email;
 
     @JsonProperty(value = "password")
     @NotBlank(message = "Password can't be empty." )
-    @Size(min = 2, message = "Invalid Password: Password should have at least 2 characters")
+    @Size(min = 2, message = "Invalid Password: password should have at least 2 characters")
     private String password;
 
 }
