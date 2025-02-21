@@ -1,5 +1,6 @@
 package com.betsanddice.craps.document;
 
+import com.betsanddice.craps.dto.BetDto;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -28,7 +29,7 @@ public class CrapsGameDocument {
     private LocalDateTime date;
 
     @Field(name = "bet")
-    private BetDocument bet;
+    private BetDto bet;
 
     @Field(name = "dice_rolls")
     private List<DiceRollDocument> diceRollsList;

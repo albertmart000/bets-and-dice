@@ -3,8 +3,6 @@ package com.betsanddice.craps.dto;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @Builder
@@ -22,5 +20,6 @@ public class ResultDto {
     private double bettingOdds;
 
     @Field(name = "amount_returned")
-    private BigDecimal amountReturned;
+    private double amountReturned;
+
 }
