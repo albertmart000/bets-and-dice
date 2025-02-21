@@ -84,7 +84,7 @@ public class CrapsGameServiceImp implements ICrapsGameService {
 
     private ResultDto generateResultDto(int expectedDiceSum, int expectedAttempts, double amountBet, List<DiceRollDocument> diceRolls) {
         int attempts = diceRolls.size();
-        boolean isWon = expectedDiceSum >= attempts;
+        boolean isWon = expectedAttempts >= attempts;
         double bettingOdds = calculateOdd(expectedDiceSum, expectedAttempts);
         double amountReturned = (amountBet * (isWon ? bettingOdds : -1));
 
