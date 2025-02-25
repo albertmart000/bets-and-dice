@@ -50,9 +50,6 @@ public class CrapsGameController {
     public Mono<ResponseEntity<CrapsGameDto>> playAndBetCrapsGameByUser(@PathVariable("userId") String userId,
                                                                         @RequestBody BetDto betDto) {
 
-        log.info("Received request to play craps for user: {}", userId);
-        log.info("Received BetDto: {}", betDto);
-
         return crapsGameService.playAndBetCrapsGameByUser(userId, betDto)
                 .map(ResponseEntity::ok);
     }
