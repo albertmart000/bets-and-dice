@@ -23,7 +23,5 @@ public interface GameTutorialRepository extends ReactiveMongoRepository<GameTuto
 
     Mono<GameTutorialDocument> findByGameName(String gameName);
 
-    Mono<GameTutorialDocument> save(GameTutorialDocument gameTutorialDocument);
-
     Flux<GameTutorialDocument> findAllByUuidNotNull();
 }

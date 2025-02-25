@@ -26,7 +26,7 @@ class UserDocumentToDtoConverterTest {
 
     @BeforeEach
     public void setUp() {
-        converter = new DocumentToDtoConverter();
+        converter = new DocumentToDtoConverter<>();
 
         UUID userId1 = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
         UUID userId2 = UUID.fromString("26977eee-89f8-11ec-a8a3-0242ac120003");
@@ -61,9 +61,6 @@ class UserDocumentToDtoConverterTest {
     @Test
     @DisplayName("Testing Flux conversion. Test convertDocumentFluxToDtoFlux method.")
     void fromFluxDocToFluxDto() {
-        UserDocument userDocument1 = this.userDocument1;
-        UserDocument userDocument2 = this.userDocument2;
-
         Flux<UserDto> resultDto = converter.fromDocumentFluxToDtoFlux(Flux.just(userDocument1, userDocument2), UserDto.class);
 
         UserDto expectedDto1 = userDto1;
