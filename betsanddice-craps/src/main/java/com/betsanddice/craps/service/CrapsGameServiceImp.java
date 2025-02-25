@@ -4,8 +4,10 @@ import com.betsanddice.craps.document.CrapsGameDocument;
 import com.betsanddice.craps.document.DiceRollDocument;
 import com.betsanddice.craps.dto.BetDto;
 import com.betsanddice.craps.dto.CrapsGameDto;
+import com.betsanddice.craps.dto.GenericResultDto;
 import com.betsanddice.craps.dto.ResultDto;
 import com.betsanddice.craps.exception.BadUuidException;
+import com.betsanddice.craps.exception.CrapGameNotFoundException;
 import com.betsanddice.craps.helper.DocumentToDtoConverter;
 import com.betsanddice.craps.repository.CrapsGameRepository;
 import io.micrometer.common.util.StringUtils;
@@ -36,26 +38,45 @@ public class CrapsGameServiceImp implements ICrapsGameService {
     @Autowired
     private DocumentToDtoConverter<CrapsGameDocument, CrapsGameDto> crapsGameDocumentConverter = new DocumentToDtoConverter<>();
 
+
+    @Override
+    public Mono<GenericResultDto<CrapsGameDto>> getCrapsGameByUser(String id, int offset, int limit) {
+        return validateUuid(id)
+                .flatMapMany(userId -> crapsGameRepository.findByUserId(userId)
+                        .switchIfEmpty(Mono.error(new CrapGameNotFoundException("No CrapsGames found for User with id " + userId))))
+                .collectList()
+                .flatMap(crapsGameList -> {
+                    int total = crapsGameList.size();
+                    List<CrapsGameDto> crapsGameListByPage = crapsGameList.stream()
+                            .skip(offset)
+                            .limit(limit == -1 ? total : limit)
+                            .map(crapsGameDocument -> crapsGameDocumentConverter.fromDocumentToDto(crapsGameDocument, CrapsGameDto.class))
+                            .toList();
+
+                    GenericResultDto<CrapsGameDto> resultDto = new GenericResultDto<>();
+                    resultDto.setInfo(offset, limit, total, crapsGameListByPage.toArray(new CrapsGameDto[0]));
+                    return Mono.just(resultDto);
+                });
+    }
+
     @Override
     public Mono<CrapsGameDto> playAndBetCrapsGameByUser(String userUuid, BetDto betDto) {
-        int expectedDiceSum = betDto.getExpectedDiceSum();
-        int expectedAttempts = betDto.getExpectedAttempts();
-        double amountBet = betDto.getAmountBet();
-
         return validateUuid(userUuid)
-                .flatMap(uuid -> generateDiceRollsList(expectedDiceSum)
+                .flatMap(uuid -> generateDiceRollsList(betDto.getExpectedDiceSum())
                         .flatMap(diceRollsList -> {
-                            ResultDto result = generateResultDto(expectedDiceSum, expectedAttempts, amountBet, diceRollsList);
-                            return crapsGameRepository.save(buildCrapsGameDocument(userUuid, betDto, diceRollsList))
-                                    .map(crapsGameDocumentToSave -> {
-                                        CrapsGameDto crapsGameDto = crapsGameDocumentConverter.fromDocumentToDto(crapsGameDocumentToSave, CrapsGameDto.class);
-                                        crapsGameDto.setResult(result);
-                                        return crapsGameDto;
-                                    });
-                        })
-                        .doOnSuccess(crapsGameDto -> log.info("Successfully played CrapsGame with Bet by user with ID: {}", userUuid))
-                        .doOnError(error -> log.error("Operation failed with error message: {}", error.getMessage())));
+                            ResultDto resultDto = generateResultDto(
+                                    betDto.getExpectedDiceSum(),
+                                    betDto.getExpectedAttempts(),
+                                    betDto.getAmountBet(),
+                                    diceRollsList
+                            );
+                            return crapsGameRepository.save(buildCrapsGameDocument(userUuid, betDto, diceRollsList, resultDto))
+                                    .map(crapsGameDocument -> crapsGameDocumentConverter.fromDocumentToDto(crapsGameDocument, CrapsGameDto.class));
+                        }))
+                .doOnSuccess(dto -> log.info("Successfully played CrapsGame with Bet by user with ID: {}", userUuid))
+                .doOnError(error -> log.error("Operation failed with error message: {}", error.getMessage()));
     }
+
 
     private Mono<List<DiceRollDocument>> generateDiceRollsList(int expectedDiceSum) {
         return Flux.<DiceRollDocument>generate(flux -> {
@@ -96,7 +117,7 @@ public class CrapsGameServiceImp implements ICrapsGameService {
                 .build();
     }
 
-    private CrapsGameDocument buildCrapsGameDocument(String userUuid, BetDto betDto, List<DiceRollDocument> diceRollsList) {
+    private CrapsGameDocument buildCrapsGameDocument(String userUuid, BetDto betDto, List<DiceRollDocument> diceRollsList, ResultDto resultDto) {
 
         return CrapsGameDocument.builder()
                 .uuid(UUID.randomUUID())
@@ -104,6 +125,7 @@ public class CrapsGameServiceImp implements ICrapsGameService {
                 .date(LocalDateTime.now())
                 .bet(betDto)
                 .diceRollsList(diceRollsList)
+                .result(resultDto)
                 .build();
     }
 

@@ -1,6 +1,7 @@
 package com.betsanddice.craps.document;
 
 import com.betsanddice.craps.dto.BetDto;
+import com.betsanddice.craps.dto.ResultDto;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -33,5 +34,8 @@ public class CrapsGameDocument {
 
     @Field(name = "dice_rolls")
     private List<DiceRollDocument> diceRollsList;
+
+    @Field(name = "result")
+    private ResultDto result;
 
 }
