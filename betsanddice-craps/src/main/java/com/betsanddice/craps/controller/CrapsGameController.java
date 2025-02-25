@@ -1,7 +1,8 @@
 package com.betsanddice.craps.controller;
 
+import com.betsanddice.craps.dto.BetDto;
 import com.betsanddice.craps.dto.CrapsGameDto;
-import com.betsanddice.craps.service.ICrapsService;
+import com.betsanddice.craps.service.ICrapsGameService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,13 +20,13 @@ import reactor.core.publisher.Mono;
 )
 @RestController
 @RequestMapping(value = "/betsanddice/api/v1/craps")
-public class CrapsController {
+public class CrapsGameController {
 
-    private static final Logger log = LoggerFactory.getLogger(CrapsController.class);
+    private static final Logger log = LoggerFactory.getLogger(CrapsGameController.class);
 
-    ICrapsService crapsGameService;
+    ICrapsGameService crapsGameService;
 
-    public CrapsController(ICrapsService crapsGameService) {
+    public CrapsGameController(ICrapsGameService crapsGameService) {
         this.crapsGameService = crapsGameService;
     }
 
@@ -36,18 +37,21 @@ public class CrapsController {
         return "Hello from Craps!!!";
     }
 
-    @PostMapping("/crapsGames/{userId}")
+    @PostMapping("/crapsGames/playAndBet/{userId}")
     @Operation(
-            operationId = "Allows the chosen user to play a game of craps game",
+            operationId = "Allows the chosen user to play and bet a game of craps game",
             summary = "Play one game of craps games.",
-            description = "The chosen user plays a game of craps that is stored in the database.",
+            description = "The chosen user plays and bets a game of craps that is stored in the database.",
             responses = {
                     @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = CrapsGameDto.class), mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404", description = "The User with given Id was not found.", content = {@Content(schema = @Schema())})
             })
 
-    public Mono<ResponseEntity<CrapsGameDto>> addCrapsGameToUser(@PathVariable("userId") String userId) {
-        return crapsGameService.addCrapsGameToUser(userId)
-                .map(ResponseEntity.ok()::body);
+    public Mono<ResponseEntity<CrapsGameDto>> playAndBetCrapsGameByUser(@PathVariable("userId") String userId,
+                                                                        @RequestBody BetDto betDto) {
+
+        return crapsGameService.playAndBetCrapsGameByUser(userId, betDto)
+                .map(ResponseEntity::ok);
     }
+
 }
