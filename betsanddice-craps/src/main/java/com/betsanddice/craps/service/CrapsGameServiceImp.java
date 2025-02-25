@@ -7,7 +7,7 @@ import com.betsanddice.craps.dto.CrapsGameDto;
 import com.betsanddice.craps.dto.GenericResultDto;
 import com.betsanddice.craps.dto.ResultDto;
 import com.betsanddice.craps.exception.BadUuidException;
-import com.betsanddice.craps.exception.CrapGameNotFoundException;
+import com.betsanddice.craps.exception.CrapsGameNotFoundException;
 import com.betsanddice.craps.helper.DocumentToDtoConverter;
 import com.betsanddice.craps.repository.CrapsGameRepository;
 import io.micrometer.common.util.StringUtils;
@@ -43,7 +43,7 @@ public class CrapsGameServiceImp implements ICrapsGameService {
     public Mono<GenericResultDto<CrapsGameDto>> getCrapsGameByUser(String id, int offset, int limit) {
         return validateUuid(id)
                 .flatMapMany(userId -> crapsGameRepository.findByUserId(userId)
-                        .switchIfEmpty(Mono.error(new CrapGameNotFoundException("No CrapsGames found for User with id " + userId))))
+                        .switchIfEmpty(Mono.error(new CrapsGameNotFoundException("No CrapsGames found for User with id " + userId))))
                 .collectList()
                 .flatMap(crapsGameList -> {
                     int total = crapsGameList.size();

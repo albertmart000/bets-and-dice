@@ -2,6 +2,7 @@ package com.betsanddice.craps.controller;
 
 import com.betsanddice.craps.dto.BetDto;
 import com.betsanddice.craps.dto.CrapsGameDto;
+import com.betsanddice.craps.dto.GenericResultDto;
 import com.betsanddice.craps.service.ICrapsGameService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,6 +24,9 @@ import reactor.core.publisher.Mono;
 public class CrapsGameController {
 
     private static final Logger log = LoggerFactory.getLogger(CrapsGameController.class);
+
+    private static final String DEFAULT_OFFSET = "0";
+    private static final String DEFAULT_LIMIT = "3";
 
     ICrapsGameService crapsGameService;
 
@@ -49,9 +53,24 @@ public class CrapsGameController {
 
     public Mono<ResponseEntity<CrapsGameDto>> playAndBetCrapsGameByUser(@PathVariable("userId") String userId,
                                                                         @RequestBody BetDto betDto) {
-
         return crapsGameService.playAndBetCrapsGameByUser(userId, betDto)
                 .map(ResponseEntity::ok);
+    }
+
+    @GetMapping("/crapsGames/crapsGamesByUser/{userId}")
+    @Operation(
+            operationId = "Get Craps Game from a user on a page.",
+            summary = "Get to see crapsGame from a user on a page.",
+            description = "Requesting crapsGames for a user sending page number and the number of items per page through the URI from the database. Requesting the users for a page sending page number and the number of items per page through the URI from the database.",
+            responses = {
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = CrapsGameDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "400", description = "Missing or unexpected parameters")
+            }
+    )
+    public Mono<GenericResultDto<CrapsGameDto>> getCrapsGameByUser(@PathVariable("userId") String userId,
+                                                            @RequestParam(defaultValue = DEFAULT_OFFSET)  String offset,
+                                                            @RequestParam(defaultValue = DEFAULT_LIMIT)  String limit) {
+        return crapsGameService.getCrapsGameByUser(userId, (Integer.parseInt(offset)), Integer.parseInt(limit));
     }
 
 }
