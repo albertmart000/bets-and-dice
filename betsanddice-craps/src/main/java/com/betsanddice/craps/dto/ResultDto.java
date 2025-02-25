@@ -1,25 +1,27 @@
 package com.betsanddice.craps.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonPropertyOrder({"attempts", "player_wins", "betting_odds", "amount_returned"})
 public class ResultDto {
 
-    @Field(name = "attempts")
+    @JsonProperty(value = "attempts")
     private Integer attempts;
 
-    @Field(name = "player_wins")
+    @JsonProperty(value = "player_wins")
     private boolean playerWins;
 
-    @Field(name = "betting_odds")
+    @JsonProperty(value = "betting_odds")
     private double bettingOdds;
 
-    @Field(name = "amount_returned")
+    @JsonProperty(value = "amount_returned")
     private double amountReturned;
 
 }

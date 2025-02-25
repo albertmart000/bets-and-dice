@@ -2,17 +2,25 @@
   "id_craps_game" : "50feba3c-3cbf-48ad-8142-cccf7c6bf3d3",
   "id_user" : "706507d4-b89f-41eb-a7eb-41838d08a08f",
   "date" : "2023-01-31 12:46:29",
-  "attempts" : 2,
+  "bet" : {
+    "expected_dice_sum" : 7,
+    "expected_attempts" : 5,
+    "amount_bet" : 10.0
+  },
   "dice_rolls" : [
     {
-      "dice_1" : 1,
-      "dice_2" : 2,
-      "result" : 3
+      "dice1" : 1,
+      "dice2" : 2
     },
     {
-      "dice_1" : 3,
-      "dice_2" : 4,
-      "result" : 7
+      "dice1" : 3,
+      "dice2" : 4
     }
-  ]
+  ],
+  "result" : {
+    "attempts" : 2,
+    "player_wins" : true,
+    "betting_odds" : 2.0,
+    "amount_returned" : 20.0
+  }
 }

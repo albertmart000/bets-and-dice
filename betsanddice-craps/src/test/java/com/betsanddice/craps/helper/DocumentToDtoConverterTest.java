@@ -1,8 +1,9 @@
 package com.betsanddice.craps.helper;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
+import com.betsanddice.craps.document.DiceRollDocument;
+import com.betsanddice.craps.dto.BetDto;
 import com.betsanddice.craps.dto.CrapsGameDto;
-import com.betsanddice.craps.dto.DiceRollDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,18 +33,18 @@ class DocumentToDtoConverterTest {
         UUID crapsGameUuid2 = UUID.fromString("6160a07c-1d0f-4ac0-80b0-ef8f17bcad53");
 
         UUID userUuid = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
-
-        DiceRollDto diceRollDto1= new DiceRollDto( 1, 2, 3);
-        DiceRollDto diceRollDto2= new DiceRollDto( 3, 4, 7);
-        List<DiceRollDto> diceRollsList = List.of(diceRollDto1, diceRollDto2);
-
         LocalDateTime date = LocalDateTime.of(2023, 1, 31, 12, 0, 0);
+        BetDto bet = new BetDto(7, 5, 10);
 
-        crapsGameDocument1 = new CrapsGameDocument(crapsGameUuid1, userUuid, date, diceRollsList);
-        crapsGameDocument2 = new CrapsGameDocument(crapsGameUuid2, userUuid, date, diceRollsList);
+        DiceRollDocument diceRollDocument1= new DiceRollDocument( 1, 2);
+        DiceRollDocument diceRollDocument2= new DiceRollDocument( 3, 4);
+        List<DiceRollDocument> diceRollsList = List.of(diceRollDocument1, diceRollDocument2);
 
-        crapsGameDto1 = new CrapsGameDto(crapsGameUuid1, userUuid,"2023-01-31 12:00:00", 2, diceRollsList);
-        crapsGameDto2 = new CrapsGameDto(crapsGameUuid2, userUuid,"2023-01-31 12:00:00", 2, diceRollsList);
+        crapsGameDocument1 = new CrapsGameDocument(crapsGameUuid1, userUuid, date, bet, diceRollsList);
+        crapsGameDocument2 = new CrapsGameDocument(crapsGameUuid2, userUuid, date, bet, diceRollsList);
+
+        crapsGameDto1 = new CrapsGameDto(crapsGameUuid1, userUuid,"2023-01-31 12:00:00", bet, diceRollsList);
+        crapsGameDto2 = new CrapsGameDto(crapsGameUuid2, userUuid,"2023-01-31 12:00:00", bet, diceRollsList);
     }
 
     @Test

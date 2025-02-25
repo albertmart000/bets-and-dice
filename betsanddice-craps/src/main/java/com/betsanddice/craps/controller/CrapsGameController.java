@@ -8,11 +8,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +18,6 @@ import reactor.core.publisher.Mono;
         name = "REST APIs for betsanddice-craps microservice",
         description = "REST API in bets-and-dice for Craps game"
 )
-@Validated
 @RestController
 @RequestMapping(value = "/betsanddice/api/v1/craps")
 public class CrapsGameController {
@@ -51,7 +48,7 @@ public class CrapsGameController {
             })
 
     public Mono<ResponseEntity<CrapsGameDto>> playAndBetCrapsGameByUser(@PathVariable("userId") String userId,
-                                                                        @Valid @RequestBody BetDto betDto) {
+                                                                        @RequestBody BetDto betDto) {
 
         log.info("Received request to play craps for user: {}", userId);
         log.info("Received BetDto: {}", betDto);

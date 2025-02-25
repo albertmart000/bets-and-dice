@@ -2,9 +2,11 @@ package com.betsanddice.craps.integration;
 
 
 import com.betsanddice.craps.document.CrapsGameDocument;
-import com.betsanddice.craps.dto.DiceRollDto;
+import com.betsanddice.craps.document.DiceRollDocument;
+import com.betsanddice.craps.dto.BetDto;
 import com.betsanddice.craps.repository.CrapsGameRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,16 +61,18 @@ class CrapsGameIntegrationTest {
     void setUp() {
         crapsGameRepository.deleteAll().block();
 
-        DiceRollDto diceRollDto1= new DiceRollDto( 1, 2, 3);
-        DiceRollDto diceRollDto2= new DiceRollDto( 3, 4, 7);
-        List<DiceRollDto> diceRollsList = List.of(diceRollDto1, diceRollDto2);
+        List<DiceRollDocument> diceRollsList = List.of(
+                new DiceRollDocument(1, 2),
+                new DiceRollDocument(3, 4));
 
-        LocalDateTime date = LocalDateTime.of(2023, 1, 31, 12, 0, 0);
+        BetDto bet = new BetDto(7, 5, 100);
 
-        crapsGameDocument = new CrapsGameDocument(uuidCrapsGame, uuidUser, date, diceRollsList);
+        crapsGameDocument = new CrapsGameDocument(uuidCrapsGame, uuidUser,
+                LocalDateTime.now(), bet, diceRollsList);
     }
 
     @Test
+    @DisplayName("Test response Hello")
     void test() {
         webTestClient.get()
                 .uri(CRAPS_BASE_URL + "/test")
@@ -80,10 +84,10 @@ class CrapsGameIntegrationTest {
     }
 
     @Test
-    void playCrapsGameByUserTest() {
-        UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
+    void playAndBetCrapsGameByUserTest() {
+        uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
         webTestClient.post()
-                .uri(CRAPS_BASE_URL + "/crapsGames/{userId}", uuidUser)
+                .uri(CRAPS_BASE_URL + "/crapsGames/playAndBet/{userId}", uuidUser)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(crapsGameDocument), CrapsGameDocument.class)
                 .exchange()

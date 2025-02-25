@@ -1,8 +1,10 @@
 package com.betsanddice.craps.service;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
+import com.betsanddice.craps.document.DiceRollDocument;
+import com.betsanddice.craps.dto.BetDto;
 import com.betsanddice.craps.dto.CrapsGameDto;
-import com.betsanddice.craps.dto.DiceRollDto;
+import com.betsanddice.craps.dto.ResultDto;
 import com.betsanddice.craps.exception.BadUuidException;
 import com.betsanddice.craps.helper.DocumentToDtoConverter;
 import com.betsanddice.craps.repository.CrapsGameRepository;
@@ -40,40 +42,52 @@ class CrapsServiceImpTest {
 
     @Test
     void testPlayCrapsGameByUserValidUuid() {
-        String uuid = "123e4567-e89b-12d3-a456-426655440000";
+        String userUuid = "123e4567-e89b-12d3-a456-426655440000";
+
+        BetDto betDto = BetDto.builder()
+                .expectedDiceSum(7)
+                .expectedAttempts(3)
+                .amountBet(10.0)
+                .build();
+
         CrapsGameDocument crapsGameDocument = CrapsGameDocument.builder()
                 .uuid(UUID.randomUUID())
-                .userId(UUID.fromString(uuid))
+                .userId(UUID.fromString(userUuid))
                 .date(LocalDateTime.now())
-                .diceRollsList(List.of(new DiceRollDto(1, 2, 3)))
+                .bet(betDto)
+                .diceRollsList(List.of(new DiceRollDocument(1, 2)))
                 .build();
-        CrapsGameDto crapsGameDto = CrapsGameDto.builder()
+
+        CrapsGameDto expectedCrapsGameDto = CrapsGameDto.builder()
                 .uuid(crapsGameDocument.getUuid())
                 .userId(crapsGameDocument.getUserId())
                 .date(String.valueOf(crapsGameDocument.getDate()))
+                .bet(crapsGameDocument.getBet())
                 .diceRollsList(crapsGameDocument.getDiceRollsList())
+                .result(ResultDto.builder()
+                        .attempts(1)
+                        .playerWins(false)
+                        .bettingOdds(1.0)
+                        .amountReturned(-10.0)
+                        .build())
                 .build();
 
         when(crapsGameRepository.save(any(CrapsGameDocument.class))).thenReturn(Mono.just(crapsGameDocument));
-        when(converter.fromDocumentToDto(any(CrapsGameDocument.class), any(Class.class))).thenReturn(crapsGameDto);
+        when(converter.fromDocumentToDto(any(CrapsGameDocument.class), any(Class.class))).thenReturn(expectedCrapsGameDto);
 
-        Mono<CrapsGameDto> result = crapsGameService.playCrapsGameByUser(uuid);
+        Mono<CrapsGameDto> result = crapsGameService.playAndBetCrapsGameByUser(userUuid, betDto);
 
         StepVerifier.create(result)
-                .assertNext(dto -> {
-                    assertThat(dto.getUuid()).isEqualTo(crapsGameDocument.getUuid());
-                    assertThat(dto.getUserId()).isEqualTo(crapsGameDocument.getUserId());
-                    assertThat(dto.getDate()).isEqualTo(String.valueOf(crapsGameDocument.getDate()));
-                    assertThat(dto.getDiceRollsList()).isEqualTo(crapsGameDocument.getDiceRollsList());
-                })
+                .assertNext(crapsGameDto -> assertThat(crapsGameDto).usingRecursiveComparison().isEqualTo(expectedCrapsGameDto))
                 .verifyComplete();
     }
 
     @Test
     void testPlayCrapsGameByUserInvalidUuid() {
-        String uuid = "invalid-uuid";
+        String userUuid = "invalid-uuid";
+        BetDto betDto = new BetDto(7, 3, 10.0);
 
-        Mono<CrapsGameDto> result = crapsGameService.playCrapsGameByUser(uuid);
+        Mono<CrapsGameDto> result = crapsGameService.playAndBetCrapsGameByUser(userUuid, betDto);
 
         StepVerifier.create(result)
                 .expectError(BadUuidException.class)

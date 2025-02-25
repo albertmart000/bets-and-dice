@@ -9,5 +9,4 @@ import java.util.UUID;
 @Repository
 public interface CrapsGameRepository extends ReactiveMongoRepository<CrapsGameDocument, UUID> {
 
-    //Mono<CrapsGameDocument> save(CrapsGameDocument crapsGameDocument);
 }
