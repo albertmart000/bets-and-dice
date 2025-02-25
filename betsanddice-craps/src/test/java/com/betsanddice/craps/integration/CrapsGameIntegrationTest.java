@@ -43,7 +43,7 @@ class CrapsGameIntegrationTest {
 
     @DynamicPropertySource
     static void initMongoProperties(DynamicPropertyRegistry registry) {
-        System.out.println("container url: {}" + container.getReplicaSetUrl("craps"));
+        registry.add("spring.data.mongodb.uri", () -> container.getReplicaSetUrl("craps"));
     }
 
     @Autowired
