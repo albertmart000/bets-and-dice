@@ -2,8 +2,8 @@ package com.betsanddice.craps.helper;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
 import com.betsanddice.craps.document.DiceRollDocument;
-import com.betsanddice.craps.dto.BetDto;
 import com.betsanddice.craps.dto.CrapsGameDto;
+import com.betsanddice.craps.dto.ResultDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class DocumentToDtoConverterTest {
 
@@ -34,17 +36,25 @@ class DocumentToDtoConverterTest {
 
         UUID userUuid = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
         LocalDateTime date = LocalDateTime.of(2023, 1, 31, 12, 0, 0);
-        BetDto bet = new BetDto(7, 5, 10);
+        int expectedDiceSum = 7;
+        int expectedAttempts = 2;
+        double amountBet = 10.0;
+
+        ResultDto resultBetDto  = new ResultDto(5, true, 2.0, 20.0);
 
         DiceRollDocument diceRollDocument1= new DiceRollDocument( 1, 2);
         DiceRollDocument diceRollDocument2= new DiceRollDocument( 3, 4);
         List<DiceRollDocument> diceRollsList = List.of(diceRollDocument1, diceRollDocument2);
 
-        crapsGameDocument1 = new CrapsGameDocument(crapsGameUuid1, userUuid, date, bet, diceRollsList);
-        crapsGameDocument2 = new CrapsGameDocument(crapsGameUuid2, userUuid, date, bet, diceRollsList);
+        crapsGameDocument1 = new CrapsGameDocument(crapsGameUuid1, userUuid, date, expectedDiceSum, expectedAttempts,
+                amountBet, diceRollsList);
+        crapsGameDocument2 = new CrapsGameDocument(crapsGameUuid2, userUuid, date, expectedDiceSum, expectedAttempts,
+                amountBet, diceRollsList);
 
-        crapsGameDto1 = new CrapsGameDto(crapsGameUuid1, userUuid,"2023-01-31 12:00:00", bet, diceRollsList);
-        crapsGameDto2 = new CrapsGameDto(crapsGameUuid2, userUuid,"2023-01-31 12:00:00", bet, diceRollsList);
+        crapsGameDto1 = getCrapsGameDtoMocked(crapsGameUuid1, userUuid,"2023-01-31 12:00:00", expectedDiceSum, expectedAttempts,
+                amountBet, diceRollsList, resultBetDto);
+        crapsGameDto2 = getCrapsGameDtoMocked(crapsGameUuid2, userUuid,"2023-01-31 12:00:00", expectedDiceSum, expectedAttempts,
+                amountBet, diceRollsList, resultBetDto);
     }
 
     @Test
@@ -55,9 +65,9 @@ class DocumentToDtoConverterTest {
         CrapsGameDto expectedDto = crapsGameDto1;
 
         assertThat(expectedDto).usingRecursiveComparison()
+                .ignoringFields("result")
                 .isEqualTo(resultDto);
     }
-
     @Test
     @DisplayName("Testing Flux conversion. Test fromDocumentFluxToDtoFlux method.")
     void fromFluxDocToFluxDto() {
@@ -68,9 +78,24 @@ class DocumentToDtoConverterTest {
 
         assertThat(resultDto.count().block()).isEqualTo(Long.valueOf(2));
         assertThat(resultDto.blockFirst()).usingRecursiveComparison()
+                .ignoringFields("result")
                 .isEqualTo(expectedDto1);
         assertThat(resultDto.blockLast()).usingRecursiveComparison()
+                .ignoringFields("result")
                 .isEqualTo(expectedDto2);
     }
 
+    private CrapsGameDto getCrapsGameDtoMocked (UUID uuid, UUID userUuid, String date, int expectedDiceSum, int expectedAttempts,
+                                                double amountBet, List<DiceRollDocument> diceRollsList, ResultDto resultDto) {
+        CrapsGameDto crapsGameDtoMocked = mock(CrapsGameDto.class);
+        when(crapsGameDtoMocked.getUuid()).thenReturn(uuid);
+        when(crapsGameDtoMocked.getUserId()).thenReturn(userUuid);
+        when(crapsGameDtoMocked.getDate()).thenReturn(date);
+        when(crapsGameDtoMocked.getExpectedDiceSum()).thenReturn(expectedDiceSum);
+        when(crapsGameDtoMocked.getExpectedAttempts()).thenReturn(expectedAttempts);
+        when(crapsGameDtoMocked.getAmountBet()).thenReturn(amountBet);
+        when(crapsGameDtoMocked.getDiceRollsList()).thenReturn(diceRollsList);
+        when(crapsGameDtoMocked.getResult()).thenReturn(resultDto);
+        return crapsGameDtoMocked;
+    }
 }

@@ -27,8 +27,8 @@ import java.util.regex.Pattern;
 @Service
 public class CrapsGameServiceImp implements ICrapsGameService {
 
-    private static final Logger log = LoggerFactory.getLogger(CrapsGameServiceImp.class);
-    private static final Pattern UUID_FORM = Pattern.compile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", Pattern.CASE_INSENSITIVE);
+    private final Logger log = LoggerFactory.getLogger(CrapsGameServiceImp.class);
+    private final Pattern UUID_FORM = Pattern.compile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", Pattern.CASE_INSENSITIVE);
 
     private final SecureRandom secureRandom = new SecureRandom();
 
@@ -38,45 +38,49 @@ public class CrapsGameServiceImp implements ICrapsGameService {
     @Autowired
     private DocumentToDtoConverter<CrapsGameDocument, CrapsGameDto> crapsGameDocumentConverter = new DocumentToDtoConverter<>();
 
-
     @Override
     public Mono<GenericResultDto<CrapsGameDto>> getCrapsGameByUser(String id, int offset, int limit) {
         return validateUuid(id)
                 .flatMapMany(userId -> crapsGameRepository.findByUserId(userId)
                         .switchIfEmpty(Mono.error(new CrapsGameNotFoundException("No CrapsGames found for User with id " + userId))))
+                .map(crapsGameDocument -> {
+                    CrapsGameDto crapsGameDto = crapsGameDocumentConverter.fromDocumentToDto(crapsGameDocument, CrapsGameDto.class);
+                    crapsGameDto.setResult(generateResultDto(crapsGameDto.getExpectedDiceSum(), crapsGameDto.getExpectedAttempts(),
+                            crapsGameDto.getAmountBet(), crapsGameDto.getDiceRollsList()));
+                    return crapsGameDto;
+                })
                 .collectList()
                 .flatMap(crapsGameList -> {
                     int total = crapsGameList.size();
                     List<CrapsGameDto> crapsGameListByPage = crapsGameList.stream()
                             .skip(offset)
                             .limit(limit == -1 ? total : limit)
-                            .map(crapsGameDocument -> crapsGameDocumentConverter.fromDocumentToDto(crapsGameDocument, CrapsGameDto.class))
                             .toList();
-
-                    GenericResultDto<CrapsGameDto> resultDto = new GenericResultDto<>();
-                    resultDto.setInfo(offset, limit, total, crapsGameListByPage.toArray(new CrapsGameDto[0]));
-                    return Mono.just(resultDto);
+                    return Mono.just(new GenericResultDto<>(offset, limit, total, crapsGameListByPage.toArray(new CrapsGameDto[0])));
                 });
     }
 
     @Override
     public Mono<CrapsGameDto> playAndBetCrapsGameByUser(String userUuid, BetDto betDto) {
+
+        int expectedDiceSum = betDto.getExpectedDiceSum();
+        int expectedAttempts = betDto.getExpectedAttempts();
+        double amountBet = betDto.getAmountBet();
+
         return validateUuid(userUuid)
-                .flatMap(uuid -> generateDiceRollsList(betDto.getExpectedDiceSum())
+                .flatMap(uuid -> generateDiceRollsList(expectedDiceSum)
                         .flatMap(diceRollsList -> {
-                            ResultDto resultDto = generateResultDto(
-                                    betDto.getExpectedDiceSum(),
-                                    betDto.getExpectedAttempts(),
-                                    betDto.getAmountBet(),
-                                    diceRollsList
-                            );
-                            return crapsGameRepository.save(buildCrapsGameDocument(userUuid, betDto, diceRollsList, resultDto))
-                                    .map(crapsGameDocument -> crapsGameDocumentConverter.fromDocumentToDto(crapsGameDocument, CrapsGameDto.class));
+                            ResultDto resultDto = generateResultDto(expectedDiceSum, expectedAttempts, amountBet, diceRollsList);
+                            return crapsGameRepository.save(buildCrapsGameDocument(userUuid, betDto, diceRollsList))
+                                    .map(crapsGameDocument -> {
+                                        CrapsGameDto crapsGameDto = crapsGameDocumentConverter.fromDocumentToDto(crapsGameDocument, CrapsGameDto.class);
+                                        crapsGameDto.setResult(resultDto);
+                                        return crapsGameDto;
+                                    });
                         }))
                 .doOnSuccess(dto -> log.info("Successfully played CrapsGame with Bet by user with ID: {}", userUuid))
                 .doOnError(error -> log.error("Operation failed with error message: {}", error.getMessage()));
     }
-
 
     private Mono<List<DiceRollDocument>> generateDiceRollsList(int expectedDiceSum) {
         return Flux.<DiceRollDocument>generate(flux -> {
@@ -103,7 +107,8 @@ public class CrapsGameServiceImp implements ICrapsGameService {
         return (1 / probResultAndAttempts);
     }
 
-    private ResultDto generateResultDto(int expectedDiceSum, int expectedAttempts, double amountBet, List<DiceRollDocument> diceRolls) {
+    private ResultDto generateResultDto(int expectedDiceSum, int expectedAttempts, double amountBet,
+                                        List<DiceRollDocument> diceRolls) {
         int attempts = diceRolls.size();
         boolean isWon = expectedAttempts >= attempts;
         double bettingOdds = calculateOdd(expectedDiceSum, expectedAttempts);
@@ -117,15 +122,17 @@ public class CrapsGameServiceImp implements ICrapsGameService {
                 .build();
     }
 
-    private CrapsGameDocument buildCrapsGameDocument(String userUuid, BetDto betDto, List<DiceRollDocument> diceRollsList, ResultDto resultDto) {
+    private CrapsGameDocument buildCrapsGameDocument(String userUuid, BetDto
+            betDto, List<DiceRollDocument> diceRollsList) {
 
         return CrapsGameDocument.builder()
                 .uuid(UUID.randomUUID())
                 .userId(UUID.fromString(userUuid))
                 .date(LocalDateTime.now())
-                .bet(betDto)
+                .expectedDiceSum(betDto.getExpectedDiceSum())
+                .expectedAttempts(betDto.getExpectedAttempts())
+                .amountBet(betDto.getAmountBet())
                 .diceRollsList(diceRollsList)
-                .result(resultDto)
                 .build();
     }
 

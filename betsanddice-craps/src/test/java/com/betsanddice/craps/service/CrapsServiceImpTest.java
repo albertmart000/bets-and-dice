@@ -55,7 +55,9 @@ class CrapsServiceImpTest {
                 .uuid(UUID.randomUUID())
                 .userId(UUID.fromString(userUuid))
                 .date(LocalDateTime.now())
-                .bet(betDto)
+                .expectedAttempts(betDto.getExpectedAttempts())
+                .expectedAttempts(betDto.getExpectedAttempts())
+                .amountBet(betDto.getAmountBet())
                 .diceRollsList(List.of(new DiceRollDocument(1, 2)))
                 .build();
 
@@ -63,7 +65,9 @@ class CrapsServiceImpTest {
                 .uuid(crapsGameDocument.getUuid())
                 .userId(crapsGameDocument.getUserId())
                 .date(String.valueOf(crapsGameDocument.getDate()))
-                .bet(crapsGameDocument.getBet())
+                .expectedAttempts(betDto.getExpectedAttempts())
+                .expectedAttempts(betDto.getExpectedAttempts())
+                .amountBet(betDto.getAmountBet())
                 .diceRollsList(crapsGameDocument.getDiceRollsList())
                 .result(ResultDto.builder()
                         .attempts(1)

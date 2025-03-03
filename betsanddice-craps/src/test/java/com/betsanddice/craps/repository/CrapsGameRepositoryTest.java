@@ -2,7 +2,6 @@ package com.betsanddice.craps.repository;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
 import com.betsanddice.craps.document.DiceRollDocument;
-import com.betsanddice.craps.dto.BetDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
@@ -45,8 +44,6 @@ class CrapsGameRepositoryTest {
     UUID uuidUser2 = UUID.fromString("26977eee-89f8-11ec-a8a3-0242ac120003");
     UUID uuidUser3 = UUID.fromString("fd5a1a38-23ce-47e0-a3f5-4a9148eff504");
 
-    BetDto bet = new BetDto(7, 5, 100);
-
     List<DiceRollDocument> diceRollsList = List.of(
             new DiceRollDocument(1, 2),
             new DiceRollDocument(3, 4)
@@ -58,13 +55,13 @@ class CrapsGameRepositoryTest {
         crapsGameRepository.deleteAll().block();
 
         CrapsGameDocument crapsGameDocument1 = new CrapsGameDocument(uuidCrapsGame1, uuidUser1,
-                LocalDateTime.now(), bet, diceRollsList);
+                LocalDateTime.now(), 7, 2, 10.0, diceRollsList);
 
         CrapsGameDocument crapsGameDocument2 = new CrapsGameDocument(uuidCrapsGame2, uuidUser2,
-                LocalDateTime.now(), bet, diceRollsList);
+                LocalDateTime.now(), 7, 2, 10.0, diceRollsList);
 
         CrapsGameDocument crapsGameDocument3 = new CrapsGameDocument(uuidCrapsGame3, uuidUser3,
-                LocalDateTime.now(), bet, diceRollsList);
+                LocalDateTime.now(), 7, 2, 10.0, diceRollsList);
 
         crapsGameRepository.saveAll(Flux.just(crapsGameDocument1, crapsGameDocument2, crapsGameDocument3)).blockLast();
     }

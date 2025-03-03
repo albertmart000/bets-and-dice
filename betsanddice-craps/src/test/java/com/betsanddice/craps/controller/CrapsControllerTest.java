@@ -46,6 +46,9 @@ class CrapsControllerTest {
     void playAndBetCrapsGameByUserTest() {
         String userId = "706507d4-b89f-41eb-a7eb-41838d08a08f";
         BetDto betDto = new BetDto(7, 5, 10);
+        int expectedDiceSum = 7;
+        int expectedAttempts = 2;
+        double amountBet = 10.0;
 
         DiceRollDocument diceRollDocument1 = new DiceRollDocument(1, 2);
         DiceRollDocument diceRollDocument2 = new DiceRollDocument(3, 4);
@@ -54,7 +57,8 @@ class CrapsControllerTest {
         ResultDto resultDto = new ResultDto(2, true, 2.0, 20.0);
 
         CrapsGameDto crapsGameDto = new CrapsGameDto(UUID.randomUUID(), UUID.fromString(userId),
-                "2023-01-31 12:46:29", betDto, diceRollsDocumentList, resultDto);
+                "2023-01-31 12:46:29", expectedDiceSum, expectedAttempts, amountBet,
+                diceRollsDocumentList, resultDto);
 
         when(crapsGameService.playAndBetCrapsGameByUser(any(), any()))
                 .thenReturn(Mono.just(crapsGameDto));

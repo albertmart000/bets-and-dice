@@ -3,7 +3,6 @@ package com.betsanddice.craps.integration;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
 import com.betsanddice.craps.document.DiceRollDocument;
-import com.betsanddice.craps.dto.BetDto;
 import com.betsanddice.craps.repository.CrapsGameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -61,14 +60,17 @@ class CrapsGameIntegrationTest {
     void setUp() {
         crapsGameRepository.deleteAll().block();
 
+        int expectedDiceSum = 7;
+        int expectedAttempts = 2;
+        double amountBet = 10.0;
+
         List<DiceRollDocument> diceRollsList = List.of(
                 new DiceRollDocument(1, 2),
                 new DiceRollDocument(3, 4));
 
-        BetDto bet = new BetDto(7, 5, 100);
 
-        crapsGameDocument = new CrapsGameDocument(uuidCrapsGame, uuidUser,
-                LocalDateTime.now(), bet, diceRollsList);
+        crapsGameDocument = new CrapsGameDocument(uuidCrapsGame, uuidUser, LocalDateTime.now(),
+                expectedDiceSum, expectedAttempts, amountBet, diceRollsList);
     }
 
     @Test

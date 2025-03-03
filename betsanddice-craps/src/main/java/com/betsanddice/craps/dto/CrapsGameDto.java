@@ -22,7 +22,8 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-@JsonPropertyOrder({"id_craps_game", "id_user", "date", "bet", "dice_rolls", "result_game"})
+@JsonPropertyOrder({"id_craps_game", "id_user", "date", "expected_dice_sum", "expected_attempts",
+        "amount_bet", "dice_rolls", "result_game"})
 public class CrapsGameDto {
 
     @JsonProperty(value = "id_craps_game")
@@ -34,8 +35,14 @@ public class CrapsGameDto {
     @JsonProperty(value = "date")
     private String date;
 
-    @JsonProperty(value = "bet")
-    private BetDto bet;
+    @JsonProperty(value = "expected_dice_sum")
+    private int expectedDiceSum;
+
+    @JsonProperty(value = "expected_attempts")
+    private int expectedAttempts;
+
+    @JsonProperty(value = "amount_bet")
+    private double amountBet;
 
     @JsonProperty(value = "dice_rolls")
     private List<DiceRollDocument> diceRollsList;
