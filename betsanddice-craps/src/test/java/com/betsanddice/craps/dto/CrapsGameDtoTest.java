@@ -36,7 +36,9 @@ class CrapsGameDtoTest {
     void setUp() {
         UUID uuidCrapsGame = UUID.fromString("50feba3c-3cbf-48ad-8142-cccf7c6bf3d3");
         UUID uuidUser = UUID.fromString("706507d4-b89f-41eb-a7eb-41838d08a08f");
-        BetDto betDto = new BetDto(7, 5, 10);
+        int expectedDiceSum = 7;
+        int expectedAttempts = 2;
+        double amountBet = 10.0;
 
         DiceRollDocument diceRollDocument1 = new DiceRollDocument(1, 2);
         DiceRollDocument diceRollDocument2 = new DiceRollDocument(3, 4);
@@ -44,8 +46,8 @@ class CrapsGameDtoTest {
 
         ResultDto resultDto = new ResultDto(2, true, 2.0, 20.0);
 
-        crapsGameDto = new CrapsGameDto(uuidCrapsGame, uuidUser,
-                "2023-01-31 12:46:29", betDto, diceRollsDocumentList, resultDto);
+        crapsGameDto = new CrapsGameDto(uuidCrapsGame, uuidUser, "2023-01-31 12:46:29",
+                expectedDiceSum, expectedAttempts, amountBet, diceRollsDocumentList, resultDto);
     }
 
     @Test

@@ -19,30 +19,31 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Builder
 @Getter
 @Setter
-@JsonPropertyOrder({"id_craps_game", "id_user", "date", "bet", "dice_rolls", "result_game"})
+@JsonPropertyOrder({"id_craps_game", "id_user", "date", "expected_dice_sum", "expected_attempts",
+        "amount_bet", "dice_rolls", "result_game"})
 public class CrapsGameDto {
 
-    @NonNull
     @JsonProperty(value = "id_craps_game")
     private UUID uuid;
 
-    @NonNull
     @JsonProperty(value = "id_user")
     private UUID userId;
 
-    @NonNull
     @JsonProperty(value = "date")
     private String date;
 
-    @NonNull
-    @JsonProperty(value = "bet")
-    private BetDto bet;
+    @JsonProperty(value = "expected_dice_sum")
+    private int expectedDiceSum;
 
-    @NonNull
+    @JsonProperty(value = "expected_attempts")
+    private int expectedAttempts;
+
+    @JsonProperty(value = "amount_bet")
+    private double amountBet;
+
     @JsonProperty(value = "dice_rolls")
     private List<DiceRollDocument> diceRollsList;
 

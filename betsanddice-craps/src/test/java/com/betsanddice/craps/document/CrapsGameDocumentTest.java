@@ -1,6 +1,5 @@
 package com.betsanddice.craps.document;
 
-import com.betsanddice.craps.dto.BetDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -20,7 +20,9 @@ class CrapsGameDocumentTest {
     private final UUID uuid = UUID.randomUUID();
     private final UUID userId = UUID.randomUUID();
     private final LocalDateTime date = now();
-    private final BetDto betDto= new BetDto(7, 5, 100);
+    private final int expectedDiceSum = 7;
+    private final int expectedAttempts = 2;
+    private final double amountBet = 10.0;
 
     private final List<DiceRollDocument> diceRollsList = List.of(
             new DiceRollDocument(1, 2),
@@ -29,12 +31,15 @@ class CrapsGameDocumentTest {
 
     @Test
     void testAllArgsConstructor() {
-        CrapsGameDocument document = new CrapsGameDocument(uuid, userId, date, betDto, diceRollsList);
+        CrapsGameDocument document = new CrapsGameDocument(uuid, userId, date, expectedDiceSum, expectedAttempts,
+                amountBet, diceRollsList);
 
         assertEquals(uuid, document.getUuid());
         assertEquals(userId, document.getUserId());
         assertEquals(date, document.getDate());
-        assertEquals(betDto, document.getBet());
+        assertEquals(expectedDiceSum, document.getExpectedDiceSum());
+        assertEquals(expectedAttempts, document.getExpectedAttempts());
+        assertEquals(amountBet, document.getAmountBet());
         assertEquals(diceRollsList, document.getDiceRollsList());
     }
 
@@ -50,14 +55,18 @@ class CrapsGameDocumentTest {
                 .uuid(uuid)
                 .userId(userId)
                 .date(date)
+                .expectedAttempts(expectedAttempts)
+                .expectedDiceSum(expectedDiceSum)
+                .amountBet(amountBet)
                 .diceRollsList(diceRollsList)
-                .bet(betDto)
                 .build();
 
         assertEquals(uuid, document.getUuid());
         assertEquals(userId, document.getUserId());
         assertEquals(date, document.getDate());
-        assertEquals(betDto, document.getBet());
+        assertEquals(expectedDiceSum, document.getExpectedDiceSum());
+        assertEquals(expectedAttempts, document.getExpectedAttempts());
+        assertEquals(amountBet, document.getAmountBet());
         assertEquals(diceRollsList, document.getDiceRollsList());
     }
 
@@ -67,13 +76,16 @@ class CrapsGameDocumentTest {
         document.setUuid(uuid);
         document.setUserId(userId);
         document.setDate(date);
-        document.setBet(betDto);
+        document.setExpectedDiceSum(expectedDiceSum);
+        document.setExpectedAttempts(expectedAttempts);
+        document.setAmountBet(amountBet);
         document.setDiceRollsList(diceRollsList);
-
         assertEquals(uuid, document.getUuid());
         assertEquals(userId, document.getUserId());
         assertEquals(date, document.getDate());
-        assertEquals(betDto, document.getBet());
+        assertEquals(expectedDiceSum, document.getExpectedDiceSum());
+        assertEquals(expectedAttempts, document.getExpectedAttempts());
+        assertEquals(amountBet, document.getAmountBet());
         assertEquals(diceRollsList, document.getDiceRollsList());
     }
 

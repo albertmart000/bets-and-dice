@@ -46,7 +46,7 @@ class BetDtoTest {
     }
 
     @Test
-    @DisplayName("Deserialization BettDto test")
+    @DisplayName("Deserialization BetDto test")
     @SneakyThrows(IOException.class)
     void rightDeserializationTest() {
         String resultJsonSource = new ResourceHelper(betJsonPath).readResourceAsString().orElse(null);
