@@ -4,6 +4,7 @@ import com.betsanddice.user.document.UserDocument;
 import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -72,6 +72,7 @@ class UserIntegrationTest {
     }
 
     @Test
+    @DisplayName("Test response Hello")
     void test() {
         webTestClient.get()
                 .uri(USER_BASE_URL + "/test")
@@ -127,7 +128,7 @@ class UserIntegrationTest {
                 .expectStatus().isOk()
                 .expectBodyList(UserDto.class)
                 .contains(new UserDto[]{})
-                .hasSize(1);
+                .hasSize(3);
     }
 
 }

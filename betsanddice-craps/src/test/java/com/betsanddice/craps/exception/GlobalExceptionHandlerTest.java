@@ -2,6 +2,7 @@ package com.betsanddice.craps.exception;
 
 import com.betsanddice.craps.dto.MessageDto;
 import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +32,7 @@ import static org.mockito.Mockito.when;
 class GlobalExceptionHandlerTest {
 
     private final HttpStatus BAD_REQUEST = HttpStatus.BAD_REQUEST;
+    private final HttpStatus OK = HttpStatus.OK;
 
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
@@ -95,6 +97,17 @@ class GlobalExceptionHandlerTest {
         ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
 
         MatcherAssert.assertThat(responseEntity, notNullValue());
+    }
+
+    @Test
+    void TestHandleCrapsGameNotFoundException() {
+        CrapsGameNotFoundException crapsGameNotFoundException = new CrapsGameNotFoundException("CrapsGame not found");
+
+        ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleCrapsGameNotFoundException(crapsGameNotFoundException);
+
+        assertEquals(OK, responseEntity.getStatusCode());
+        String responseBody = Objects.requireNonNull(responseEntity.getBody()).getMessage();
+        Assertions.assertTrue(responseBody.contains("CrapsGame not found"));
     }
 
     @Test
