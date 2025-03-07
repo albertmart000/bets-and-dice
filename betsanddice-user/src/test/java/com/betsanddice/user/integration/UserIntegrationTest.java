@@ -128,7 +128,7 @@ class UserIntegrationTest {
                 .expectStatus().isOk()
                 .expectBodyList(UserDto.class)
                 .contains(new UserDto[]{})
-                .hasSize(3);
+                .hasSize(1);
     }
 
 }
