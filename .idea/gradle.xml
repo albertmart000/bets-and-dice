@@ -10,8 +10,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/betsanddice-craps" />
-            <option value="$PROJECT_DIR$/betsanddice-stat" />
-            <option value="$PROJECT_DIR$/betsanddice-tutorial" />
             <option value="$PROJECT_DIR$/betsanddice-user" />
           </set>
         </option>
