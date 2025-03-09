@@ -12,7 +12,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @JsonPropertyOrder({"attempts", "player_wins", "betting_odds", "amount_returned"})
-public class ResultDto {
+public class ResultCrapsGameDto {
 
     @JsonProperty(value = "attempts")
     private Integer attempts;

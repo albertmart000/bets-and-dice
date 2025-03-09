@@ -100,7 +100,7 @@ class CrapsServiceImpTest {
 //        double bettingOdds = 1.0;
 //        double amountReturned = -10.0;
 //
-//        ResultDto resultCrapsGameDto= new ResultDto(attempts, isWon, bettingOdds, amountReturned);
+//        ResultCrapsGameDto resultCrapsGameDto= new ResultCrapsGameDto(attempts, isWon, bettingOdds, amountReturned);
 //
 //        CrapsGameDto crapsGameDto1 = new CrapsGameDto(crapsGameDocument1.getUuid(), crapsGameDocument1.getUserId(),
 //                String.valueOf(crapsGameDocument1.getDate()), crapsGameDocument1.getExpectedAttempts(),

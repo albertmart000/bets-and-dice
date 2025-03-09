@@ -5,7 +5,7 @@ import com.betsanddice.craps.document.DiceRollDocument;
 import com.betsanddice.craps.dto.BetDto;
 import com.betsanddice.craps.dto.CrapsGameDto;
 import com.betsanddice.craps.dto.GenericResultDto;
-import com.betsanddice.craps.dto.ResultDto;
+import com.betsanddice.craps.dto.ResultCrapsGameDto;
 import com.betsanddice.craps.exception.BadUuidException;
 import com.betsanddice.craps.exception.CrapsGameNotFoundException;
 import com.betsanddice.craps.helper.DocumentToDtoConverter;
@@ -70,7 +70,7 @@ public class CrapsGameServiceImp implements ICrapsGameService {
         return validateUuid(userUuid)
                 .flatMap(uuid -> generateDiceRollsList(expectedDiceSum)
                         .flatMap(diceRollsList -> {
-                            ResultDto resultDto = generateResultDto(expectedDiceSum, expectedAttempts, amountBet, diceRollsList);
+                            ResultCrapsGameDto resultDto = generateResultDto(expectedDiceSum, expectedAttempts, amountBet, diceRollsList);
                             return crapsGameRepository.save(buildCrapsGameDocument(userUuid, betDto, diceRollsList))
                                     .map(crapsGameDocument -> {
                                         CrapsGameDto crapsGameDto = crapsGameDocumentConverter.fromDocumentToDto(crapsGameDocument, CrapsGameDto.class);
@@ -107,14 +107,14 @@ public class CrapsGameServiceImp implements ICrapsGameService {
         return (1 / probResultAndAttempts);
     }
 
-    private ResultDto generateResultDto(int expectedDiceSum, int expectedAttempts, double amountBet,
-                                        List<DiceRollDocument> diceRolls) {
+    private ResultCrapsGameDto generateResultDto(int expectedDiceSum, int expectedAttempts, double amountBet,
+                                                 List<DiceRollDocument> diceRolls) {
         int attempts = diceRolls.size();
         boolean isWon = expectedAttempts >= attempts;
         double bettingOdds = calculateOdd(expectedDiceSum, expectedAttempts);
         double amountReturned = (amountBet * (isWon ? bettingOdds : -1));
 
-        return ResultDto.builder()
+        return ResultCrapsGameDto.builder()
                 .attempts(attempts)
                 .playerWins(isWon)
                 .bettingOdds(bettingOdds)

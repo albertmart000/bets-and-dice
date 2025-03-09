@@ -3,7 +3,7 @@ package com.betsanddice.craps.helper;
 import com.betsanddice.craps.document.CrapsGameDocument;
 import com.betsanddice.craps.document.DiceRollDocument;
 import com.betsanddice.craps.dto.CrapsGameDto;
-import com.betsanddice.craps.dto.ResultDto;
+import com.betsanddice.craps.dto.ResultCrapsGameDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ class DocumentToDtoConverterTest {
         int expectedAttempts = 2;
         double amountBet = 10.0;
 
-        ResultDto resultBetDto  = new ResultDto(5, true, 2.0, 20.0);
+        ResultCrapsGameDto resultBetDto  = new ResultCrapsGameDto(5, true, 2.0, 20.0);
 
         DiceRollDocument diceRollDocument1= new DiceRollDocument( 1, 2);
         DiceRollDocument diceRollDocument2= new DiceRollDocument( 3, 4);
@@ -86,7 +86,7 @@ class DocumentToDtoConverterTest {
     }
 
     private CrapsGameDto getCrapsGameDtoMocked (UUID uuid, UUID userUuid, String date, int expectedDiceSum, int expectedAttempts,
-                                                double amountBet, List<DiceRollDocument> diceRollsList, ResultDto resultDto) {
+                                                double amountBet, List<DiceRollDocument> diceRollsList, ResultCrapsGameDto resultDto) {
         CrapsGameDto crapsGameDtoMocked = mock(CrapsGameDto.class);
         when(crapsGameDtoMocked.getUuid()).thenReturn(uuid);
         when(crapsGameDtoMocked.getUserId()).thenReturn(userUuid);

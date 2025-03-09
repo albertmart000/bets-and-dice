@@ -44,7 +44,7 @@ class CrapsGameDtoTest {
         DiceRollDocument diceRollDocument2 = new DiceRollDocument(3, 4);
         List<DiceRollDocument> diceRollsDocumentList = List.of(diceRollDocument1, diceRollDocument2);
 
-        ResultDto resultDto = new ResultDto(2, true, 2.0, 20.0);
+        ResultCrapsGameDto resultDto = new ResultCrapsGameDto(2, true, 2.0, 20.0);
 
         crapsGameDto = new CrapsGameDto(uuidCrapsGame, uuidUser, "2023-01-31 12:46:29",
                 expectedDiceSum, expectedAttempts, amountBet, diceRollsDocumentList, resultDto);

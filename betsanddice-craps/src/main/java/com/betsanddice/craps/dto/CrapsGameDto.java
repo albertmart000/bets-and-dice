@@ -48,5 +48,5 @@ public class CrapsGameDto {
     private List<DiceRollDocument> diceRollsList;
 
     @JsonProperty(value = "result")
-    private ResultDto result;
+    private ResultCrapsGameDto result;
 }

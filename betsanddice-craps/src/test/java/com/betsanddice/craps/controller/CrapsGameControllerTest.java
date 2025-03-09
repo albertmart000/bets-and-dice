@@ -4,7 +4,7 @@ import com.betsanddice.craps.document.DiceRollDocument;
 import com.betsanddice.craps.dto.BetDto;
 import com.betsanddice.craps.dto.CrapsGameDto;
 import com.betsanddice.craps.dto.GenericResultDto;
-import com.betsanddice.craps.dto.ResultDto;
+import com.betsanddice.craps.dto.ResultCrapsGameDto;
 import com.betsanddice.craps.exception.CrapsGameNotFoundException;
 import com.betsanddice.craps.service.ICrapsGameService;
 import org.junit.jupiter.api.Test;
@@ -56,7 +56,7 @@ class CrapsGameControllerTest {
         DiceRollDocument diceRollDocument2 = new DiceRollDocument(3, 4);
         List<DiceRollDocument> diceRollsDocumentList = List.of(diceRollDocument1, diceRollDocument2);
 
-        ResultDto resultDto = new ResultDto(2, true, 2.0, 20.0);
+        ResultCrapsGameDto resultDto = new ResultCrapsGameDto(2, true, 2.0, 20.0);
 
         CrapsGameDto crapsGameDto = new CrapsGameDto(UUID.randomUUID(), UUID.fromString(userId),
                 "2023-01-31 12:46:29", expectedDiceSum, expectedAttempts, amountBet,

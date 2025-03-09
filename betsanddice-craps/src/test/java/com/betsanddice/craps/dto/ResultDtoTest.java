@@ -26,16 +26,16 @@ class ResultDtoTest {
     @Autowired
     private ObjectMapper mapper;
 
-    private final String resultJsonPath = "json/resultSerialized.json";
-    private ResultDto resultBetDto;
+    private final String resultJsonPath = "json/resultCrapsGameSerialized.json";
+    private ResultCrapsGameDto resultBetDto;
 
     @BeforeEach
     void setUp() {
-        resultBetDto = new ResultDto(5, true, 2.0, 20.0);
+        resultBetDto = new ResultCrapsGameDto(5, true, 2.0, 20.0);
     }
 
     @Test
-    @DisplayName("Serialization ResultDto test")
+    @DisplayName("Serialization ResultCrapsGameDto test")
     @SneakyThrows({JsonProcessingException.class})
     void rightSerializationTest() {
         String jsonResult = mapper
@@ -46,11 +46,11 @@ class ResultDtoTest {
     }
 
     @Test
-    @DisplayName("Deserialization ResultDto test")
+    @DisplayName("Deserialization ResultCrapsGameDto test")
     @SneakyThrows(IOException.class)
     void rightDeserializationTest() {
         String resultJsonSource = new ResourceHelper(resultJsonPath).readResourceAsString().orElse(null);
-        ResultDto dtoResult = mapper.readValue(resultJsonSource, ResultDto.class);
+        ResultCrapsGameDto dtoResult = mapper.readValue(resultJsonSource, ResultCrapsGameDto.class);
         assertThat(dtoResult).usingRecursiveComparison().isEqualTo(resultBetDto);
     }
 
