@@ -1,5 +1,3 @@
 rootProject.name = 'bets-and-dice'
-include 'betsanddice-stat'
-include 'betsanddice-tutorial'
 include 'betsanddice-user'
 include 'betsanddice-craps'

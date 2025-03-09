@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Build images micros
-directories=("betsanddice-game" "betsanddice-stat" "betsanddice-tutorial" "betsanddice-user")
+directories=("betsanddice-game" "betsanddice-user")
 for dir in "${directories[@]}"; do
     # shellcheck disable=SC2164
     (cd "$dir" && bash build_Docker.sh)
