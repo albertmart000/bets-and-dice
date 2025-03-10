@@ -3,6 +3,7 @@ package com.betsanddice.craps.controller;
 import com.betsanddice.craps.dto.BetDto;
 import com.betsanddice.craps.dto.CrapsGameDto;
 import com.betsanddice.craps.dto.GenericResultDto;
+import com.betsanddice.craps.dto.UserCrapsGameStatsDto;
 import com.betsanddice.craps.service.ICrapsGameService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -61,7 +62,7 @@ public class CrapsGameController {
     @Operation(
             operationId = "Get Craps Game from a user on a page.",
             summary = "Get to see crapsGame from a user on a page.",
-            description = "Requesting crapsGames for a user sending page number and the number of items per page through the URI from the database. Requesting the users for a page sending page number and the number of items per page through the URI from the database.",
+            description = "Requesting crapsGames for a user sending page number and the number of items per page through the URI from the database.",
             responses = {
                     @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = CrapsGameDto.class), mediaType = "application/json")}),
                     @ApiResponse(responseCode = "400", description = "Missing or unexpected parameters")
@@ -71,6 +72,21 @@ public class CrapsGameController {
                                                             @RequestParam(defaultValue = DEFAULT_OFFSET)  String offset,
                                                             @RequestParam(defaultValue = DEFAULT_LIMIT)  String limit) {
         return crapsGameService.getCrapsGameByUser(userId, (Integer.parseInt(offset)), Integer.parseInt(limit));
+    }
+
+    @GetMapping("/crapsGames/crapsGamesStatsByUser/{userId}")
+    @Operation(
+            operationId = "Get crapsGames statistics from a given user.",
+            summary = "Get crapsGames statistics from a user.",
+            description = "Retrieve crapsGames statistics for a user through the URI from the database.",
+            responses = {
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = UserCrapsGameStatsDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "400", description = "Missing or unexpected parameters")
+            }
+    )
+    public Mono<ResponseEntity<UserCrapsGameStatsDto>> getUserCrapsGameStats(@PathVariable("userId") String id) {
+        return crapsGameService.getUserCrapsGameStats(id)
+                .map(ResponseEntity.ok()::body);
     }
 
 }

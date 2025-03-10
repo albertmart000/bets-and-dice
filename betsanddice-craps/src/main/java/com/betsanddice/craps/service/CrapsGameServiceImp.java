@@ -2,10 +2,7 @@ package com.betsanddice.craps.service;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
 import com.betsanddice.craps.document.DiceRollDocument;
-import com.betsanddice.craps.dto.BetDto;
-import com.betsanddice.craps.dto.CrapsGameDto;
-import com.betsanddice.craps.dto.GenericResultDto;
-import com.betsanddice.craps.dto.ResultCrapsGameDto;
+import com.betsanddice.craps.dto.*;
 import com.betsanddice.craps.exception.BadUuidException;
 import com.betsanddice.craps.exception.CrapsGameNotFoundException;
 import com.betsanddice.craps.helper.DocumentToDtoConverter;
@@ -39,28 +36,6 @@ public class CrapsGameServiceImp implements ICrapsGameService {
     private DocumentToDtoConverter<CrapsGameDocument, CrapsGameDto> crapsGameDocumentConverter = new DocumentToDtoConverter<>();
 
     @Override
-    public Mono<GenericResultDto<CrapsGameDto>> getCrapsGameByUser(String id, int offset, int limit) {
-        return validateUuid(id)
-                .flatMapMany(userId -> crapsGameRepository.findByUserId(userId)
-                        .switchIfEmpty(Mono.error(new CrapsGameNotFoundException("No CrapsGames found for User with id " + userId))))
-                .map(crapsGameDocument -> {
-                    CrapsGameDto crapsGameDto = crapsGameDocumentConverter.fromDocumentToDto(crapsGameDocument, CrapsGameDto.class);
-                    crapsGameDto.setResult(generateResultDto(crapsGameDto.getExpectedDiceSum(), crapsGameDto.getExpectedAttempts(),
-                            crapsGameDto.getAmountBet(), crapsGameDto.getDiceRollsList()));
-                    return crapsGameDto;
-                })
-                .collectList()
-                .flatMap(crapsGameList -> {
-                    int total = crapsGameList.size();
-                    List<CrapsGameDto> crapsGameListByPage = crapsGameList.stream()
-                            .skip(offset)
-                            .limit(limit == -1 ? total : limit)
-                            .toList();
-                    return Mono.just(new GenericResultDto<>(offset, limit, total, crapsGameListByPage.toArray(new CrapsGameDto[0])));
-                });
-    }
-
-    @Override
     public Mono<CrapsGameDto> playAndBetCrapsGameByUser(String userUuid, BetDto betDto) {
 
         int expectedDiceSum = betDto.getExpectedDiceSum();
@@ -82,17 +57,49 @@ public class CrapsGameServiceImp implements ICrapsGameService {
                 .doOnError(error -> log.error("Operation failed with error message: {}", error.getMessage()));
     }
 
+    @Override
+    public Mono<GenericResultDto<CrapsGameDto>> getCrapsGameByUser(String id, int offset, int limit) {
+        return getCrapsGamesDtoByUserList(id)
+                .flatMap(crapsGameList -> {
+                    int total = crapsGameList.size();
+                    List<CrapsGameDto> crapsGameListByPage = crapsGameList.stream()
+                            .skip(offset)
+                            .limit(limit == -1 ? total : limit)
+                            .toList();
+                    return Mono.just(new GenericResultDto<>(offset, limit, total, crapsGameListByPage.toArray(new CrapsGameDto[0])));
+                });
+    }
+
+    @Override
+    public Mono<UserCrapsGameStatsDto> getUserCrapsGameStats(String id) {
+        return getCrapsGamesDtoByUserList(id)
+                .flatMap(crapsGameDtoList -> {
+                    UserCrapsGameStatsDto userCrapsGameStatsDto = generateUserCrapsGameStatsDto(crapsGameDtoList);
+                    return Mono.just(userCrapsGameStatsDto);
+                });
+    }
+
+    private Mono<List<CrapsGameDto>> getCrapsGamesDtoByUserList(String id) {
+        return validateUuid(id)
+                .flatMapMany(userId -> crapsGameRepository.findByUserId(userId)
+                        .switchIfEmpty(Mono.error(new CrapsGameNotFoundException("No CrapsGames found for User with id " + userId))))
+                .map(crapsGameDocument -> {
+                    CrapsGameDto crapsGameDto = crapsGameDocumentConverter.fromDocumentToDto(crapsGameDocument, CrapsGameDto.class);
+                    crapsGameDto.setResult(generateResultDto(crapsGameDto.getExpectedDiceSum(), crapsGameDto.getExpectedAttempts(),
+                            crapsGameDto.getAmountBet(), crapsGameDto.getDiceRollsList()));
+                    return crapsGameDto;
+                })
+                .collectList();
+    }
+
     private Mono<List<DiceRollDocument>> generateDiceRollsList(int expectedDiceSum) {
-        return Flux.<DiceRollDocument>generate(flux -> {
+        return Flux.range(0, 50)
+                .map(i -> {
                     int dice1 = secureRandom.nextInt(6) + 1;
                     int dice2 = secureRandom.nextInt(6) + 1;
-                    int diceSum = dice1 + dice2;
-                    flux.next(new DiceRollDocument(dice1, dice2));
-                    if (diceSum == expectedDiceSum) {
-                        flux.complete();
-                    }
+                    return new DiceRollDocument(dice1, dice2);
                 })
-                .take(50)
+                .takeUntil(diceRoll -> diceRoll.getDice1() + diceRoll.getDice2() == expectedDiceSum)
                 .collectList();
     }
 
@@ -105,6 +112,20 @@ public class CrapsGameServiceImp implements ICrapsGameService {
         double probNotSum = Math.pow(1 - probSum, attempts);
         double probResultAndAttempts = 1 - probNotSum;
         return (1 / probResultAndAttempts);
+    }
+
+    private CrapsGameDocument buildCrapsGameDocument(String userUuid, BetDto
+            betDto, List<DiceRollDocument> diceRollsList) {
+
+        return CrapsGameDocument.builder()
+                .uuid(UUID.randomUUID())
+                .userId(UUID.fromString(userUuid))
+                .date(LocalDateTime.now())
+                .expectedDiceSum(betDto.getExpectedDiceSum())
+                .expectedAttempts(betDto.getExpectedAttempts())
+                .amountBet(betDto.getAmountBet())
+                .diceRollsList(diceRollsList)
+                .build();
     }
 
     private ResultCrapsGameDto generateResultDto(int expectedDiceSum, int expectedAttempts, double amountBet,
@@ -122,26 +143,36 @@ public class CrapsGameServiceImp implements ICrapsGameService {
                 .build();
     }
 
-    private CrapsGameDocument buildCrapsGameDocument(String userUuid, BetDto
-            betDto, List<DiceRollDocument> diceRollsList) {
+    private UserCrapsGameStatsDto generateUserCrapsGameStatsDto(List<CrapsGameDto> crapsGameDtoList) {
 
-        return CrapsGameDocument.builder()
-                .uuid(UUID.randomUUID())
-                .userId(UUID.fromString(userUuid))
-                .date(LocalDateTime.now())
-                .expectedDiceSum(betDto.getExpectedDiceSum())
-                .expectedAttempts(betDto.getExpectedAttempts())
-                .amountBet(betDto.getAmountBet())
-                .diceRollsList(diceRollsList)
+        int gamesPlayed = crapsGameDtoList.size();
+        int gamesWon = (int) crapsGameDtoList.stream()
+                .filter(crapsGame -> crapsGame.getResult().isPlayerWins())
+                .count();
+        double percentGamesWon = gamesWon * 100.0 / gamesPlayed;
+        double totalAmountBet = crapsGameDtoList.stream()
+                .mapToDouble(CrapsGameDto::getAmountBet)
+                .sum();
+        double totalAmountReturned = crapsGameDtoList.stream()
+                .mapToDouble(crapsGame -> crapsGame.getResult().getAmountReturned())
+                .sum();
+
+        return UserCrapsGameStatsDto.builder()
+                .userId(crapsGameDtoList.getFirst().getUserId())
+                .nameGame("Craps")
+                .gamesPlayed(gamesPlayed)
+                .gamesWon(gamesWon)
+                .percentGamesWon(percentGamesWon)
+                .totalAmountBet(totalAmountBet)
+                .profitObtained(totalAmountReturned - totalAmountBet)
                 .build();
+
     }
 
     private Mono<UUID> validateUuid(String id) {
-        boolean validUuid = !StringUtils.isEmpty(id) && UUID_FORM.matcher(id).matches();
-        if (!validUuid) {
-            log.warn("Invalid ID format: {}", id);
-            return Mono.error(new BadUuidException("Invalid ID format. Please indicate the correct format."));
-        }
-        return Mono.just(UUID.fromString(id));
+        return Mono.just(UUID.fromString(id))
+                .filter(uuid -> !StringUtils.isEmpty(id) && UUID_FORM.matcher(id).matches())
+                .switchIfEmpty(Mono.error(new BadUuidException("Invalid ID format")));
     }
+
 }
