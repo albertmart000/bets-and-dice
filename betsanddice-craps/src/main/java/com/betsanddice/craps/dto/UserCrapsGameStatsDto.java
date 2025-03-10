@@ -20,7 +20,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-@JsonPropertyOrder({"id_user", "name_game", "games_played", "games_won", "percent_games_won", "amount_bet", "profit_obtained"})
+@JsonPropertyOrder({"id_user", "name_game", "games_played", "games_won", "percent_games_won", "total_amount_bet", "profit_obtained"})
 public class UserCrapsGameStatsDto {
 
     @JsonProperty(value = "id_user")
