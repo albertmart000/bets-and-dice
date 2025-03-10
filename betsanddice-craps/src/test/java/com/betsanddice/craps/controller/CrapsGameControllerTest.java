@@ -1,10 +1,7 @@
 package com.betsanddice.craps.controller;
 
 import com.betsanddice.craps.document.DiceRollDocument;
-import com.betsanddice.craps.dto.BetDto;
-import com.betsanddice.craps.dto.CrapsGameDto;
-import com.betsanddice.craps.dto.GenericResultDto;
-import com.betsanddice.craps.dto.ResultCrapsGameDto;
+import com.betsanddice.craps.dto.*;
 import com.betsanddice.craps.exception.CrapsGameNotFoundException;
 import com.betsanddice.craps.service.ICrapsGameService;
 import org.junit.jupiter.api.Test;
@@ -80,14 +77,8 @@ class CrapsGameControllerTest {
     void getCrapsGamesByUser_ValidPageParameters_CrapsGameReturned() {
         String userId = "706507d4-b89f-41eb-a7eb-41838d08a08f";
 
-        CrapsGameDto crapsGameDto1 = new CrapsGameDto();
-        crapsGameDto1.setUserId(UUID.fromString(userId));
-        CrapsGameDto crapsGameDto2 = new CrapsGameDto();
-        crapsGameDto2.setUserId(UUID.fromString(userId));
-        CrapsGameDto[] expectedCraps = {crapsGameDto1, crapsGameDto2};
-
         GenericResultDto<CrapsGameDto> expectedResult = new GenericResultDto<>();
-        expectedResult.setInfo(0, 2, 3, expectedCraps);
+        expectedResult.setInfo(0, 2, 2, new CrapsGameDto[]{new CrapsGameDto(), new CrapsGameDto()});
 
         Mono<GenericResultDto<CrapsGameDto>> expectedResultMono = Mono.just(expectedResult);
 
@@ -108,16 +99,9 @@ class CrapsGameControllerTest {
     void getCrapsGamesByUser_NullPageParameters_CrapsGameReturned() {
         String userId = "706507d4-b89f-41eb-a7eb-41838d08a08f";
 
-        CrapsGameDto crapsGameDto1 = new CrapsGameDto();
-        crapsGameDto1.setUserId(UUID.fromString(userId));
-        CrapsGameDto crapsGameDto2 = new CrapsGameDto();
-        crapsGameDto2.setUserId(UUID.fromString(userId));
-        CrapsGameDto crapsGameDto3 = new CrapsGameDto();
-        crapsGameDto2.setUserId(UUID.fromString(userId));
-        CrapsGameDto[] expectedCraps = {crapsGameDto1, crapsGameDto2, crapsGameDto3};
-
         GenericResultDto<CrapsGameDto> expectedResult = new GenericResultDto<>();
-        expectedResult.setInfo(0, 3, 3, expectedCraps);
+        expectedResult.setInfo(0, 3, 3, new CrapsGameDto[]{new CrapsGameDto(), new CrapsGameDto(),
+                new CrapsGameDto()});
 
         Mono<GenericResultDto<CrapsGameDto>> expectedResultMono = Mono.just(expectedResult);
 
@@ -151,5 +135,36 @@ class CrapsGameControllerTest {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(CrapsGameDto.class);
+    }
+
+    @Test
+    void getUserCrapsGameStats_CrapsGameStatsReturned() {
+        String userId = "706507d4-b89f-41eb-a7eb-41838d08a08f";
+
+        UserCrapsGameStatsDto expectedUserCrapsGameStatsDto = new UserCrapsGameStatsDto();
+
+        when(crapsGameService.getUserCrapsGameStats(userId))
+                .thenReturn(Mono.just(expectedUserCrapsGameStatsDto));
+
+        webTestClient.get()
+                .uri(CRAPS_BASE_URL + "/crapsGames/crapsGamesStatsByUser/{userid}", userId)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(UserCrapsGameStatsDto.class);
+    }
+
+    @Test
+    void getUserCrapsGameStats_CrapsGameStatsNotFound_ThrowsException() {
+        String userId = "706507d4-b89f-41eb-a7eb-41838d08a08f";
+
+        when(crapsGameService.getUserCrapsGameStats(userId))
+                .thenThrow(new CrapsGameNotFoundException("No CrapsGames found for User with id " + userId));
+
+        webTestClient.get()
+                .uri(CRAPS_BASE_URL + "/crapsGames/crapsGamesStatsByUser/{userid}", userId)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(UserCrapsGameStatsDto.class);
     }
 }
