@@ -157,14 +157,15 @@ public class CrapsGameServiceImp implements ICrapsGameService {
                 .mapToDouble(crapsGame -> crapsGame.getResult().getAmountReturned())
                 .sum();
 
-        return UserCrapsGameStatsDto.builder()
-                .userId(crapsGameDtoList.getFirst().getUserId())
-                .nameGame("Craps")
-                .gamesPlayed(gamesPlayed)
-                .gamesWon(gamesWon)
-                .percentGamesWon(percentGamesWon)
-                .totalAmountBet(totalAmountBet)
-                .profitObtained(totalAmountReturned - totalAmountBet)
+        UserCrapsGameStatsDto.UserCrapsGameStatsDtoBuilder builder = UserCrapsGameStatsDto.builder();
+        builder.userId(crapsGameDtoList.get(0).getUserId());
+        builder.nameGame("Craps");
+        builder.gamesPlayed(gamesPlayed);
+        builder.gamesWon(gamesWon);
+        builder.percentGamesWon(percentGamesWon);
+        builder.totalAmountBet(totalAmountBet);
+        builder.profitObtained(totalAmountReturned - totalAmountBet);
+        return builder
                 .build();
 
     }
