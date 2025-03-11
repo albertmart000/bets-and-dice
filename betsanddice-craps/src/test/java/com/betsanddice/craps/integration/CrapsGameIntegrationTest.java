@@ -4,7 +4,9 @@ package com.betsanddice.craps.integration;
 import com.betsanddice.craps.document.CrapsGameDocument;
 import com.betsanddice.craps.document.DiceRollDocument;
 import com.betsanddice.craps.dto.CrapsGameDto;
-import com.betsanddice.craps.dto.ResultDto;
+import com.betsanddice.craps.dto.GenericResultDto;
+import com.betsanddice.craps.dto.ResultCrapsGameDto;
+import com.betsanddice.craps.dto.UserCrapsGameStatsDto;
 import com.betsanddice.craps.repository.CrapsGameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,7 +31,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
-
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
@@ -90,13 +91,13 @@ class CrapsGameIntegrationTest {
         crapsGameDocument3 = new CrapsGameDocument(uuidCrapsGame3, uuidUser, date,
                 expectedDiceSum, expectedAttempts, amountBet, diceRollsList);
 
-        ResultDto resultDto = new ResultDto(expectedAttempts, true, 1.671898516448076, 16.71898516448076);
+        ResultCrapsGameDto resultDto = new ResultCrapsGameDto(expectedAttempts, true, 1.671898516448076, 16.71898516448076);
 
         crapsGameDto1 = new CrapsGameDto(uuidCrapsGame1, uuidUser, "2023-01-31 12:00:00",
                 expectedDiceSum, expectedAttempts, amountBet, diceRollsList, resultDto);
         crapsGameDto2 = new CrapsGameDto(uuidCrapsGame2, uuidUser, "2023-01-31 12:00:00",
                 expectedDiceSum, expectedAttempts, amountBet, diceRollsList, resultDto);
-        crapsGameDto1 = new CrapsGameDto(uuidCrapsGame2, uuidUser, "2023-01-31 12:00:00",
+        crapsGameDto3 = new CrapsGameDto(uuidCrapsGame2, uuidUser, "2023-01-31 12:00:00",
                 expectedDiceSum, expectedAttempts, amountBet, diceRollsList, resultDto);
 
         crapsGameRepository.saveAll(Flux.just(crapsGameDocument1, crapsGameDocument2, crapsGameDocument3)).blockLast();
@@ -134,8 +135,21 @@ class CrapsGameIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList(CrapsGameDto.class)
-                .contains(new CrapsGameDto[]{})
+                .expectBodyList(GenericResultDto.class)
+                .contains(new GenericResultDto[]{})
                 .hasSize(1);
     }
+
+    @Test
+    void getUserCrapsGameStats_CrapsGameReturned() {
+        webTestClient.get()
+                .uri(CRAPS_BASE_URL + "/crapsGames/crapsGamesStatsByUser/{userId}?", uuidUser)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(UserCrapsGameStatsDto.class)
+                .contains(new UserCrapsGameStatsDto[]{})
+                .hasSize(1);
+    }
+
 }
