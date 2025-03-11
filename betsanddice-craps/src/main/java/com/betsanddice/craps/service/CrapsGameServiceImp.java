@@ -85,8 +85,8 @@ public class CrapsGameServiceImp implements ICrapsGameService {
                         .switchIfEmpty(Mono.error(new CrapsGameNotFoundException("No CrapsGames found for User with id " + userId))))
                 .map(crapsGameDocument -> {
                     CrapsGameDto crapsGameDto = crapsGameDocumentConverter.fromDocumentToDto(crapsGameDocument, CrapsGameDto.class);
-                    crapsGameDto.setResult(generateResultDto(crapsGameDto.getExpectedDiceSum(), crapsGameDto.getExpectedAttempts(),
-                            crapsGameDto.getAmountBet(), crapsGameDto.getDiceRollsList()));
+                    crapsGameDto.setResult(generateResultDto(crapsGameDocument.getExpectedDiceSum(), crapsGameDocument.getExpectedAttempts(),
+                            crapsGameDocument.getAmountBet(), crapsGameDocument.getDiceRollsList()));
                     return crapsGameDto;
                 })
                 .collectList();
@@ -170,9 +170,13 @@ public class CrapsGameServiceImp implements ICrapsGameService {
     }
 
     private Mono<UUID> validateUuid(String id) {
-        return Mono.just(UUID.fromString(id))
-                .filter(uuid -> !StringUtils.isEmpty(id) && UUID_FORM.matcher(id).matches())
-                .switchIfEmpty(Mono.error(new BadUuidException("Invalid ID format")));
-    }
+        boolean validUUID = !StringUtils.isEmpty(id) && UUID_FORM.matcher(id).matches();
 
+        if (!validUUID) {
+            log.warn("Invalid ID format.");
+            return Mono.error(new BadUuidException("Invalid ID format. Please indicate the correct format."));
+        }
+
+        return Mono.just(UUID.fromString(id));
+    }
 }
