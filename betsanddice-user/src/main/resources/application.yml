@@ -20,6 +20,10 @@ springdoc:
 server:
   port: 8094
 
+config:
+  webclient:
+    host: http://localhost:8095
+
 management:
   endpoints:
     web:
