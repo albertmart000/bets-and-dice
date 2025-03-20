@@ -80,7 +80,7 @@ public class UserController {
         return userService.getAllUsers((Integer.parseInt(offset)), Integer.parseInt(limit));
     }
 
-    @GetMapping("/users/crapsGamesStatsByUser/{userId}")
+    @GetMapping("/crapsGamesStatsByUser/{userId}")
     @Operation(
             operationId = "Get crapsGames statistics from a given user.",
             summary = "Get crapsGames statistics from a user.",

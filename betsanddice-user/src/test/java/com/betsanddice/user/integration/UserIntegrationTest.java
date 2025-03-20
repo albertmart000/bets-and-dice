@@ -1,6 +1,7 @@
 package com.betsanddice.user.integration;
 
 import com.betsanddice.user.document.UserDocument;
+import com.betsanddice.user.dto.UserCrapsGameStatsDto;
 import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -128,6 +129,19 @@ class UserIntegrationTest {
                 .expectStatus().isOk()
                 .expectBodyList(UserDto.class)
                 .contains(new UserDto[]{})
+                .hasSize(1);
+    }
+
+    @Test
+    void getUserCrapsGameStats_CrapsGameReturned() {
+        String uuidUser = "81099a9e-0d59-4571-a04c-31a08a711e3b";
+        webTestClient.get()
+                .uri(USER_BASE_URL + "/crapsGamesStatsByUser/{userId}?", uuidUser)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(UserCrapsGameStatsDto.class)
+                .contains(new UserCrapsGameStatsDto[]{})
                 .hasSize(1);
     }
 
