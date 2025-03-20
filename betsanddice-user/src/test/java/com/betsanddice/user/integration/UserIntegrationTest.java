@@ -134,7 +134,7 @@ class UserIntegrationTest {
 
     @Test
     void getUserCrapsGameStats_CrapsGameReturned() {
-        String uuidUser = "81099a9e-0d59-4571-a04c-31a08a711e3b";
+        String uuidUser = "706507d4-b89f-41eb-a7eb-41838d08a08f";
         webTestClient.get()
                 .uri(USER_BASE_URL + "/crapsGamesStatsByUser/{userId}?", uuidUser)
                 .accept(MediaType.APPLICATION_JSON)
