@@ -20,7 +20,7 @@ public class StringToUuidValidator {
         boolean validUuid = !StringUtils.isEmpty(id) && UUID_FORM.matcher(id).matches();
 
         if (!validUuid) {
-            log.warn("Invalid ID format: {}", id);
+            log.warn("Invalid ID format.");
             return Mono.error(new BadUuidException("Invalid ID format. Please indicate the correct format."));
         }
 
