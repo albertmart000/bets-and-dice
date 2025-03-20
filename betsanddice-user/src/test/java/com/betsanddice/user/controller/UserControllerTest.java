@@ -1,12 +1,15 @@
 package com.betsanddice.user.controller;
 
 import com.betsanddice.user.dto.GenericResultDto;
+import com.betsanddice.user.dto.UserCrapsGameStatsDto;
 import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.service.IUserService;
+import com.betsanddice.user.service.client.ICrapsGameClientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
@@ -22,6 +25,9 @@ class UserControllerTest {
 
     @MockBean
     private IUserService userService;
+
+    @MockBean
+    private ICrapsGameClientService crapsGameClientService;
 
     UserDto userDto1 = new UserDto();
     UserDto userDto2 = new UserDto();
@@ -94,5 +100,22 @@ class UserControllerTest {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(UserDto.class);
+    }
+
+    @Test
+    void getUserCrapsGameStats_CrapsGameStatsReturned() {
+        String userId = "706507d4-b89f-41eb-a7eb-41838d08a08f";
+
+        UserCrapsGameStatsDto expectedUserCrapsGameStatsDto = new UserCrapsGameStatsDto();
+
+        when(crapsGameClientService.getUserCrapsGameStats(userId))
+                .thenReturn(Mono.just(expectedUserCrapsGameStatsDto));
+
+        webTestClient.get()
+                .uri(USER_BASE_URL + "/crapsGamesStatsByUser/{userid}", userId)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(UserCrapsGameStatsDto.class);
     }
 }

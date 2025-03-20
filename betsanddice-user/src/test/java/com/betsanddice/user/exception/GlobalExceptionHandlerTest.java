@@ -2,6 +2,7 @@ package com.betsanddice.user.exception;
 
 import com.betsanddice.user.dto.MessageDto;
 import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -109,6 +110,17 @@ class GlobalExceptionHandlerTest {
         ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
 
         MatcherAssert.assertThat(responseEntity, notNullValue());
+    }
+
+    @Test
+    void TestHandleCrapsGameNotFoundException() {
+        CrapsGameNotFoundException crapsGameNotFoundException = new CrapsGameNotFoundException("CrapsGame not found");
+
+        ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleCrapsGameNotFoundException(crapsGameNotFoundException);
+
+        assertEquals(OK_REQUEST, responseEntity.getStatusCode());
+        String responseBody = Objects.requireNonNull(responseEntity.getBody()).getMessage();
+        Assertions.assertTrue(responseBody.contains("CrapsGame not found"));
     }
 
     @Test

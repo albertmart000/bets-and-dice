@@ -7,6 +7,7 @@ import com.betsanddice.user.exception.BadUuidException;
 import com.betsanddice.user.exception.UserNotFoundException;
 import com.betsanddice.user.helper.DocumentToDtoConverter;
 import com.betsanddice.user.repository.UserRepository;
+import com.betsanddice.user.utils.StringToUuidValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,40 +30,45 @@ class UserServiceImpTest {
     @Mock
     private DocumentToDtoConverter<UserDocument, UserDto> converter;
 
+    @Mock
+    private StringToUuidValidator uuidValidator;
+
     @InjectMocks
     private UserServiceImp userService;
+
+    private final String validId = "706507d4-b89f-41eb-a7eb-41838d08a08f";
+    private final UUID userUuid = UUID.fromString(validId);
+    private final String invalidUuid = "invalid-uuid";
+    UserDocument userDocument = new UserDocument();
+    UserDto userDto = new UserDto();
 
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
+        when(uuidValidator.validateUuid(validId)).thenReturn(Mono.just(userUuid));
+        when(uuidValidator.validateUuid(invalidUuid)).thenReturn(Mono.error(new BadUuidException("Invalid UUID")));
+        when(userRepository.findByUuid(userUuid)).thenReturn(Mono.just(userDocument));
+        when(converter.fromDocumentToDto(userDocument, UserDto.class)).thenReturn(userDto);
     }
 
     @Test
     void getUserById_ValidId_UserFound() {
-        UUID userId = UUID.randomUUID();
-        UserDocument userDocument = new UserDocument();
-        UserDto userDto = new UserDto();
-
-        when(userRepository.findByUuid(userId)).thenReturn(Mono.just(userDocument));
-        when(converter.fromDocumentToDto(userDocument, UserDto.class)).thenReturn(userDto);
-
-
-        Mono<UserDto> resultDto = userService.getUserById(userId.toString());
+        Mono<UserDto> resultDto = userService.getUserById(validId);
 
         StepVerifier.create(resultDto)
                 .expectNext(userDto)
                 .expectComplete()
                 .verify();
 
-        verify(userRepository).findByUuid(userId);
+        verify(uuidValidator).validateUuid(validId);
+        verify(userRepository).findByUuid(userUuid);
         verify(converter).fromDocumentToDto(userDocument, UserDto.class);
     }
 
     @Test
     void getUserById_InvalidId_ErrorThrown() {
-        String invalidId = "invalid-id";
 
-        Mono<UserDto> result = userService.getUserById(invalidId);
+        Mono<UserDto> result = userService.getUserById(invalidUuid);
 
         StepVerifier.create(result)
                 .expectError(BadUuidException.class)
@@ -74,17 +80,18 @@ class UserServiceImpTest {
 
     @Test
     void getUserById_NonExistId_ErrorThrown() {
-        String idString = "4f8a6c91-8a9d-49b0-9f2c-3e67d2b18b7d";
-        UUID id = UUID.fromString(idString);
+        String nonExistId = "4f8a6c91-8a9d-49b0-9f2c-3e67d2b18b7d";
+        UUID nonExistUuid = UUID.fromString(nonExistId);
 
-        when(userRepository.findByUuid(id)).thenReturn(Mono.empty());
+        when(uuidValidator.validateUuid(nonExistId)).thenReturn(Mono.just(nonExistUuid));
+        when(userRepository.findByUuid(nonExistUuid)).thenReturn(Mono.empty());
 
-        Mono<UserDto> result = userService.getUserById(idString);
+        Mono<UserDto> result = userService.getUserById(nonExistId);
 
         StepVerifier.create(result)
                 .expectErrorMatches(error ->
                         error instanceof UserNotFoundException
-                                && error.getMessage().equals("User with id " + id + " not found.")
+                                && error.getMessage().equals("User with id " + nonExistId + " not found.")
                 );
     }
 
@@ -135,46 +142,4 @@ class UserServiceImpTest {
                 .verify();
     }
 
-    @Test
-    void validateUuid_ValidUuid_ReturnsMonoWithUuid_Test() {
-        String validUuid = "550e8400-e29b-41d4-a716-446655440000";
-
-        Mono<UUID> resultMono = userService.validateUuid(validUuid);
-
-        StepVerifier.create(resultMono)
-                .expectNextMatches(uuid -> uuid.toString().equals(validUuid))
-                .expectComplete()
-                .verify();
-    }
-
-    @Test
-    void validateUuid_InvalidUuid_ReturnsErrorMono_Test() {
-        String invalidUuid = "invalid-uuid";
-
-        Mono<UUID> resultMono = userService.validateUuid(invalidUuid);
-
-        StepVerifier.create(resultMono)
-                .expectError(BadUuidException.class)
-                .verify();
-    }
-
-    @Test
-    void validateUuid_EmptyUuid_ReturnsErrorMono_Test() {
-        String emptyUuid = "";
-
-        Mono<UUID> resultMono = userService.validateUuid(emptyUuid);
-
-        StepVerifier.create(resultMono)
-                .expectError(BadUuidException.class)
-                .verify();
-    }
-
-    @Test
-    void validateUuid_NullUuid_ReturnsErrorMono_Test() {
-        Mono<UUID> resultMono = userService.validateUuid(null);
-
-        StepVerifier.create(resultMono)
-                .expectError(BadUuidException.class)
-                .verify();
-    }
 }

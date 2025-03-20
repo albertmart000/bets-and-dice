@@ -3,8 +3,10 @@ package com.betsanddice.user.controller;
 import com.betsanddice.user.annotations.ValidGenericPattern;
 import com.betsanddice.user.annotations.ValidUUID;
 import com.betsanddice.user.dto.GenericResultDto;
+import com.betsanddice.user.dto.UserCrapsGameStatsDto;
 import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.service.IUserService;
+import com.betsanddice.user.service.client.ICrapsGameClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,9 +35,11 @@ public class UserController {
     private static final String INVALID_PARAM = "Invalid parameter";
 
     IUserService userService;
+    ICrapsGameClientService crapsGameClient;
 
-    public UserController(IUserService userService) {
+    public UserController(IUserService userService, ICrapsGameClientService crapsGameClient) {
         this.userService = userService;
+        this.crapsGameClient = crapsGameClient;
     }
 
     @Operation(summary = "Testing the App")
@@ -74,6 +78,21 @@ public class UserController {
     public Mono<GenericResultDto<UserDto>> getAllUsers(@RequestParam(defaultValue = DEFAULT_OFFSET) @ValidGenericPattern(message = INVALID_PARAM) String offset,
                                                        @RequestParam(defaultValue = DEFAULT_LIMIT) @ValidGenericPattern(pattern = LIMIT, message = INVALID_PARAM) String limit) {
         return userService.getAllUsers((Integer.parseInt(offset)), Integer.parseInt(limit));
+    }
+
+    @GetMapping("/crapsGamesStatsByUser/{userId}")
+    @Operation(
+            operationId = "Get crapsGames statistics from a given user.",
+            summary = "Get crapsGames statistics from a user.",
+            description = "Retrieve crapsGames statistics for a user through the URI from the database.",
+            responses = {
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = UserCrapsGameStatsDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "400", description = "Missing or unexpected parameters")
+            }
+    )
+    public Mono<ResponseEntity<UserCrapsGameStatsDto>> getUserCrapsGameStats(@PathVariable("userId") String id) {
+        return crapsGameClient.getUserCrapsGameStats(id)
+                .map(ResponseEntity.ok()::body);
     }
 
 }

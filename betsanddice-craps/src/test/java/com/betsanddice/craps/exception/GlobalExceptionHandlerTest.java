@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 class GlobalExceptionHandlerTest {
 
     private final HttpStatus BAD_REQUEST = HttpStatus.BAD_REQUEST;
-    private final HttpStatus OK = HttpStatus.OK;
+    private final HttpStatus OK_REQUEST = HttpStatus.OK;
 
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
@@ -105,7 +105,7 @@ class GlobalExceptionHandlerTest {
 
         ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleCrapsGameNotFoundException(crapsGameNotFoundException);
 
-        assertEquals(OK, responseEntity.getStatusCode());
+        assertEquals(OK_REQUEST, responseEntity.getStatusCode());
         String responseBody = Objects.requireNonNull(responseEntity.getBody()).getMessage();
         Assertions.assertTrue(responseBody.contains("CrapsGame not found"));
     }

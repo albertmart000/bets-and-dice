@@ -25,7 +25,7 @@ class UserDocumentToDtoConverterTest {
 
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         converter = new DocumentToDtoConverter<>();
 
         UUID userId1 = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
