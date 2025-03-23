@@ -1,6 +1,11 @@
 spring:
   application:
     name: betsanddice-user
+  cloud:
+    config:
+      enabled: false
+      import-check:
+        enabled: false
   data:
     mongodb:
       #uri para bbdd local:
