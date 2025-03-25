@@ -1,0 +1,5 @@
+build:
+  version: "1.0"
+
+betsanddice-craps:
+  message: "Welcome to Bets-And-Dice Craps local API "

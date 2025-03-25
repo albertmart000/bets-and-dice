@@ -8,6 +8,9 @@ spring:
       #uri para bbdd docker:
       #uri: mongodb://admin_betsanddice:XMOJocgKlmRHz2O@mongodb-betsanddice:27017/craps?authSource=admin
       uuid-representation: standard
+  cloud:
+    compatibility-verifier:
+      enabled: false
 
 springdoc:
   swagger-ui:
