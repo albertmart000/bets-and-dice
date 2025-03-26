@@ -57,7 +57,7 @@ eureka:
 info:
   app:
     name: "betsanddice-user"
-    description: "Bet-And-Dice Users Application"
+    description: "Bet-And-Dice User Application"
     version: "1.0.0"
 
 url:
