@@ -7,7 +7,7 @@ import com.betsanddice.user.repository.UserRepository;
 import com.betsanddice.user.utils.StringToUuidValidator;
 import mockwebserver3.MockResponse;
 import mockwebserver3.MockWebServer;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,6 +62,9 @@ class CrapsGameClientServiceImpTest {
         when(uuidValidator.validateUuid(validId)).thenReturn(Mono.just(userUuid));
         when(userRepository.findById(userUuid)).thenReturn(Mono.just(userDocument));
 
+
+
+
         mockWebServer.enqueue(new MockResponse()
                 .setBody(getMockedResponse())
                 .addHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE));
@@ -102,7 +105,7 @@ class CrapsGameClientServiceImpTest {
                 .verify();
     }
 
-    @NotNull
+    //@NotNull
     private static String getMockedResponse() {
         return "{\"id_user\":\"706507d4-b89f-41eb-a7eb-41838d08a08f\",\"name_game\":\"Craps\",\"games_played\":2,\"games_won\":1,\"percent_games_won\":50.0,\"total_amount_bet\":20.0,\"profit_obtained\":1.5}";
     }

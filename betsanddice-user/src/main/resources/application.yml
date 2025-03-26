@@ -1,6 +1,8 @@
 spring:
   application:
-    name: betsanddice-user
+    name: "betsanddice-user"
+  profiles:
+    active: "dev"
   data:
     mongodb:
       #uri para bbdd local:
@@ -8,6 +10,11 @@ spring:
       #uri para bbdd docker:
       #uri: mongodb://admin_betsanddice:XMOJocgKlmRHz2O@mongodb-betsanddice:27017/users?authSource=admin
       uuid-representation: standard
+  cloud:
+    compatibility-verifier:
+      enabled: false
+  config:
+    import: "optional:configserver:http://localhost:8071/"
 
 springdoc:
   swagger-ui:
