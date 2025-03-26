@@ -1,6 +1,8 @@
 spring:
   application:
-    name: betsanddice-user
+    name: "betsanddice-user"
+  profiles:
+    active: "dev"
   data:
     mongodb:
       #uri para bbdd local:
@@ -11,6 +13,8 @@ spring:
   cloud:
     compatibility-verifier:
       enabled: false
+  config:
+    import: "optional:configserver:http://localhost:8071/"
 
 springdoc:
   swagger-ui:
