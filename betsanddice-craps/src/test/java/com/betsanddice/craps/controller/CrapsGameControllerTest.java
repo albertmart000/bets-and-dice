@@ -4,7 +4,9 @@ import com.betsanddice.craps.document.DiceRollDocument;
 import com.betsanddice.craps.dto.*;
 import com.betsanddice.craps.exception.CrapsGameNotFoundException;
 import com.betsanddice.craps.service.ICrapsGameService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,8 +19,7 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @WebFluxTest(CrapsGameController.class)
 class CrapsGameControllerTest {
@@ -30,6 +31,11 @@ class CrapsGameControllerTest {
 
     @MockBean
     private ICrapsGameService crapsGameService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void testHello() {

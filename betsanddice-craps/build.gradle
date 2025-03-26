@@ -66,7 +66,8 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test:3.1.0.RELEASE'
     testImplementation 'org.testcontainers:mongodb:1.17.6'
     testImplementation 'org.testcontainers:junit-jupiter:1.17.6'
-    testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.3'
+    testImplementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.11'
+    testImplementation 'com.squareup.okhttp3:mockwebserver3-junit5:5.0.0-alpha.11'
     testImplementation 'org.junit.platform:junit-platform-suite-engine:1.8.1'
 }
 

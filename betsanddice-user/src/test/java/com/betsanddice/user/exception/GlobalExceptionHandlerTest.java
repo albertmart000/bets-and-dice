@@ -10,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -37,16 +36,15 @@ class GlobalExceptionHandlerTest {
 
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
-    @MockBean
+
     private ResponseStatusException responseStatusException;
-    @MockBean
     private MethodArgumentNotValidException methodArgumentNotValidException;
-    @MockBean
-    private MessageDto errorMessageDto;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        responseStatusException = mock(ResponseStatusException.class);
+        methodArgumentNotValidException = mock(MethodArgumentNotValidException.class);
     }
 
     @Test
