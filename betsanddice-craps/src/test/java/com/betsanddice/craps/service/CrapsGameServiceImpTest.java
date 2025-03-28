@@ -7,6 +7,7 @@ import com.betsanddice.craps.exception.BadUuidException;
 import com.betsanddice.craps.exception.CrapsGameNotFoundException;
 import com.betsanddice.craps.helper.DocumentToDtoConverter;
 import com.betsanddice.craps.repository.CrapsGameRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,9 +22,9 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
 class CrapsGameServiceImpTest {
@@ -195,6 +196,27 @@ class CrapsGameServiceImpTest {
         StepVerifier.create(result)
                 .expectError(CrapsGameNotFoundException.class)
                 .verify();
+    }
+
+    @Test
+    void testDeleteCrapsGamesByUserId_Success() {
+        String userUuid = "706507d4-b89f-41eb-a7eb-41838d08a08f";
+
+        when(crapsGameRepository.findByUserId(UUID.fromString(userUuid))).thenReturn(Flux.just(crapsGameDocument, crapsGameDocument1));
+        when(crapsGameRepository.deleteAll(List.of(crapsGameDocument, crapsGameDocument1))).thenReturn(Mono.empty());
+
+        Mono<DeleteResponseDto> result = crapsGameService.deleteCrapsGamesByUserId(userUuid);
+
+        StepVerifier.create(result)
+                .assertNext(response -> {
+                    Assertions.assertNotNull(response);
+                    assertEquals(userUuid, response.getId());
+                    assertEquals("CrapsGames deleted successfully.", response.getMessage());
+                })
+                .verifyComplete();
+
+        verify(crapsGameRepository, times(1)).findByUserId(UUID.fromString(userUuid));
+        verify(crapsGameRepository, times(1)).deleteAll(List.of(crapsGameDocument, crapsGameDocument1));
     }
 
     private CrapsGameDto getCrapsGameDtoMocked(UUID crapsGameRandomId, UUID uuid, String date, int expectedDiceSum,
