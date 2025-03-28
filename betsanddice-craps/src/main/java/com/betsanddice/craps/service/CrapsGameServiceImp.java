@@ -76,7 +76,22 @@ public class CrapsGameServiceImp implements ICrapsGameService {
                 .flatMap(crapsGameDtoList -> {
                     UserCrapsGameStatsDto userCrapsGameStatsDto = generateUserCrapsGameStatsDto(crapsGameDtoList);
                     return Mono.just(userCrapsGameStatsDto);
-                });
+                })
+                .doOnSuccess(response -> log.info("CrapsGamesStats generated successfully for user with ID: {}", response.getUserId()))
+                .doOnError(error -> log.error("Error occurred while generating CrapsGames for User with id: {}", error.getMessage()));
+
+    }
+
+    @Override
+    public Mono<DeleteResponseDto> deleteCrapsGamesByUserId(String id) {
+        return validateUuid(id)
+                .flatMap(userId -> crapsGameRepository.findByUserId(userId)
+                        .switchIfEmpty(Mono.error(new CrapsGameNotFoundException("No CrapsGames found for User with id " + userId)))
+                        .collectList()
+                        .flatMap(crapsGameDocumentsList -> crapsGameRepository.deleteAll(crapsGameDocumentsList))
+                        .thenReturn(new DeleteResponseDto(id, "CrapsGames deleted successfully.")))
+                .doOnSuccess(response -> log.info("CrapsGames deleted successfully for user with ID: {}", response.getId()))
+                .doOnError(error -> log.error("Error occurred while deleting CrapsGames for User with id: {}", error.getMessage()));
     }
 
     private Mono<List<CrapsGameDto>> getCrapsGamesDtoByUserList(String id) {
@@ -128,7 +143,8 @@ public class CrapsGameServiceImp implements ICrapsGameService {
                 .build();
     }
 
-    private ResultCrapsGameDto generateResultDto(int expectedDiceSum, int expectedAttempts, double amountBet,
+    private ResultCrapsGameDto generateResultDto(int expectedDiceSum, int expectedAttempts,
+                                                 double amountBet,
                                                  List<DiceRollDocument> diceRolls) {
         int attempts = diceRolls.size();
         boolean isWon = expectedAttempts >= attempts;
@@ -143,7 +159,8 @@ public class CrapsGameServiceImp implements ICrapsGameService {
                 .build();
     }
 
-    private UserCrapsGameStatsDto generateUserCrapsGameStatsDto(List<CrapsGameDto> crapsGameDtoList) {
+    private UserCrapsGameStatsDto generateUserCrapsGameStatsDto
+            (List<CrapsGameDto> crapsGameDtoList) {
 
         int gamesPlayed = crapsGameDtoList.size();
         int gamesWon = (int) crapsGameDtoList.stream()

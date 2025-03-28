@@ -1,9 +1,6 @@
 package com.betsanddice.craps.controller;
 
-import com.betsanddice.craps.dto.BetDto;
-import com.betsanddice.craps.dto.CrapsGameDto;
-import com.betsanddice.craps.dto.GenericResultDto;
-import com.betsanddice.craps.dto.UserCrapsGameStatsDto;
+import com.betsanddice.craps.dto.*;
 import com.betsanddice.craps.service.ICrapsGameService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -87,6 +84,22 @@ public class CrapsGameController {
     public Mono<ResponseEntity<UserCrapsGameStatsDto>> getUserCrapsGameStats(@PathVariable("userId") String id) {
         return crapsGameService.getUserCrapsGameStats(id)
                 .map(ResponseEntity.ok()::body);
+    }
+
+    @DeleteMapping("/crapsGames/deleteCrapsGamesByUser/{userId}")
+    @Operation(
+            operationId = "Delete all Craps Games of a given user.",
+            summary = "Deleting a challenge.",
+            description = "Sending the ID User through the URI to delete all Craps Games of the user from the database.",
+            responses = {
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = CrapsGameDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "404", description = "The User with given Id was not found."),
+                    @ApiResponse(responseCode = "400", description = "Malformed or invalid parameter(s)")
+            }
+    )
+    public Mono<ResponseEntity<DeleteResponseDto>> deleteCrapsGamesByUserId(@PathVariable("userId") String id) {
+        return crapsGameService.deleteCrapsGamesByUserId(id)
+                .map(dto -> ResponseEntity.ok().body(dto));
     }
 
 }
