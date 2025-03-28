@@ -3,15 +3,9 @@ package com.betsanddice.craps.integration;
 
 import com.betsanddice.craps.document.CrapsGameDocument;
 import com.betsanddice.craps.document.DiceRollDocument;
-import com.betsanddice.craps.dto.CrapsGameDto;
-import com.betsanddice.craps.dto.GenericResultDto;
-import com.betsanddice.craps.dto.ResultCrapsGameDto;
-import com.betsanddice.craps.dto.UserCrapsGameStatsDto;
+import com.betsanddice.craps.dto.*;
 import com.betsanddice.craps.repository.CrapsGameRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,7 +50,7 @@ class CrapsGameIntegrationTest {
 
     private final String CRAPS_BASE_URL = "/betsanddice/api/v1/craps";
 
-    String uuidUser = "81099a9e-0d59-4571-a04c-31a08a711e3b";
+    String uuidUser = ("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
     UUID uuidCrapsGame1 = UUID.fromString("50feba3c-3cbf-48ad-8142-cccf7c6bf111");
     UUID uuidCrapsGame2 = UUID.fromString("50feba3c-3cbf-48ad-8142-cccf7c6bf222");
@@ -152,4 +146,17 @@ class CrapsGameIntegrationTest {
                 .hasSize(1);
     }
 
+    @Test
+    void deleteCrapsGamesByUserId_CrapsGameDeleted() {
+        webTestClient.delete()
+                .uri(CRAPS_BASE_URL + "/crapsGames/deleteCrapsGamesByUser/{userId}?", uuidUser)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(DeleteResponseDto.class)
+                .value(response -> {
+                    Assertions.assertNotNull(response);
+                    Assertions.assertEquals("CrapsGames deleted successfully.", response.getMessage());
+                });
+    }
 }

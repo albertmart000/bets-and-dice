@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.List;
 import java.util.UUID;
@@ -173,5 +174,20 @@ class CrapsGameControllerTest {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(UserCrapsGameStatsDto.class);
+    }
+
+    @Test
+    void deleteCrapsGamesByUserId_CrapsGameDeleted() {
+        String userId = "706507d4-b89f-41eb-a7eb-41838d08a08f";
+        DeleteResponseDto deleteResponseDto = new DeleteResponseDto(userId, "CrapsGames deleted successfully.");
+        Mono<DeleteResponseDto> response = Mono.just(deleteResponseDto);
+
+        when(crapsGameService.deleteCrapsGamesByUserId(userId)).thenReturn(response);
+
+        Mono<DeleteResponseDto> result = crapsGameService.deleteCrapsGamesByUserId(userId);
+
+        StepVerifier.create(result)
+                .expectNext(deleteResponseDto)
+                .verifyComplete();
     }
 }
