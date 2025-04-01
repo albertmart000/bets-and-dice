@@ -16,9 +16,6 @@
           </set>
         </option>
       </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/betsanddice-eureka" />
-      </GradleProjectSettings>
     </option>
   </component>
 </project>
