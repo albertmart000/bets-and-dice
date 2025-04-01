@@ -19,6 +19,7 @@ jacoco{
 }
 
 group = 'com.betsanddice'
+version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()

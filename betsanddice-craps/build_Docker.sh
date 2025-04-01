@@ -19,11 +19,11 @@ then
     echo "$fileConfig not found."
   fi
 
-./gradlew :betsanddice-user:clean && ./gradlew :betsanddice-user:build
+./gradlew :betsanddice-craps:clean && ./gradlew :betsanddice-craps:build
 
-docker build -t="${REGISTRY_NAME}":betsanddice-user-"${USER_TAG}" .
+docker build -t="${REGISTRY_NAME}":betsanddice-craps-"${CRAPS_TAG}" .
 
 if [ "${ENV}" = "dev" ]
 then
-docker push "${REGISTRY_NAME}":betsanddice-user-"${USER_TAG}"
+docker push "${REGISTRY_NAME}":betsanddice-craps-"${CRAPS_TAG}"
 fi
