@@ -2,13 +2,13 @@ spring:
   application:
     name: "betsanddice-config"
   profiles:
-#    active: native
+    #    active: native
     active: git
   cloud:
     config:
       server:
-#        native:
-#          search-locations: "classpath:/config"
+        #        native:
+        #          search-locations: "classpath:/config"
         git:
           uri: "https://github.com/albertmart000/betsanddice-config.git"
           default-label: main

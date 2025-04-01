@@ -5,8 +5,21 @@ plugins {
 	id 'jacoco'
 }
 
-group = 'com.betsanddice-eureka'
-version = '1.0-SNAPSHOT'
+jar {
+	manifest {
+		attributes(
+				'Main-Class': 'com.betsanddice.eureka.App'
+		)
+	}
+}
+
+group = 'com.betsanddice'
+version = '0.0.1-SNAPSHOT'
+
+jacoco{
+	toolVersion = '0.8.11'
+	reportsDirectory = layout.buildDirectory.dir('jacocoXml')
+}
 
 java {
 	toolchain {
@@ -27,7 +40,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
-	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
@@ -41,6 +53,3 @@ dependencyManagement {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-//tasks.register('prepareKotlinBuildScriptModel') {
-//}
