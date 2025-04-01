@@ -1,5 +1,0 @@
-build:
-  version: "1.0"
-
-betsanddice-user:
-  message: "Welcome to Bets-And-Dice User local API "
