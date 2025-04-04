@@ -1,11 +1,6 @@
 #!/bin/bash
 
-cd docker
-cd default
+cd docker/default
 
-docker image prune -f
-docker volume prune -f
-docker container prune -f
-docker network prune -f
 docker system prune -f
 docker-compose down

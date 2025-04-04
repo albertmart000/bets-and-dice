@@ -1,29 +1,25 @@
 #!/bin/sh
 
-fileConfig=.env.dev;
-now="$(date +'%d-%m-%Y %H:%M:%S:%3N')"
-base_dir=`pwd`
+fileConfig=config/.env.dev
+now=$(date +'%d-%m-%Y %H:%M:%S:%3N')
+base_dir=$(pwd)
 
-if [ -f "$fileConfig" ]
-then
-  while IFS='=' read -r key value
-  do
+if [ -f "$fileConfig" ]; then
+  while IFS='=' read -r key value; do
     key=$(echo "$key" | tr '.' '_')
-    eval "${key}"='${value}'
+    export "${key}=${value}"
   done < "$fileConfig"
 
-  echo " Date: ""${now}"
-  echo " REGISTRY_NAME=""${REGISTRY_NAME}"
+  echo "Date: $now"
+  echo "REGISTRY_NAME: $REGISTRY_NAME"
 
-  else
-    echo "$fileConfig not found."
+ ./gradlew :betsanddice-config:clean && ./gradlew :betsanddice-config:build
+
+  docker build -t "$REGISTRY_NAME:betsanddice-config-$CONFIG_TAG" .
+
+  if [ "$ENV" = "dev" ]; then
+    docker push "$REGISTRY_NAME:betsanddice-config-$CONFIG_TAG"
   fi
-
-./gradlew :betsanddice-config:clean && ./gradlew :betsanddice-config:build
-
-docker build -t="${REGISTRY_NAME}":betsanddice-config-"${CONFIG_TAG}" .
-
-if [ "${ENV}" = "dev" ]
-then
-docker push "${REGISTRY_NAME}":betsanddice-config-"${CONFIG_TAG}"
+else
+  echo "$fileConfig not found."
 fi
