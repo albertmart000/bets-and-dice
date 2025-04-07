@@ -1,5 +1,6 @@
 rootProject.name = 'bets-and-dice'
 include 'betsanddice-config'
 include 'betsanddice-eureka'
+include 'betsanddice-gateway'
 include 'betsanddice-user'
 include 'betsanddice-craps'

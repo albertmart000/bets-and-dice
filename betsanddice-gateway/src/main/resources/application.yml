@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: "betsanddice-gateway"
+  cloud:
+    compatibility-verifier:
+      enabled: false
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+          lowerCaseServiceId: true
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      access: unrestricted
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: "betsanddice-gateway"
+    description: "Bet-And-Dice Gateway Application"
+    version: "1.0.0"

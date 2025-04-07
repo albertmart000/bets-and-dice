@@ -12,9 +12,13 @@
             <option value="$PROJECT_DIR$/betsanddice-config" />
             <option value="$PROJECT_DIR$/betsanddice-craps" />
             <option value="$PROJECT_DIR$/betsanddice-eureka" />
+            <option value="$PROJECT_DIR$/betsanddice-gateway" />
             <option value="$PROJECT_DIR$/betsanddice-user" />
           </set>
         </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/betsanddice-gateway" />
       </GradleProjectSettings>
     </option>
   </component>
