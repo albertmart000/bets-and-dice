@@ -6,10 +6,8 @@ services:
     ports:
       - "27018:27017"
     environment:
-      MONGO_DATABASE: betsanddice-mongodb
       MONGO_INITDB_ROOT_USERNAME: admin_betsanddice
       MONGO_INITDB_ROOT_PASSWORD: XMOJocgKlmRHz2O
-      MONGO_INITDB_DATABASE: betsanddice
     extends:
       file: common-config.yml
       service: microservice-configserver-config
