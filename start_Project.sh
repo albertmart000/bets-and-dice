@@ -1,13 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
-# Build images micros
-directories=("betsanddice-game" "betsanddice-user")
-for dir in "${directories[@]}"; do
-    # shellcheck disable=SC2164
-    (cd "$dir" && bash build_Docker.sh)
+for dir in "betsanddice-config" "betsanddice-eureka" "betsanddice-user" "betsanddice-craps"; do
+  (cd "$dir" && bash build_Docker.sh)
 done
 
-docker image prune -f
-# shellcheck disable=SC2164
-cd docker
+cd docker/default
+
 docker-compose up -d

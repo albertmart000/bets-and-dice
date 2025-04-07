@@ -1,0 +1,78 @@
+services:
+
+  betsanddice-mongodb:
+    container_name: betsanddice-mongodb
+    image: mongo:5.0.9
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin_betsanddice
+      MONGO_INITDB_ROOT_PASSWORD: XMOJocgKlmRHz2O
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+    volumes:
+      - betsanddice_mongodb_data:/data/db
+
+  betsanddice-config:
+    container_name: betsanddice-config-v1.0-SNAPSHOT
+    image: albertmart000/betsanddice:betsanddice-config-v1.0-SNAPSHOT
+    restart: always
+    ports:
+      - "8071:8071"
+    extends:
+      file: common-config.yml
+      service: microservice-base-config
+
+  betsanddice-eureka:
+    container_name: betsanddice-eureka-v1.0-SNAPSHOT
+    image: albertmart000/betsanddice:betsanddice-eureka-v1.0-SNAPSHOT
+    restart: always
+    ports:
+      - "8070:8070"
+    depends_on:
+      - betsanddice-config
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+    environment:
+      SPRING_APPLICATION_NAME: betsanddice-eureka
+
+  betsanddice-user:
+    container_name: betsanddice-user-v1.0-SNAPSHOT
+    image: albertmart000/betsanddice:betsanddice-user-v1.0-SNAPSHOT
+    restart: always
+    ports:
+      - "8094:8094"
+    depends_on:
+      - betsanddice-config
+      - betsanddice-eureka
+      - betsanddice-mongodb
+    environment:
+      SPRING_APPLICATION_NAME: betsanddice-user
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+
+  betsanddice-craps:
+    container_name: betsanddice-craps-v1.0-SNAPSHOT
+    image: albertmart000/betsanddice:betsanddice-craps-v1.0-SNAPSHOT
+    restart: always
+    ports:
+      - "8095:8095"
+    depends_on:
+      - betsanddice-config
+      - betsanddice-eureka
+      - betsanddice-mongodb
+    environment:
+      SPRING_APPLICATION_NAME: betsanddice-craps
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+
+networks:
+  network-betsanddice:
+    driver: "bridge"
+
+volumes:
+  betsanddice_mongodb_data:
