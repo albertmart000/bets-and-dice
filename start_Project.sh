@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for dir in "betsanddice-config" "betsanddice-eureka" "betsanddice-user" "betsanddice-craps"; do
+for dir in "betsanddice-config" "betsanddice-eureka" "betsanddice-user" "betsanddice-craps" "betsanddice-gateway"; do
   (cd "$dir" && bash build_Docker.sh)
 done
 

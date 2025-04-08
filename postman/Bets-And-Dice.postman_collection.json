@@ -121,13 +121,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8072/user/crapsGamesStatsByUser/706507d4-b89f-41eb-a7eb-41838d08a08f",
+									"raw": "http://localhost:8072/betsanddice-user/user/crapsGamesStatsByUser/706507d4-b89f-41eb-a7eb-41838d08a08f",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8072",
 									"path": [
+										"betsanddice-user",
 										"user",
 										"crapsGamesStatsByUser",
 										"706507d4-b89f-41eb-a7eb-41838d08a08f"

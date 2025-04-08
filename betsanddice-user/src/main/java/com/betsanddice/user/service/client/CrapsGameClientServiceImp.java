@@ -30,7 +30,7 @@ public class CrapsGameClientServiceImp implements ICrapsGameClientService {
                 .flatMap(userId -> userRepository.findById(userId)
                 .switchIfEmpty(Mono.error(new UserNotFoundException("User with id " + userId + " not found")))
                 .flatMap(user -> webClient.get()
-                        .uri(CRAPS_BASE_URL + "/crapsGames/crapsGamesStatsByUser/{userid}", userId)
+                        .uri(CRAPS_BASE_URL + "/crapsGames/crapsGamesStatsByUser/{userId}", userId)
                         .accept(MediaType.APPLICATION_JSON)
                         .retrieve()
                         .bodyToMono(UserCrapsGameStatsDto.class)

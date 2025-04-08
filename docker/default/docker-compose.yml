@@ -70,6 +70,21 @@ services:
       file: common-config.yml
       service: microservice-eureka-config
 
+  betsanddice-gateway:
+    container_name: betsanddice-gateway-v1.0-SNAPSHOT
+    image: albertmart000/betsanddice:betsanddice-gateway-v1.0-SNAPSHOT
+    restart: always
+    ports:
+      - "8072:8072"
+    depends_on:
+      - betsanddice-user
+      - betsanddice-craps
+    environment:
+      SPRING_APPLICATION_NAME: betsanddice-gateway
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+
 networks:
   network-betsanddice:
     driver: "bridge"
