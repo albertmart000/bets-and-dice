@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 @WebFluxTest(UserController.class)
 class UserControllerTest {
 
-    private final String USER_BASE_URL = "/betsanddice/api/v1/user";
+    private final String USER_BASE_URL = "/user";
 
     @Autowired
     private WebTestClient webTestClient;
@@ -75,7 +75,7 @@ class UserControllerTest {
                 .thenReturn(expectedResultMono);
 
         webTestClient.get()
-                .uri("/betsanddice/api/v1/user/users?offset=0&limit=3")
+                .uri(USER_BASE_URL + "/users?offset=0&limit=3")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(UserDto.class);
@@ -96,7 +96,7 @@ class UserControllerTest {
                 .thenReturn(expectedResultMono);
 
         webTestClient.get()
-                .uri("/betsanddice/api/v1/user/users")
+                .uri(USER_BASE_URL + "/users")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(UserDto.class);

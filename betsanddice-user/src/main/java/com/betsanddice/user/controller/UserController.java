@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 )
 @Validated
 @RestController
-@RequestMapping(value = "/betsanddice/api/v1/user")
+@RequestMapping(value = "/user")
 public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
