@@ -50,13 +50,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8072/craps/crapsGames/playAndBet/706507d4-b89f-41eb-a7eb-41838d08a08f",
+									"raw": "http://localhost:8072/betsanddice-craps/craps/crapsGames/playAndBet/706507d4-b89f-41eb-a7eb-41838d08a08f",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8072",
 									"path": [
+										"betsanddice-craps",
 										"craps",
 										"crapsGames",
 										"playAndBet",
@@ -271,7 +272,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"expectedDiceSum\": 7,\n    \"expectedAttempts\": 1,\n    \"amountBet\": 10\n}",
+							"raw": "{\n    \"expected_dice_sum\": 7,\n    \"expected_attempts\": 5,\n    \"amount_bet\": 10\n}",
 							"options": {
 								"raw": {
 									"language": "json"
