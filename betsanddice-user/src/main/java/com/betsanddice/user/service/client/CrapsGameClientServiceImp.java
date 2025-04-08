@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 @Service
 public class CrapsGameClientServiceImp implements ICrapsGameClientService {
 
-    private final String CRAPS_BASE_URL = "/betsanddice/api/v1/craps";
+    private final String CRAPS_BASE_URL = "/craps";
 
     private final UserRepository userRepository;
     private final StringToUuidValidator uuidValidator;
@@ -30,7 +30,7 @@ public class CrapsGameClientServiceImp implements ICrapsGameClientService {
                 .flatMap(userId -> userRepository.findById(userId)
                 .switchIfEmpty(Mono.error(new UserNotFoundException("User with id " + userId + " not found")))
                 .flatMap(user -> webClient.get()
-                        .uri(CRAPS_BASE_URL + "/crapsGames/crapsGamesStatsByUser/{userid}", userId)
+                        .uri(CRAPS_BASE_URL + "/crapsGames/crapsGamesStatsByUser/{userId}", userId)
                         .accept(MediaType.APPLICATION_JSON)
                         .retrieve()
                         .bodyToMono(UserCrapsGameStatsDto.class)

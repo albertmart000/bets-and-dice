@@ -16,6 +16,9 @@ spring:
           clone-on-start: true
           force-pull: true
 
+server:
+  port: 8071
+
 management:
   endpoints:
     web:
@@ -30,6 +33,3 @@ management:
     health:
       probes:
         enabled: true
-
-server:
-  port: 8071

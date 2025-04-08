@@ -1,0 +1,393 @@
+{
+	"info": {
+		"_postman_id": "d91447d9-1607-418e-907a-3465cfa6243a",
+		"name": "Bets-And-Dice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19939148"
+	},
+	"item": [
+		{
+			"name": "betsanddice-gateway",
+			"item": [
+				{
+					"name": "betsanddice-craps",
+					"item": [
+						{
+							"name": "/localhost:8072/betsanddice-craps/craps/crapsGames/crapsGamesStatsByUser/{userId}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8072/betsanddice-craps/craps/crapsGames/crapsGamesStatsByUser/706507d4-b89f-41eb-a7eb-41838d08a08f",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"betsanddice-craps",
+										"craps",
+										"crapsGames",
+										"crapsGamesStatsByUser",
+										"706507d4-b89f-41eb-a7eb-41838d08a08f"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/localhost:8072/betsanddice-craps/craps/crapsGames/playAndBet/{userId}",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"expected_dice_sum\": 7,\n    \"expected_attempts\": 5,\n    \"amount_bet\": 10\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8072/betsanddice-craps/craps/crapsGames/playAndBet/706507d4-b89f-41eb-a7eb-41838d08a08f",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"betsanddice-craps",
+										"craps",
+										"crapsGames",
+										"playAndBet",
+										"706507d4-b89f-41eb-a7eb-41838d08a08f"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "betsanddice-users",
+					"item": [
+						{
+							"name": "/localhost:8072/betsanddice-user/user/users",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8072/betsanddice-user/user/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"betsanddice-user",
+										"user",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/localhost:8072/betsanddice-user/user/users/{userId}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8072/betsanddice-user/user/users/706507d4-b89f-41eb-a7eb-41838d08a08f",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"betsanddice-user",
+										"user",
+										"users",
+										"706507d4-b89f-41eb-a7eb-41838d08a08f"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/localhost:8072/betsanddice-user/user/crapsGamesStatsByUser/{userId}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8072/betsanddice-user/user/crapsGamesStatsByUser/706507d4-b89f-41eb-a7eb-41838d08a08f",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"betsanddice-user",
+										"user",
+										"crapsGamesStatsByUser",
+										"706507d4-b89f-41eb-a7eb-41838d08a08f"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "betsanddice-user",
+			"item": [
+				{
+					"name": "/test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_user}}/test",
+							"host": [
+								"{{host_user}}"
+							],
+							"path": [
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_user}}/users",
+							"host": [
+								"{{host_user}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/{userId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_user}}/users/{userId}",
+							"host": [
+								"{{host_user}}"
+							],
+							"path": [
+								"users",
+								"{userId}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/crapsGamesStatsByUser/{userId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_user}}/crapsGamesStatsByUser/706507d4-b89f-41eb-a7eb-41838d08a08f",
+							"host": [
+								"{{host_user}}"
+							],
+							"path": [
+								"crapsGamesStatsByUser",
+								"706507d4-b89f-41eb-a7eb-41838d08a08f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/{userId}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host_user}}/users/{userId}",
+							"host": [
+								"{{host_user}}"
+							],
+							"path": [
+								"users",
+								"{userId}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "betsanddice-craps",
+			"item": [
+				{
+					"name": "/test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_craps}}/test",
+							"host": [
+								"{{host_craps}}"
+							],
+							"path": [
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/crapsGames/playAndBet/{userId}",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"expected_dice_sum\": 7,\n    \"expected_attempts\": 5,\n    \"amount_bet\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_craps}}/crapsGames/playAndBet/e0f6b820-3fe5-4d43-b7c9-c20486e9a123",
+							"host": [
+								"{{host_craps}}"
+							],
+							"path": [
+								"crapsGames",
+								"playAndBet",
+								"e0f6b820-3fe5-4d43-b7c9-c20486e9a123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/crapsGames/crapsGamesByUser/{userId}",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"expectedDiceSum\": 7,\n    \"expectedAttempts\": 5,\n    \"amountBet\": 10.0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_craps}}/crapsGames/crapsGamesByUser/1d16966d-8f33-4dde-806e-d11126ff9759",
+							"host": [
+								"{{host_craps}}"
+							],
+							"path": [
+								"crapsGames",
+								"crapsGamesByUser",
+								"1d16966d-8f33-4dde-806e-d11126ff9759"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/crapsGames/crapsGamesStatsByUser/{userId}",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"expectedDiceSum\": 7,\n    \"expectedAttempts\": 5,\n    \"amountBet\": 10.0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_craps}}/crapsGames/crapsGamesStatsByUser/706507d4-b89f-41eb-a7eb-41838d08a08f",
+							"host": [
+								"{{host_craps}}"
+							],
+							"path": [
+								"crapsGames",
+								"crapsGamesStatsByUser",
+								"706507d4-b89f-41eb-a7eb-41838d08a08f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/crapsGames/deleteCrapsGamesByUser/{userId}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host_craps}}/crapsGames/deleteCrapsGamesByUser/706507d4-b89f-41eb-a7eb-41838d08a08f",
+							"host": [
+								"{{host_craps}}"
+							],
+							"path": [
+								"crapsGames",
+								"deleteCrapsGamesByUser",
+								"706507d4-b89f-41eb-a7eb-41838d08a08f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -5,20 +5,20 @@ spring:
     active: "dev"
   data:
     mongodb:
-#      #uri para bbdd local:
-      host: localhost
-      port: 27017
-      database: users
-      password: XMOJocgKlmRHz2O
-      username: admin_user
-      authentication-database: admin
-      #uri para bbdd docker:
-#      host: betsanddice-mongodb
+      #uri para bbdd local:
+#      host: localhost
 #      port: 27017
-#      database: betsanddice
+#      database: users
 #      password: XMOJocgKlmRHz2O
-#      username: admin_betsanddice
+#      username: admin_user
 #      authentication-database: admin
+      #uri para bbdd docker:
+      host: betsanddice-mongodb
+      port: 27017
+      database: betsanddice
+      password: XMOJocgKlmRHz2O
+      username: admin_betsanddice
+      authentication-database: admin
       uuid-representation: standard
   cloud:
     compatibility-verifier:
@@ -26,24 +26,15 @@ spring:
   config:
     import: "optional:configserver:http://localhost:8071/"
 
-springdoc:
-  swagger-ui:
-    path: "/swagger-ui-custom.html"
-    operationsSorted: method
-  api-docs:
-    enable: true
-    path: "/api-docs"
-
 server:
   port: 8094
 
 config:
-#  #para local:
   webclient:
-    host: http://localhost:8095
+  #para local:
+#    host: http://localhost:8095
   #para docker:
-#  webclient:
-#    host: http://betsanddice-craps:8095
+    host: http://betsanddice-craps:8095
 
 management:
   endpoints:
@@ -53,11 +44,12 @@ management:
   endpoint:
     shutdown:
       access: unrestricted
+    health:
+      probes:
+        enabled: true
   info:
     env:
       enabled: true
-  security:
-    enabled: false
 
 eureka:
   instance:
@@ -68,15 +60,19 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
 
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui-custom.html"
+    operationsSorted: method
+  api-docs:
+    enable: true
+    path: "/api-docs"
+
 info:
   app:
     name: "betsanddice-user"
     description: "Bet-And-Dice User Application"
     version: "1.0.0"
-
-url:
-  connection_timeout: 30000
-  maxBytesInMemory: 30000000
 
 validation:
     number: "^\\d{1,9}$"
