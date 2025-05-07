@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 )
 @Validated
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/api")
 public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);

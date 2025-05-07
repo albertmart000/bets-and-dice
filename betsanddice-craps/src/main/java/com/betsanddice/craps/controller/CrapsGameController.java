@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
         description = "REST API in bets-and-dice for Craps game"
 )
 @RestController
-@RequestMapping(value = "/craps")
+@RequestMapping(value = "/api")
 public class CrapsGameController {
 
     private static final Logger log = LoggerFactory.getLogger(CrapsGameController.class);

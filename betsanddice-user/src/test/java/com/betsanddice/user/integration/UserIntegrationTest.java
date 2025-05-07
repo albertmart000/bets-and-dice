@@ -34,7 +34,7 @@ import static org.springframework.http.HttpStatus.OK;
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class UserIntegrationTest {
 
-    private final String USER_BASE_URL = "/user";
+    private final String USER_BASE_URL = "/api";
 
     @Container
     static MongoDBContainer container = new MongoDBContainer("mongo")

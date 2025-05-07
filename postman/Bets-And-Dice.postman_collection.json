@@ -13,20 +13,43 @@
 					"name": "betsanddice-craps",
 					"item": [
 						{
-							"name": "/localhost:8072/betsanddice-craps/craps/crapsGames/crapsGamesStatsByUser/{userId}",
+							"name": "/localhost:8072/betsanddice/craps/api/test",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8072/betsanddice-craps/craps/crapsGames/crapsGamesStatsByUser/706507d4-b89f-41eb-a7eb-41838d08a08f",
+									"raw": "http://localhost:8072/betsanddice/craps/api/test",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8072",
 									"path": [
-										"betsanddice-craps",
+										"betsanddice",
 										"craps",
+										"api",
+										"test"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/localhost:8072/betsanddice/craps/api/crapsGames/crapsGamesStatsByUser/{userId}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8072/betsanddice/craps/api/crapsGames/crapsGamesStatsByUser/706507d4-b89f-41eb-a7eb-41838d08a08f",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"betsanddice",
+										"craps",
+										"api",
 										"crapsGames",
 										"crapsGamesStatsByUser",
 										"706507d4-b89f-41eb-a7eb-41838d08a08f"
@@ -36,7 +59,7 @@
 							"response": []
 						},
 						{
-							"name": "/localhost:8072/betsanddice-craps/craps/crapsGames/playAndBet/{userId}",
+							"name": "/localhost:8072/betsanddice/craps/api/crapsGames/playAndBet/{userId}",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -50,15 +73,16 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8072/betsanddice-craps/craps/crapsGames/playAndBet/706507d4-b89f-41eb-a7eb-41838d08a08f",
+									"raw": "http://localhost:8072/betsanddice/craps/api/crapsGames/playAndBet/706507d4-b89f-41eb-a7eb-41838d08a08f",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8072",
 									"path": [
-										"betsanddice-craps",
+										"betsanddice",
 										"craps",
+										"api",
 										"crapsGames",
 										"playAndBet",
 										"706507d4-b89f-41eb-a7eb-41838d08a08f"
@@ -73,20 +97,43 @@
 					"name": "betsanddice-users",
 					"item": [
 						{
-							"name": "/localhost:8072/betsanddice-user/user/users",
+							"name": "/localhost:8072/betsanddice/user/api/test",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8072/betsanddice-user/user/users",
+									"raw": "http://localhost:8072/betsanddice/user/api/test",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8072",
 									"path": [
-										"betsanddice-user",
+										"betsanddice",
 										"user",
+										"api",
+										"test"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/localhost:8072/betsanddice/user/api/users",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8072/betsanddice/user/api/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"betsanddice",
+										"user",
+										"api",
 										"users"
 									]
 								}
@@ -94,20 +141,21 @@
 							"response": []
 						},
 						{
-							"name": "/localhost:8072/betsanddice-user/user/users/{userId}",
+							"name": "/localhost:8072/betsanddice/user/api/users/{userId}",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8072/betsanddice-user/user/users/706507d4-b89f-41eb-a7eb-41838d08a08f",
+									"raw": "http://localhost:8072/betsanddice/user/api/users/706507d4-b89f-41eb-a7eb-41838d08a08f",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8072",
 									"path": [
-										"betsanddice-user",
+										"betsanddice",
 										"user",
+										"api",
 										"users",
 										"706507d4-b89f-41eb-a7eb-41838d08a08f"
 									]
@@ -116,20 +164,21 @@
 							"response": []
 						},
 						{
-							"name": "/localhost:8072/betsanddice-user/user/crapsGamesStatsByUser/{userId}",
+							"name": "/localhost:8072/betsanddice/user/api/crapsGamesStatsByUser/{userId}",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8072/betsanddice-user/user/crapsGamesStatsByUser/706507d4-b89f-41eb-a7eb-41838d08a08f",
+									"raw": "http://localhost:8072/betsanddice/user/api/crapsGamesStatsByUser/706507d4-b89f-41eb-a7eb-41838d08a08f",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8072",
 									"path": [
-										"betsanddice-user",
+										"betsanddice",
 										"user",
+										"api",
 										"crapsGamesStatsByUser",
 										"706507d4-b89f-41eb-a7eb-41838d08a08f"
 									]
@@ -384,6 +433,14 @@
 								"706507d4-b89f-41eb-a7eb-41838d08a08f"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}

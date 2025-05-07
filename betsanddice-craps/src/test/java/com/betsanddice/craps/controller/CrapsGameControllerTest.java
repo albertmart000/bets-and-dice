@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 @WebFluxTest(CrapsGameController.class)
 class CrapsGameControllerTest {
 
-    private final String CRAPS_BASE_URL = "/craps";
+    private final String CRAPS_BASE_URL = "/api";
 
     @Autowired
     private WebTestClient webTestClient;
