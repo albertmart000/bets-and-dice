@@ -6,19 +6,19 @@ spring:
   data:
     mongodb:
       #uri para bbdd local:
-#      host: localhost
-#      port: 27017
-#      database: users
-#      password: XMOJocgKlmRHz2O
-#      username: admin_user
-#      authentication-database: admin
-      #uri para bbdd docker:
-      host: betsanddice-mongodb
+      host: localhost
       port: 27017
-      database: betsanddice
+      database: users
       password: XMOJocgKlmRHz2O
-      username: admin_betsanddice
+      username: admin_user
       authentication-database: admin
+      #uri para bbdd docker:
+#      host: betsanddice-mongodb
+#      port: 27017
+#      database: betsanddice
+#      password: XMOJocgKlmRHz2O
+#      username: admin_betsanddice
+#      authentication-database: admin
       uuid-representation: standard
   cloud:
     compatibility-verifier:
@@ -32,9 +32,9 @@ server:
 config:
   webclient:
   #para local:
-#    host: http://localhost:8095
+    host: http://localhost:8095
   #para docker:
-    host: http://betsanddice-craps:8095
+    #host: http://betsanddice-craps:8095
 
 management:
   endpoints:

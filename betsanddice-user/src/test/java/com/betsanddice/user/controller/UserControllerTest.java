@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 @WebFluxTest(UserController.class)
 class UserControllerTest {
 
-    private final String USER_BASE_URL = "/user";
+    private final String USER_BASE_URL = "/api";
 
     @Autowired
     private WebTestClient webTestClient;

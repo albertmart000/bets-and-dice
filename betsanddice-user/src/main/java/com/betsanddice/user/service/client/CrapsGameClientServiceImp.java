@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 @Service
 public class CrapsGameClientServiceImp implements ICrapsGameClientService {
 
-    private final String CRAPS_BASE_URL = "/craps";
+    private final String CRAPS_BASE_URL = "/api";
 
     private final UserRepository userRepository;
     private final StringToUuidValidator uuidValidator;

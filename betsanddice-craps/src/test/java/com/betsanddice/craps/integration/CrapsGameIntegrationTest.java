@@ -48,7 +48,7 @@ class CrapsGameIntegrationTest {
     @Autowired
     private CrapsGameRepository crapsGameRepository;
 
-    private final String CRAPS_BASE_URL = "/craps";
+    private final String CRAPS_BASE_URL = "/api";
 
     String uuidUser = ("706507d4-b89f-41eb-a7eb-41838d08a08f");
 
