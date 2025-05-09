@@ -98,7 +98,16 @@ class GlobalExceptionHandlerTest {
         assertTrue(responseBody.contains("User not found"));
     }
 
+    @Test
+    void testHandleUserAlreadyExistException() {
+        UserAlreadyExistException userAlreadyExistException = new UserAlreadyExistException("User already exists");
 
+        ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleUserAlreadyExistsException(userAlreadyExistException);
+
+        assertEquals(OK_REQUEST, responseEntity.getStatusCode());
+        String responseBody = Objects.requireNonNull(responseEntity.getBody()).getMessage();
+        assertTrue(responseBody.contains("User already exists"));
+    }
     @Test
     void handleMethodArgumentNotValidException_Test() {
         BindingResult bindingResult = Mockito.mock(BindingResult.class);
