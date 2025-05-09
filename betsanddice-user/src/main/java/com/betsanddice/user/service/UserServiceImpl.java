@@ -73,9 +73,9 @@ public class UserServiceImpl implements IUserService {
     private UserDocument buildUserDocument(UserRegisterDto userRegisterDto) {
         return UserDocument.builder()
                 .uuid(UUID.randomUUID())
-                .firstName(userRegisterDto.getName())
-                .surname(userRegisterDto.getSurname())
-                //.birthdate(LocalDate.parse(userRegisterDto.getBirthdate()))
+//                .firstName(userRegisterDto.getName())
+//                .surname(userRegisterDto.getSurname())
+                .birthdate(userRegisterDto.getBirthdate())
                 .nickname(userRegisterDto.getNickname())
                 .email(userRegisterDto.getEmail())
                 .password(userRegisterDto.getPassword())

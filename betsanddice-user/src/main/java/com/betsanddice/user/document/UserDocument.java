@@ -21,14 +21,11 @@ public class UserDocument {
     @Field(name = "_id")
     private UUID uuid;
 
-    @Field(name = "name")
-    private String firstName;
-
-    @Field(name = "surname")
-    private String surname;
-
-    @Field(name = "birthdate")
-    private LocalDate birthdate;
+//    @Field(name = "name")
+//    private String firstName;
+//
+//    @Field(name = "surname")
+//    private String surname;
 
     @Field(name = "nickname")
     private String nickname;
@@ -39,7 +36,10 @@ public class UserDocument {
     @Field(name = "password")
     private String password;
 
-    @Field(name="registered")
+    @Field(name = "birthdate")
+    private LocalDate birthdate;
+
+    @Field(name="registration_date")
     private LocalDateTime registrationDate;
 
 }
