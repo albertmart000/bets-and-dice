@@ -27,7 +27,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
-class CrapsGameServiceImpTest {
+class CrapsGameServiceImplTest {
 
     @Mock
     private CrapsGameRepository crapsGameRepository;
@@ -36,7 +36,7 @@ class CrapsGameServiceImpTest {
     private DocumentToDtoConverter<CrapsGameDocument, CrapsGameDto> converter;
 
     @InjectMocks
-    private CrapsGameServiceImp crapsGameService;
+    private CrapsGameServiceImpl crapsGameService;
 
     private CrapsGameDocument crapsGameDocument;
     private CrapsGameDocument crapsGameDocument1;

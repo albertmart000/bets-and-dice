@@ -22,9 +22,9 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Service
-public class CrapsGameServiceImp implements ICrapsGameService {
+public class CrapsGameServiceImpl implements ICrapsGameService {
 
-    private final Logger log = LoggerFactory.getLogger(CrapsGameServiceImp.class);
+    private final Logger log = LoggerFactory.getLogger(CrapsGameServiceImpl.class);
     private final Pattern UUID_FORM = Pattern.compile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", Pattern.CASE_INSENSITIVE);
 
     private final SecureRandom secureRandom = new SecureRandom();
@@ -174,17 +174,15 @@ public class CrapsGameServiceImp implements ICrapsGameService {
                 .mapToDouble(crapsGame -> crapsGame.getResult().getAmountReturned())
                 .sum();
 
-        UserCrapsGameStatsDto.UserCrapsGameStatsDtoBuilder builder = UserCrapsGameStatsDto.builder();
-        builder.userId(crapsGameDtoList.get(0).getUserId());
-        builder.nameGame("Craps");
-        builder.gamesPlayed(gamesPlayed);
-        builder.gamesWon(gamesWon);
-        builder.percentGamesWon(percentGamesWon);
-        builder.totalAmountBet(totalAmountBet);
-        builder.profitObtained(totalAmountReturned - totalAmountBet);
-        return builder
+        return UserCrapsGameStatsDto.builder()
+                .userId(crapsGameDtoList.get(0).getUserId())
+                .nameGame("Craps")
+                .gamesPlayed(gamesPlayed)
+                .gamesWon(gamesWon)
+                .percentGamesWon(percentGamesWon)
+                .totalAmountBet(totalAmountBet)
+                .profitObtained(totalAmountReturned - totalAmountBet)
                 .build();
-
     }
 
     private Mono<UUID> validateUuid(String id) {

@@ -42,6 +42,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.ok().body(new MessageDto(ex.getMessage()));
     }
 
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ResponseEntity<MessageDto> handleUserAlreadyExistsException(UserAlreadyExistException ex) {
+        return ResponseEntity.ok().body(new MessageDto(ex.getMessage()));
+    }
+
     @ExceptionHandler(CrapsGameNotFoundException.class)
     public ResponseEntity<MessageDto> handleCrapsGameNotFoundException(CrapsGameNotFoundException ex) {
         return ResponseEntity.ok().body(new MessageDto(ex.getMessage()));

@@ -5,6 +5,7 @@ import com.betsanddice.user.annotations.ValidUUID;
 import com.betsanddice.user.dto.GenericResultDto;
 import com.betsanddice.user.dto.UserCrapsGameStatsDto;
 import com.betsanddice.user.dto.UserDto;
+import com.betsanddice.user.dto.UserRegisterDto;
 import com.betsanddice.user.service.IUserService;
 import com.betsanddice.user.service.client.ICrapsGameClientService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,6 +48,23 @@ public class UserController {
     public String test() {
         log.info("** Greetings from the logger **");
         return "Hello from User!!!";
+    }
+
+    @PostMapping("/users/register")
+    @Operation(
+            operationId = "Allows a new user to register on Bets-And-Dice application.",
+            summary = "Register a new user.",
+            description = "A new user is registered in the application after entering his/her data.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User successfully registered.", content = {@Content(schema = @Schema(implementation = UserDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "400", description = "Input parameters not valid.", content = {@Content(schema = @Schema())}),
+                    @ApiResponse(responseCode = "409", description = "User already exists.", content = {@Content(schema = @Schema())}),
+            }
+    )
+
+    public Mono<ResponseEntity<UserDto>> registerUser(@RequestBody UserRegisterDto userRegisterDto) {
+        return userService.registerUser(userRegisterDto)
+                .map(ResponseEntity::ok);
     }
 
     @GetMapping(path = "/users/{userId}")

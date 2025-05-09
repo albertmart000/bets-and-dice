@@ -23,7 +23,7 @@ import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class UserServiceImpTest {
+class UserServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
@@ -34,7 +34,7 @@ class UserServiceImpTest {
     private StringToUuidValidator uuidValidator;
 
     @InjectMocks
-    private UserServiceImp userService;
+    private UserServiceImpl userService;
 
     private final String validId = "706507d4-b89f-41eb-a7eb-41838d08a08f";
     private final UUID userUuid = UUID.fromString(validId);

@@ -12,9 +12,8 @@ import java.util.UUID;
 public interface UserRepository extends ReactiveMongoRepository<UserDocument, UUID> {
 
     Mono<Boolean> existsByUuid(UUID uuid);
-
     Mono<UserDocument> findByUuid(UUID uuid);
-
+    Mono<UserDocument> findByEmail(String email);
     @Query(value = "{}", fields = "{'testingValues':0}")
     Flux<UserDocument> findAllByUuidNotNullExcludingTestingValues();
 }

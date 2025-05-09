@@ -1,0 +1,46 @@
+package com.betsanddice.user.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
+public class UserRegisterDto {
+
+    @JsonProperty(value = "name")
+    @NotBlank(message = "Name can't be empty.")
+    @Size(min = 2, message = "Invalid Name: name should have at least 2 characters.")
+    private String name;
+
+    @JsonProperty(value = "surname")
+    @NotBlank(message = "Surname can't be empty." )
+    @Size(min = 2, message = "Invalid Surname: surname should have at least 2 characters")
+    private String surname;
+
+//    @JsonProperty(value = "birthdate")
+//    @NotBlank(message = "Birthdate can't be empty." )
+//    @Past(message = "Invalid Birthdate: birthdate should be prior to the current one.")
+//    @Pattern(regexp = "yyyy-MM-dd", message = "Invalid Birthdate: birthdate should be in the format yyyy-MM-dd")
+//    private String birthdate;
+
+    @JsonProperty(value = "nickname")
+    @NotBlank(message = "Surname can't be empty." )
+    @Size(min = 2, message = "Invalid Nickname: Nickname should have at least 2 characters")
+    private String nickname;
+
+    @JsonProperty(value = "email")
+    @NotBlank(message = "Email cannot be empty")
+    @Email(message = "Invalid Email: email should be a valid email address")
+    private String email;
+
+    @JsonProperty(value = "password")
+    @NotBlank(message = "Password can't be empty." )
+    @Size(min = 2, message = "Invalid Password: password should have at least 2 characters")
+    private String password;
+}

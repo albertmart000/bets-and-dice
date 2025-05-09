@@ -10,7 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Service
-public class CrapsGameClientServiceImp implements ICrapsGameClientService {
+public class CrapsGameClientServiceImpl implements ICrapsGameClientService {
 
     private final String CRAPS_BASE_URL = "/api";
 
@@ -18,7 +18,7 @@ public class CrapsGameClientServiceImp implements ICrapsGameClientService {
     private final StringToUuidValidator uuidValidator;
     private final WebClient webClient;
 
-    public CrapsGameClientServiceImp(UserRepository userRepository, StringToUuidValidator uuidValidator, WebClient webClient) {
+    public CrapsGameClientServiceImpl(UserRepository userRepository, StringToUuidValidator uuidValidator, WebClient webClient) {
         this.userRepository = userRepository;
         this.uuidValidator = uuidValidator;
         this.webClient = webClient;
