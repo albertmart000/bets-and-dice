@@ -2,8 +2,9 @@
   "user_id" : "81099a9e-0d59-4571-a04c-31a08a711e3b",
   "name" : "Morrow",
   "surname" : "Montgomery",
-  "birthdate" : "2000-03-03T00:00:00.000+00:00",
   "nickname" : "Player1",
   "email" : "morrowmontgomery@email.com",
-  "password" : "player1"
+  "password" : "player1",
+  "birthdate" : "2000-03-03T00:00:00.000+00:00",
+  "registration_date" : "2020-03-03T00:00:00.000+00:00"
 }

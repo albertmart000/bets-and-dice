@@ -1,10 +1,10 @@
 package com.betsanddice.user.controller;
 
 import com.betsanddice.user.annotations.ValidGenericPattern;
-import com.betsanddice.user.annotations.ValidUUID;
 import com.betsanddice.user.dto.GenericResultDto;
 import com.betsanddice.user.dto.UserCrapsGameStatsDto;
 import com.betsanddice.user.dto.UserDto;
+import com.betsanddice.user.dto.UserRegisterDto;
 import com.betsanddice.user.service.IUserService;
 import com.betsanddice.user.service.client.ICrapsGameClientService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +50,22 @@ public class UserController {
         return "Hello from User!!!";
     }
 
+    @PostMapping("/users/register")
+    @Operation(
+            operationId = "Allows a new user to register on Bets-And-Dice application.",
+            summary = "Register a new user.",
+            description = "A new user is registered in the application after entering his/her data.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User successfully registered.", content = {@Content(schema = @Schema(implementation = UserDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "400", description = "Input parameters not valid.", content = {@Content(schema = @Schema())}),
+                    @ApiResponse(responseCode = "409", description = "User already exists.", content = {@Content(schema = @Schema())}),
+            }
+    )
+    public Mono<ResponseEntity<UserDto>> registerUser(@Valid @RequestBody UserRegisterDto userRegisterDto) {
+        return userService.registerUser(userRegisterDto)
+                .map(ResponseEntity::ok);
+    }
+
     @GetMapping(path = "/users/{userId}")
     @Operation(
             operationId = "Get the information from a chosen user.",
@@ -60,7 +77,7 @@ public class UserController {
                     @ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error")
             }
     )
-    public Mono<ResponseEntity<UserDto>> getOneUser(@PathVariable("userId") @ValidUUID(message = "Invalid UUID for user") String id) {
+    public Mono<ResponseEntity<UserDto>> getOneUser(@PathVariable("userId") String id) {
         return userService.getUserById(id)
                 .map(ResponseEntity.ok()::body);
     }

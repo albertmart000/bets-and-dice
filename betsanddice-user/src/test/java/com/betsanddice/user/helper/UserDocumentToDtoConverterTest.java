@@ -34,17 +34,15 @@ class UserDocumentToDtoConverterTest {
         LocalDate birthdate = LocalDate.of(2000, 3, 3);
         LocalDateTime registered = LocalDateTime.of(2023, 1, 31, 12, 0, 0);
 
-        userDocument1 = new UserDocument(userId1, "Morrow", "Montgomery", birthdate,
-                "Player1", "user1@email.com", "player1", registered);
+        userDocument1 = new UserDocument(userId1, "Morrow", "Montgomery", "Player1", "user1@email.com",
+                "player1",  birthdate,registered);
+        userDocument2 = new UserDocument(userId2, "Morrow", "Montgomery", "Player2", "user2@email.com",
+                "player2", birthdate,registered);
+        userDto1 = new UserDto(userId1, "Morrow", "Montgomery", "Player1", "user1@email.com", "player1",
+                "2000-03-03", "2023-01-31");
+        userDto2 = new UserDto(userId2, "Morrow", "Montgomery", "Player2", "user2@email.com", "player2",
+                "2000-03-03", "2023-01-31");
 
-        userDocument2 = new UserDocument(userId2, "Morrow", "Montgomery", birthdate,
-                "Player2", "user2@email.com", "player2", registered);
-
-        userDto1 = new UserDto(userId1, "Morrow", "Montgomery", "2000-03-03", "Player1",
-                "user1@email.com", "player1");
-
-        userDto2 = new UserDto(userId2, "Morrow", "Montgomery", "2000-03-03", "Player2",
-                "user2@email.com", "player2");
     }
 
     @Test

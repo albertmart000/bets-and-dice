@@ -43,19 +43,27 @@ class UserRepositoryTest {
     UUID uuidUser2 = UUID.fromString("26977eee-89f8-11ec-a8a3-0242ac120003");
     UUID uuidUser3 = UUID.fromString("fd5a1a38-23ce-47e0-a3f5-4a9148eff504");
 
+    private final String emailUser1 = "user1@email.com";
+    private final String emailUser2 = "user2@email.com";
+    private final String emailUser3 = "user3@email.com";
+
+    private final String nicknameUser1 = "Player1";
+    private final String nicknameUser2 = "Player2";
+    private final String nicknameUser3 = "Player3";
+
     @BeforeEach
-    public void setUp() {
+    void setUp() {
 
         userRepository.deleteAll().block();
 
-        UserDocument user1 = new UserDocument(uuidUser1, "Morrow", "Montgomery", LocalDate.now(),
-                "Player1", "user1@email.com", "player1", LocalDateTime.now());
+        UserDocument user1 = new UserDocument(uuidUser1, "Morrow", "Montgomery", "Player1",
+                emailUser1, nicknameUser1, LocalDate.now(), LocalDateTime.now());
 
-        UserDocument user2 = new UserDocument(uuidUser2, "Morrow", "Montgomery", LocalDate.now(),
-                "Player2", "user2@email.com", "player2", LocalDateTime.now());
+        UserDocument user2 = new UserDocument(uuidUser2, "Morrow", "Montgomery", "Player2",
+                emailUser2, nicknameUser2, LocalDate.now(), LocalDateTime.now());
 
-        UserDocument user3 = new UserDocument(uuidUser3, "Morrow", "Montgomery", LocalDate.now(),
-                "Player3", "user3@email.com", "player3", LocalDateTime.now());
+        UserDocument user3 = new UserDocument(uuidUser3, "Morrow", "Montgomery", "Player3",
+                emailUser3, nicknameUser3, LocalDate.now(), LocalDateTime.now());
 
         userRepository.saveAll(Flux.just(user1, user2, user3)).blockLast();
     }
@@ -86,6 +94,36 @@ class UserRepositoryTest {
         user2.blockOptional().ifPresentOrElse(
                 user -> Assertions.assertEquals(user.getUuid(), uuidUser2),
                 () -> fail("User not found: " + uuidUser2));
+    }
+
+    @DisplayName("Find by email Test")
+    @Test
+    void findByEmailTest() {
+
+        Mono<UserDocument> user1 = userRepository.findByEmail(emailUser1);
+        user1.blockOptional().ifPresentOrElse(
+                user -> Assertions.assertEquals(user.getEmail(), emailUser1),
+                () -> fail("User not found: " + emailUser1));
+
+        Mono<UserDocument> user2 = userRepository.findByEmail(emailUser2);
+        user2.blockOptional().ifPresentOrElse(
+                user -> Assertions.assertEquals(user.getEmail(), emailUser2),
+                () -> fail("User not found: " + emailUser2));
+    }
+
+    @DisplayName("Find by nickname Test")
+    @Test
+    void findByNicknameTest() {
+
+        Mono<UserDocument> user1 = userRepository.findByNickname(nicknameUser1);
+        user1.blockOptional().ifPresentOrElse(
+                user -> Assertions.assertEquals(user.getNickname(), nicknameUser1),
+                () -> fail("User not found: " + nicknameUser1));
+
+        Mono<UserDocument> user2 = userRepository.findByNickname(nicknameUser2);
+        user2.blockOptional().ifPresentOrElse(
+                user -> Assertions.assertEquals(user.getNickname(), nicknameUser2),
+                () -> fail("User not found: " + nicknameUser2));
     }
 
     @DisplayName("Find Users for a Page Test")

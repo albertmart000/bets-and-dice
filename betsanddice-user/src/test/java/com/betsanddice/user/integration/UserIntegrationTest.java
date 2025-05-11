@@ -3,6 +3,7 @@ package com.betsanddice.user.integration;
 import com.betsanddice.user.document.UserDocument;
 import com.betsanddice.user.dto.UserCrapsGameStatsDto;
 import com.betsanddice.user.dto.UserDto;
+import com.betsanddice.user.dto.UserRegisterDto;
 import com.betsanddice.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +27,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -62,12 +64,12 @@ class UserIntegrationTest {
     void setUp() {
         userRepository.deleteAll().block();
 
-        UserDocument user1 = new UserDocument(userId1, "Morrow", "Montgomery", LocalDate.now(),
-                "Player1", "user1@email.com", "player1", LocalDateTime.now());
-        UserDocument user2 = new UserDocument(userId2, "Morrow", "Montgomery", LocalDate.now(),
-                "Player2", "user2@email.com", "player2", LocalDateTime.now());
-        UserDocument user3 = new UserDocument(userId3, "Morrow", "Montgomery", LocalDate.now(),
-                "Player3", "user3@email.com", "player3", LocalDateTime.now());
+        UserDocument user1 = new UserDocument(userId1, "Morrow", "Montgomery", "Player1",
+                "user1@email.com", "player1", LocalDate.now(), LocalDateTime.now());
+        UserDocument user2 = new UserDocument(userId2, "Morrow", "Montgomery", "Player2",
+                "user2@email.com", "player2", LocalDate.now(), LocalDateTime.now());
+        UserDocument user3 = new UserDocument(userId3, "Morrow", "Montgomery", "Player3",
+                "user3@email.com", "player3", LocalDate.now(), LocalDateTime.now());
 
         userRepository.saveAll(Flux.just(user1, user2, user3)).blockLast();
     }
@@ -82,6 +84,92 @@ class UserIntegrationTest {
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .value(String::toString, equalTo("Hello from User!!!"));
+    }
+
+    @Test
+    void registerUser_NewsAndValidParams_UserRegisteredSuccessfully() {
+        UserRegisterDto userRegisterDto = new UserRegisterDto("New", "User", "NewUser1", "new1@email.com",
+                "newUser1", LocalDate.parse("2000-03-03"));
+
+        webTestClient.post()
+                .uri(USER_BASE_URL +"/users/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(userRegisterDto)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(UserDto.class)
+                .value(userDto -> {
+                    assert userDto.getEmail().equals(userRegisterDto.getEmail());
+                    assert userDto.getNickname().equals(userRegisterDto.getNickname());
+                });
+    }
+
+    @Test
+    void registerUser_EmailExist_UserNotRegistered() {
+        UserRegisterDto userRegisterDto = new UserRegisterDto("New", "User", "NewUser1", "user1@email.com",
+                "newUser1", LocalDate.parse("2000-03-03"));
+
+        webTestClient.post()
+                .uri(USER_BASE_URL +"/users/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(userRegisterDto)
+                .exchange()
+                .expectStatus().isEqualTo(CONFLICT)
+                .expectBody(String.class)
+                .value(errorMessage -> {
+                    assert errorMessage.contains("User with email user1@email.com already exists");
+                });
+    }
+
+    @Test
+    void registerUser_NicknameExist_UserNotRegistered() {
+        UserRegisterDto userRegisterDto = new UserRegisterDto("New", "User", "Player1", "new1@email.com",
+                "newUser1", LocalDate.parse("2000-03-03"));
+
+        webTestClient.post()
+                .uri(USER_BASE_URL +"/users/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(userRegisterDto)
+                .exchange()
+                .expectStatus().isEqualTo(CONFLICT)
+                .expectBody(String.class)
+                .value(errorMessage -> {
+                    assert errorMessage.contains("User with nickname Player1 already exists");
+                });
+    }
+
+    @Test
+    void registerUser_InvalidsParams_UserNotRegistered() {
+        UserRegisterDto userRegisterDto = new UserRegisterDto("New", "User", "NewUser1", "new1@email",
+                "newUser1", LocalDate.parse("2000-03-03"));
+
+        webTestClient.post()
+                .uri(USER_BASE_URL +"/users/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(userRegisterDto)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(String.class)
+                .value(errorMessage -> {
+                    assert errorMessage.contains("Invalid Email: email should be in a valid format");
+                });
+    }
+
+    @Test
+    void registerUser_OneParamNull_UserNotRegistered() {
+        UserRegisterDto userRegisterDto = new UserRegisterDto("", "User", "NewUser1", "new1@email.com",
+                "newUser1", LocalDate.parse("2000-03-03"));
+
+        webTestClient.post()
+                .uri(USER_BASE_URL +"/users/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(userRegisterDto)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(String.class)
+                .value(errorMessage -> {
+                    assert errorMessage.contains("Invalid Name: name can't be empty and should have at least 3 characters and not more than 20.");
+                });
     }
 
     @Test

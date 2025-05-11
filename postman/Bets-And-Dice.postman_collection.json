@@ -119,6 +119,38 @@
 							"response": []
 						},
 						{
+							"name": "/localhost:8072/betsanddice/user/api/users/register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"User\",\n    \"surname\": \"One\",\n    \"nickname\": \"user1\",\n    \"email\": \"user1@email.com\",\n    \"password\": \"user1\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8072/betsanddice/user/api/users/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"betsanddice",
+										"user",
+										"api",
+										"users",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "/localhost:8072/betsanddice/user/api/users",
 							"request": {
 								"method": "GET",
@@ -211,6 +243,33 @@
 					"response": []
 				},
 				{
+					"name": "/users/register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\" : \"User\",\n  \"surname\" : \"Eleven\",\n  \"nickname\" : \"User11\",\n  \"email\" : \"user11@email.com\",\n  \"password\" : \"user11\",\n  \"birthdate\" : \"2000-03-03\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_user}}/users/register",
+							"host": [
+								"{{host_user}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/users",
 					"request": {
 						"method": "GET",
@@ -245,13 +304,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_user}}/users/{userId}",
+							"raw": "{{host_user}}/users/706507d4-b89f-41eb-a7eb-41838d08a08f",
 							"host": [
 								"{{host_user}}"
 							],
 							"path": [
 								"users",
-								"{userId}"
+								"706507d4-b89f-41eb-a7eb-41838d08a08f"
 							]
 						}
 					},
