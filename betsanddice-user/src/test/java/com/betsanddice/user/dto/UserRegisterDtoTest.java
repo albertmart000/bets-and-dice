@@ -15,46 +15,45 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
-import java.util.UUID;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class UserDtoTest {
+class UserRegisterDtoTest {
 
     @Autowired
     private ObjectMapper mapper;
 
-    private final String userJsonPath = "json/userSerialized.json";
-    private UserDto userDto;
+    private final String userRegisterJsonPath = "json/userRegisterSerialized.json";
+    private UserRegisterDto userRegisterDto;
 
     @BeforeEach
     void setUp() {
-        UUID userId = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
-        userDto = new UserDto(userId, "Morrow", "Montgomery", "Player1", "morrowmontgomery@email.com",
-                "player1", "2000-03-03T00:00:00.000+00:00", "2020-03-03T00:00:00.000+00:00");
+        userRegisterDto = new UserRegisterDto("Morrow", "Montgomery", "Player1", "morrowmontgomery@email.com",
+                "player1", LocalDate.parse("2000-03-03"));
     }
 
     @Test
-    @DisplayName("Serialization UserDto test")
+    @DisplayName("Serialization UserRegisterDto test")
     @SneakyThrows({JsonProcessingException.class})
     void rightSerializationTest() {
         String jsonResult = mapper
                 .writer(new DefaultPrettyPrinter().withArrayIndenter(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE))
-                .writeValueAsString(userDto);
-        String jsonExpected = new ResourceHelper(userJsonPath).readResourceAsString().orElse(null);
+                .writeValueAsString(userRegisterDto);
+        String jsonExpected = new ResourceHelper(userRegisterJsonPath).readResourceAsString().orElse(null);
         assertEquals(jsonExpected, jsonResult);
     }
 
     @Test
-    @DisplayName("Deserialization UserDto test")
+    @DisplayName("Deserialization UserRegisterDto test")
     @SneakyThrows(IOException.class)
     void rightDeserializationTest() {
-        String challengeJsonSource = new ResourceHelper(userJsonPath).readResourceAsString().orElse(null);
-        UserDto dtoResult = mapper.readValue(challengeJsonSource, UserDto.class);
-        assertThat(dtoResult).usingRecursiveComparison().isEqualTo(userDto);
+        String challengeJsonSource = new ResourceHelper(userRegisterJsonPath).readResourceAsString().orElse(null);
+        UserRegisterDto dtoResult = mapper.readValue(challengeJsonSource, UserRegisterDto.class);
+        assertThat(dtoResult).usingRecursiveComparison().isEqualTo(userRegisterDto);
     }
 
 }

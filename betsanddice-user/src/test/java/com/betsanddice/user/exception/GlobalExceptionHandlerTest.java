@@ -19,6 +19,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -33,10 +34,10 @@ class GlobalExceptionHandlerTest {
 
     private final HttpStatus BAD_REQUEST = HttpStatus.BAD_REQUEST;
     private final HttpStatus OK_REQUEST = HttpStatus.OK;
+    private final HttpStatus CONFLICT_REQUEST = HttpStatus.CONFLICT;
 
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
-
     private ResponseStatusException responseStatusException;
     private MethodArgumentNotValidException methodArgumentNotValidException;
 
@@ -104,23 +105,13 @@ class GlobalExceptionHandlerTest {
 
         ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleUserAlreadyExistsException(userAlreadyExistException);
 
-        assertEquals(OK_REQUEST, responseEntity.getStatusCode());
+        assertEquals(CONFLICT_REQUEST, responseEntity.getStatusCode());
         String responseBody = Objects.requireNonNull(responseEntity.getBody()).getMessage();
         assertTrue(responseBody.contains("User already exists"));
     }
-    @Test
-    void handleMethodArgumentNotValidException_Test() {
-        BindingResult bindingResult = Mockito.mock(BindingResult.class);
-        when(bindingResult.getFieldErrors()).thenReturn(List.of(new FieldError("object", "field", "errorMessage")));
-        when(methodArgumentNotValidException.getBindingResult()).thenReturn(bindingResult);
-
-        ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
-
-        MatcherAssert.assertThat(responseEntity, notNullValue());
-    }
 
     @Test
-    void TestHandleCrapsGameNotFoundException() {
+    void testHandleCrapsGameNotFoundException() {
         CrapsGameNotFoundException crapsGameNotFoundException = new CrapsGameNotFoundException("CrapsGame not found");
 
         ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleCrapsGameNotFoundException(crapsGameNotFoundException);
@@ -131,7 +122,18 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void handleMethodArgumentNotValidException_Return_ErrorMessage_Test() {
+    void testHandleMethodArgumentNotValidException() {
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.getFieldErrors()).thenReturn(List.of(new FieldError("object", "field", "errorMessage")));
+        when(methodArgumentNotValidException.getBindingResult()).thenReturn(bindingResult);
+
+        ResponseEntity<Map<String, String>> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
+
+        MatcherAssert.assertThat(responseEntity, notNullValue());
+    }
+
+    @Test
+    void testHandleMethodArgumentNotValidException_Return_ErrorMessage() {
         BindingResult bindingResult = Mockito.mock(BindingResult.class);
         FieldError fieldError = Mockito.mock(FieldError.class);
         when(fieldError.getField()).thenReturn("name");
@@ -140,13 +142,9 @@ class GlobalExceptionHandlerTest {
         when(bindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
         when(methodArgumentNotValidException.getBindingResult()).thenReturn(bindingResult);
 
-        ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
+        ResponseEntity<Map<String, String>> responseEntity = globalExceptionHandler
+                .handleMethodArgumentNotValidException(methodArgumentNotValidException);
 
         MatcherAssert.assertThat(responseEntity, notNullValue());
     }
 }
-
-
-
-
-

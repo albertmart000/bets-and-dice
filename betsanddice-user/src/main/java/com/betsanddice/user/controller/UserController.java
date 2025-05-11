@@ -1,7 +1,6 @@
 package com.betsanddice.user.controller;
 
 import com.betsanddice.user.annotations.ValidGenericPattern;
-import com.betsanddice.user.annotations.ValidUUID;
 import com.betsanddice.user.dto.GenericResultDto;
 import com.betsanddice.user.dto.UserCrapsGameStatsDto;
 import com.betsanddice.user.dto.UserDto;
@@ -62,7 +61,6 @@ public class UserController {
                     @ApiResponse(responseCode = "409", description = "User already exists.", content = {@Content(schema = @Schema())}),
             }
     )
-
     public Mono<ResponseEntity<UserDto>> registerUser(@Valid @RequestBody UserRegisterDto userRegisterDto) {
         return userService.registerUser(userRegisterDto)
                 .map(ResponseEntity::ok);
@@ -79,7 +77,7 @@ public class UserController {
                     @ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error")
             }
     )
-    public Mono<ResponseEntity<UserDto>> getOneUser(@PathVariable("userId") @ValidUUID(message = "Invalid UUID for user") String id) {
+    public Mono<ResponseEntity<UserDto>> getOneUser(@PathVariable("userId") String id) {
         return userService.getUserById(id)
                 .map(ResponseEntity.ok()::body);
     }

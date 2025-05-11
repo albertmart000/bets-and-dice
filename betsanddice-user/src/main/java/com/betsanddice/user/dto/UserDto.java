@@ -20,17 +20,17 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-@JsonPropertyOrder({"user_id", "nickname", "email", "password", "birthdate","registration_date"})
+@JsonPropertyOrder({"user_id", "name", "surname", "nickname", "email", "password", "birthdate","registration_date"})
 public class UserDto {
 
     @JsonProperty(value = "user_id")
     private UUID uuid;
 
-//    @JsonProperty(value = "name")
-//    private String name;
-//
-//    @JsonProperty(value = "surname")
-//    private String surname;
+    @JsonProperty(value = "name")
+    private String name;
+
+    @JsonProperty(value = "surname")
+    private String surname;
 
     @JsonProperty(value = "nickname")
     private String nickname;
@@ -41,11 +41,10 @@ public class UserDto {
     @JsonProperty(value = "password")
     private String password;
 
-    @JsonProperty(value = "registration_date")
-    private String registrationDate;
-
     @JsonProperty(value = "birthdate")
     private String birthdate;
-    //TODO: Add authorities and date
+
+    @JsonProperty(value = "registration_date")
+    private String registrationDate;
 
 }

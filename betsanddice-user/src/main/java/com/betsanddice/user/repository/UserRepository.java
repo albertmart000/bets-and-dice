@@ -14,6 +14,7 @@ public interface UserRepository extends ReactiveMongoRepository<UserDocument, UU
     Mono<Boolean> existsByUuid(UUID uuid);
     Mono<UserDocument> findByUuid(UUID uuid);
     Mono<UserDocument> findByEmail(String email);
+    Mono<UserDocument> findByNickname(String nickname);
     @Query(value = "{}", fields = "{'testingValues':0}")
     Flux<UserDocument> findAllByUuidNotNullExcludingTestingValues();
 }

@@ -35,18 +35,9 @@ class UserDocumentTest {
     }
 
     @Test
-    void getBirthdateTest() {
-        LocalDate birthdate = LocalDate.now();
-
-        UserDocument userDocument = new UserDocument(null, null, null, birthdate, null,
-                null, null, null);
-        assertEquals(birthdate, userDocument.getBirthdate());
-    }
-
-    @Test
     void getNickNameTest() {
         String nickname = "nickname";
-        UserDocument userDocument = new UserDocument(null, null, null, null, nickname,
+        UserDocument userDocument = new UserDocument(null, null, null, nickname, null,
                 null, null, null);
         assertEquals(nickname, userDocument.getNickname());
     }
@@ -54,8 +45,8 @@ class UserDocumentTest {
     @Test
     void getEmailTest() {
         String email = "email";
-        UserDocument userDocument = new UserDocument(null, null, null, null, null,
-                email, null, null);
+        UserDocument userDocument = new UserDocument(null, null, null, null, email,
+                null, null, null);
         assertEquals(email, userDocument.getEmail());
     }
 
@@ -63,8 +54,16 @@ class UserDocumentTest {
     void getPasswordTest() {
         String password = "password";
         UserDocument userDocument = new UserDocument(null, null, null, null, null,
-                null, password, null);
+                password, null, null);
         assertEquals(password, userDocument.getPassword());
+    }
+
+    @Test
+    void getBirthdateTest() {
+        LocalDate birthdate = LocalDate.now();
+        UserDocument userDocument = new UserDocument(null, null, null, null, null,
+                null, birthdate, null);
+        assertEquals(birthdate, userDocument.getBirthdate());
     }
 
     @Test

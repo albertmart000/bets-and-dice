@@ -20,19 +20,16 @@ import java.time.LocalDate;
 @Setter
 public class UserRegisterDto {
 
-//    @JsonProperty(value = "name")
-//    @NotBlank(message = "Name can't be empty.")
-//    @Size(min = 2, message = "Invalid Name: name should have at least 2 characters.")
-//    private String name;
-//
-//    @JsonProperty(value = "surname")
-//    @NotBlank(message = "Surname can't be empty." )
-//    @Size(min = 2, message = "Invalid Surname: surname should have at least 2 characters")
-//    private String surname;
+    @JsonProperty(value = "name")
+    @Size(min = 3, max = 20, message = "Invalid Name: name can't be empty and should have at least 3 characters and not more than 20.")
+    private String name;
+
+    @JsonProperty(value = "surname")
+    @Size(min = 3, max = 20, message = "Invalid Surname: Surname can't be empty and should have at least 3 characters and not more than 20.")
+    private String surname;
 
     @JsonProperty(value = "nickname")
-    @NotBlank(message = "Nickname can't be empty.")
-    @Size(min = 3, max = 20,  message = "Invalid Nickname: Nickname should have at least 2 characters and not more than 20")
+    @Size(min = 3, max = 20,  message = "Invalid Nickname: Nickname should have at least 3 characters and not more than 20")
     private String nickname;
 
     @JsonProperty(value = "email")
@@ -41,12 +38,12 @@ public class UserRegisterDto {
     private String email;
 
     @JsonProperty(value = "password")
-    @NotBlank(message = "Password can't be empty.")
-    @Size(min = 5, message = "Invalid Password: password should have at least 5 characters")
+    @Size(min = 5, message = "Invalid Password: password  can't be empty and should have at least 8 characters and not more than 20.")
     private String password;
 
     @JsonProperty(value = "birthdate")
     @NotNull(message = "Birthdate can't be empty.")
     @Past(message = "Invalid Birthdate: birthdate should be prior to the current one.")
     private LocalDate birthdate;
+
 }

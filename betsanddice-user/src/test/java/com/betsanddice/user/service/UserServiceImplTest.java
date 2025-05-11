@@ -3,6 +3,7 @@ package com.betsanddice.user.service;
 import com.betsanddice.user.document.UserDocument;
 import com.betsanddice.user.dto.GenericResultDto;
 import com.betsanddice.user.dto.UserDto;
+import com.betsanddice.user.dto.UserRegisterDto;
 import com.betsanddice.user.exception.BadUuidException;
 import com.betsanddice.user.exception.UserNotFoundException;
 import com.betsanddice.user.helper.DocumentToDtoConverter;
@@ -18,6 +19,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -39,16 +42,54 @@ class UserServiceImplTest {
     private final String validId = "706507d4-b89f-41eb-a7eb-41838d08a08f";
     private final UUID userUuid = UUID.fromString(validId);
     private final String invalidUuid = "invalid-uuid";
+
     UserDocument userDocument = new UserDocument();
     UserDto userDto = new UserDto();
 
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
+
         when(uuidValidator.validateUuid(validId)).thenReturn(Mono.just(userUuid));
         when(uuidValidator.validateUuid(invalidUuid)).thenReturn(Mono.error(new BadUuidException("Invalid UUID")));
         when(userRepository.findByUuid(userUuid)).thenReturn(Mono.just(userDocument));
         when(converter.fromDocumentToDto(userDocument, UserDto.class)).thenReturn(userDto);
+    }
+
+    @Test
+    void registerUser_NewAndValidParams_UserRegisteredSuccessfully() {
+        UserRegisterDto userRegisterDto = new UserRegisterDto("Morrow", "Montgomery", "Player1",
+                "player1@email.com", "player1", LocalDate.parse("2000-03-03"));
+
+        userDocument = UserDocument.builder()
+                .uuid(UUID.randomUUID())
+                .firstName("Morrow")
+                .surname("Montgomery")
+                .nickname("Player1")
+                .email("player1@email.com")
+                .password("player1")
+                .build();
+
+        UserDto expectedUserDto = new UserDto(userDocument.getUuid(), "Morrow", "Montgomery", "Player1",
+                "player1@email.com", "player1", "2000-03-03", LocalDateTime.now().toString()
+        );
+
+        when(userRepository.findByEmail(userRegisterDto.getEmail())).thenReturn(Mono.empty());
+        when(userRepository.findByNickname(userRegisterDto.getNickname())).thenReturn(Mono.empty());
+        when(userRepository.save(any(UserDocument.class))).thenReturn(Mono.just(userDocument));
+        when(converter.fromDocumentToDto(userDocument, UserDto.class)).thenReturn(expectedUserDto);
+
+        Mono<UserDto> result = userService.registerUser(userRegisterDto);
+
+        StepVerifier.create(result)
+                .expectNext(expectedUserDto)
+                .expectComplete()
+                .verify();
+
+        verify(userRepository).findByEmail(userRegisterDto.getEmail());
+        verify(userRepository).findByNickname(userRegisterDto.getNickname());
+        verify(userRepository).save(any(UserDocument.class));
+        verify(converter).fromDocumentToDto(userDocument, UserDto.class);
     }
 
     @Test

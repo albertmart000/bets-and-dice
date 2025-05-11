@@ -21,11 +21,11 @@ public class UserDocument {
     @Field(name = "_id")
     private UUID uuid;
 
-//    @Field(name = "name")
-//    private String firstName;
-//
-//    @Field(name = "surname")
-//    private String surname;
+    @Field(name = "name")
+    private String firstName;
+
+    @Field(name = "surname")
+    private String surname;
 
     @Field(name = "nickname")
     private String nickname;

@@ -36,12 +36,18 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Mono<UserDto> registerUser(UserRegisterDto userRegisterDto) {
         return userRepository.findByEmail(userRegisterDto.getEmail())
-                .flatMap(userByEmail -> Mono.<UserDto>error(new UserAlreadyExistException("User with email " +
-                        userRegisterDto.getEmail() + " already exists")))
-                .switchIfEmpty(userRepository.save(buildUserDocument(userRegisterDto))
+                .flatMap(userByEmail ->
+                        Mono.<UserDto>error(new UserAlreadyExistException("User with email " +
+                                userRegisterDto.getEmail() + " already exists")))
+                .doOnError(e -> log.error("Error occurred while registering user: {}", e.getMessage()))
+                .switchIfEmpty(userRepository.findByNickname(userRegisterDto.getNickname())
+                        .flatMap(userByNickname ->
+                                Mono.<UserDto>error(new UserAlreadyExistException("User with nickname " +
+                                        userRegisterDto.getNickname() + " already exists")))
+                        .doOnError(e -> log.error("Error occurred while registering user: {}", e.getMessage()))
+                        .switchIfEmpty(userRepository.save(buildUserDocument(userRegisterDto))
                                 .map(savedUser -> converter.fromDocumentToDto(savedUser, UserDto.class)))
-                .doOnSuccess(userDto ->log.info("User registered successfully with email: {}", userRegisterDto.getEmail()))
-                .doOnError(e ->log.error("Error occurred while registering user: {}", e.getMessage())
+                        .doOnSuccess(userDto -> log.info("User registered successfully with email: {}", userRegisterDto.getEmail()))
                 );
     }
 
@@ -73,15 +79,14 @@ public class UserServiceImpl implements IUserService {
     private UserDocument buildUserDocument(UserRegisterDto userRegisterDto) {
         return UserDocument.builder()
                 .uuid(UUID.randomUUID())
-//                .firstName(userRegisterDto.getName())
-//                .surname(userRegisterDto.getSurname())
+                .firstName(userRegisterDto.getName())
+                .surname(userRegisterDto.getSurname())
                 .birthdate(userRegisterDto.getBirthdate())
                 .nickname(userRegisterDto.getNickname())
                 .email(userRegisterDto.getEmail())
                 .password(userRegisterDto.getPassword())
                 .registrationDate(LocalDateTime.now())
                 .build();
-
     }
 
 }
