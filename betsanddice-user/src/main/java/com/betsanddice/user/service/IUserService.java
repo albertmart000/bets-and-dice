@@ -9,6 +9,7 @@ public interface IUserService {
 
     Mono<UserDto> registerUser (UserRegisterDto userRegisterDto);
     Mono<UserDto> getUserById(String id);
+    Mono<UserDto> getUserByEmail(String email);
     Mono<GenericResultDto<UserDto>> getAllUsers(int offset, int limit);
 
 }

@@ -66,7 +66,7 @@ public class UserController {
                 .map(ResponseEntity::ok);
     }
 
-    @GetMapping(path = "/users/{userId}")
+    @GetMapping(path = "/users/userById/{userId}")
     @Operation(
             operationId = "Get the information from a chosen user.",
             summary = "Get to see the User Data.",
@@ -77,8 +77,24 @@ public class UserController {
                     @ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error")
             }
     )
-    public Mono<ResponseEntity<UserDto>> getOneUser(@PathVariable("userId") String id) {
+    public Mono<ResponseEntity<UserDto>> getOneUserById(@PathVariable("userId") String id) {
         return userService.getUserById(id)
+                .map(ResponseEntity.ok()::body);
+    }
+
+    @GetMapping(path = "/users/userByEmail/{email}")
+    @Operation(
+            operationId = "Get the information from a chosen user.",
+            summary = "Get to see the User Data.",
+            description = "Sending the Email User through the URI to retrieve it from the database.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "HTTP Status OK", content = {@Content(schema = @Schema(implementation = UserDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "404", description = "The User with given Email was not found.", content = {@Content(schema = @Schema())}),
+                    @ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error")
+            }
+    )
+    public Mono<ResponseEntity<UserDto>> getOneUserByEmail(@PathVariable("email") String email) {
+        return userService.getUserByEmail(email)
                 .map(ResponseEntity.ok()::body);
     }
 
