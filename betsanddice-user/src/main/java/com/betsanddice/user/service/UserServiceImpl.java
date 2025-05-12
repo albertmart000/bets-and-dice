@@ -63,6 +63,15 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public Mono<UserDto> getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .switchIfEmpty(Mono.error(new UserNotFoundException("User with email" + email + " not found")))
+                .map(user -> converter.fromDocumentToDto(user, UserDto.class))
+                .doOnSuccess(userDto -> log.info("User found with email: {}", email))
+                .doOnError(error -> log.error("Error occurred while retrieving user: {}", error.getMessage()));
+    }
+
+    @Override
     public Mono<GenericResultDto<UserDto>> getAllUsers(int offset, int limit) {
         Mono<Long> countUsers = userRepository.count();
         Flux<UserDto> userDtoFlux = converter.fromDocumentFluxToDtoFlux(

@@ -173,12 +173,12 @@
 							"response": []
 						},
 						{
-							"name": "/localhost:8072/betsanddice/user/api/users/{userId}",
+							"name": "/localhost:8072/betsanddice/user/api/users/userById/{userId}",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8072/betsanddice/user/api/users/706507d4-b89f-41eb-a7eb-41838d08a08f",
+									"raw": "http://localhost:8072/betsanddice/user/api/users/userById/706507d4-b89f-41eb-a7eb-41838d08a08f",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -189,7 +189,32 @@
 										"user",
 										"api",
 										"users",
+										"userById",
 										"706507d4-b89f-41eb-a7eb-41838d08a08f"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/localhost:8072/betsanddice/user/api/users/userByEmail/{email}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8072/betsanddice/user/api/users/userByEmail/admin@email.com",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"betsanddice",
+										"user",
+										"api",
+										"users",
+										"userByEmail",
+										"admin@email.com"
 									]
 								}
 							},
@@ -299,18 +324,38 @@
 					"response": []
 				},
 				{
-					"name": "/users/{userId}",
+					"name": "/users/userById/{userId}",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_user}}/users/706507d4-b89f-41eb-a7eb-41838d08a08f",
+							"raw": "{{host_user}}/users/userById/706507d4-b89f-41eb-a7eb-41838d08a08f",
 							"host": [
 								"{{host_user}}"
 							],
 							"path": [
 								"users",
+								"userById",
 								"706507d4-b89f-41eb-a7eb-41838d08a08f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/userByEmail/{email}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_user}}/users/userByEmail/admin@email.com",
+							"host": [
+								"{{host_user}}"
+							],
+							"path": [
+								"users",
+								"userByEmail",
+								"admin@email.com"
 							]
 						}
 					},
