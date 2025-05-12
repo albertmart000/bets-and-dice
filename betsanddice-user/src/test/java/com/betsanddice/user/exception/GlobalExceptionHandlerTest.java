@@ -1,6 +1,7 @@
 package com.betsanddice.user.exception;
 
 import com.betsanddice.user.dto.MessageDto;
+import jakarta.validation.ConstraintViolationException;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +45,7 @@ class GlobalExceptionHandlerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        globalExceptionHandler = new GlobalExceptionHandler();
         responseStatusException = mock(ResponseStatusException.class);
         methodArgumentNotValidException = mock(MethodArgumentNotValidException.class);
     }
@@ -147,4 +149,14 @@ class GlobalExceptionHandlerTest {
 
         MatcherAssert.assertThat(responseEntity, notNullValue());
     }
+
+    @Test
+    void testHandleValidationExceptions() {
+        ConstraintViolationException exception = new ConstraintViolationException("Validation failed", null);
+        ResponseEntity<String> response = globalExceptionHandler.handleValidationExceptions(exception);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Validation failed", response.getBody());
+    }
+
 }

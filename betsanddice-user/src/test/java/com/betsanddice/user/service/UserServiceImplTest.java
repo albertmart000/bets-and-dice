@@ -39,10 +39,6 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
-    private final String validId = "706507d4-b89f-41eb-a7eb-41838d08a08f";
-    private final UUID userUuid = UUID.fromString(validId);
-    private final String invalidUuid = "invalid-uuid";
-
     UserDocument userDocument = new UserDocument();
     UserDto userDto = new UserDto();
 
@@ -50,10 +46,6 @@ class UserServiceImplTest {
     void setup() {
         MockitoAnnotations.openMocks(this);
 
-        when(uuidValidator.validateUuid(validId)).thenReturn(Mono.just(userUuid));
-        when(uuidValidator.validateUuid(invalidUuid)).thenReturn(Mono.error(new BadUuidException("Invalid UUID")));
-        when(userRepository.findByUuid(userUuid)).thenReturn(Mono.just(userDocument));
-        when(converter.fromDocumentToDto(userDocument, UserDto.class)).thenReturn(userDto);
     }
 
     @Test
@@ -94,6 +86,13 @@ class UserServiceImplTest {
 
     @Test
     void getUserById_ValidId_UserFound() {
+        String validId = "706507d4-b89f-41eb-a7eb-41838d08a08f";
+        UUID userUuid = UUID.fromString(validId);
+
+        when(uuidValidator.validateUuid(validId)).thenReturn(Mono.just(userUuid));
+        when(userRepository.findByUuid(userUuid)).thenReturn(Mono.just(userDocument));
+        when(converter.fromDocumentToDto(userDocument, UserDto.class)).thenReturn(userDto);
+
         Mono<UserDto> resultDto = userService.getUserById(validId);
 
         StepVerifier.create(resultDto)
@@ -108,6 +107,10 @@ class UserServiceImplTest {
 
     @Test
     void getUserById_InvalidId_ErrorThrown() {
+        String invalidUuid = "invalid-uuid";
+
+        when(uuidValidator.validateUuid(invalidUuid)).thenReturn(Mono.error(new BadUuidException("Invalid UUID")));
+        when(userRepository.findByUuid(any(UUID.class))).thenReturn(Mono.empty());
 
         Mono<UserDto> result = userService.getUserById(invalidUuid);
 
@@ -133,6 +136,40 @@ class UserServiceImplTest {
                 .expectErrorMatches(error ->
                         error instanceof UserNotFoundException
                                 && error.getMessage().equals("User with id " + nonExistId + " not found.")
+                );
+    }
+
+    @Test
+    void getUserByEmail_ValidEmail_UserFound() {
+        String validEmail = "valid@email.com";
+
+        when(userRepository.findByEmail(validEmail)).thenReturn(Mono.just(userDocument));
+        when(converter.fromDocumentToDto(userDocument, UserDto.class)).thenReturn(userDto);
+
+        Mono<UserDto> resultDto = userService.getUserByEmail(validEmail);
+        StepVerifier.create(resultDto)
+                .expectNext(userDto)
+                .expectComplete()
+                .verify();
+
+        verify(userRepository).findByEmail(validEmail);
+        verify(converter).fromDocumentToDto(userDocument, UserDto.class);
+    }
+
+    @Test
+    void getUserByEmail_NonExistId_ErrorThrown() {
+        String nonExistEmail = "nonExist@email";
+
+        when(userRepository.findByEmail(nonExistEmail)).thenReturn(Mono.empty());
+        when(converter.fromDocumentToDto(userDocument, UserDto.class)).thenReturn(userDto);
+        when(userRepository.findByEmail(nonExistEmail)).thenReturn(Mono.empty());
+
+        Mono<UserDto> result = userService.getUserByEmail(nonExistEmail);
+
+        StepVerifier.create(result)
+                .expectErrorMatches(error ->
+                        error instanceof UserNotFoundException
+                                && error.getMessage().equals("User with email " + nonExistEmail + " not found.")
                 );
     }
 

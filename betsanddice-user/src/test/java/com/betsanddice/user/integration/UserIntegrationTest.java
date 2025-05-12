@@ -28,7 +28,6 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
@@ -173,10 +172,10 @@ class UserIntegrationTest {
     }
 
     @Test
-    void getOneUser_ValidId_UserReturned() {
+    void getUserById_ValidId_UserReturned() {
         String VALID_UUID = "81099a9e-0d59-4571-a04c-31a08a711e3b";
         webTestClient.get()
-                .uri(USER_BASE_URL + "/users/{userId}", VALID_UUID)
+                .uri(USER_BASE_URL + "/users/userById/{userId}", VALID_UUID)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
@@ -187,13 +186,35 @@ class UserIntegrationTest {
     }
 
     @Test
-    void getOneUser_InvalidId_UserNotFoundReturned() {
-        String INVALID_UUID = "ce020780-1a66-4587-bec4-284c8ca80296";
+    void getUserById_InvalidId_BadRequestReturned() {
+        String INVALID_UUID = "ce020780-1a66-4587-bec4";
         webTestClient.get()
-                .uri(USER_BASE_URL + "/users/{userId}", INVALID_UUID)
+                .uri(USER_BASE_URL + "/users/userById/{userId}", INVALID_UUID)
                 .exchange()
-                .expectStatus()
-                .isEqualTo(OK);
+                .expectStatus().isBadRequest();
+    }
+
+    @Test
+    void getUserByEmail_ValidEmail_UserReturned() {
+        String VALID_EMAIL = "admin@email.com";
+        webTestClient.get()
+                .uri(USER_BASE_URL + "/users/userByEmail/{email}", VALID_EMAIL)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(UserDto.class)
+                .value(dto -> {
+                    assert dto != null;
+                });
+    }
+
+    @Test
+    void geUserByEmail_InvalidEmail_BadRequestReturned() {
+        String INVALID_EMAIL = "admin@email";
+        webTestClient.get()
+                .uri(USER_BASE_URL + "/users/userByEmail/{email}", INVALID_EMAIL)
+                .exchange()
+                .expectStatus().isBadRequest();
     }
 
     @Test
