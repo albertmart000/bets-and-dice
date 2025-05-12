@@ -1,5 +1,6 @@
 package com.betsanddice.user.controller;
 
+import com.betsanddice.user.annotations.ValidEmail;
 import com.betsanddice.user.annotations.ValidGenericPattern;
 import com.betsanddice.user.dto.GenericResultDto;
 import com.betsanddice.user.dto.UserCrapsGameStatsDto;
@@ -77,10 +78,11 @@ public class UserController {
                     @ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error")
             }
     )
-    public Mono<ResponseEntity<UserDto>> getOneUserById(@PathVariable("userId") String id) {
+    public Mono<ResponseEntity<UserDto>> getUserById(@PathVariable("userId") String id) {
         return userService.getUserById(id)
                 .map(ResponseEntity.ok()::body);
     }
+
 
     @GetMapping(path = "/users/userByEmail/{email}")
     @Operation(
@@ -92,8 +94,9 @@ public class UserController {
                     @ApiResponse(responseCode = "404", description = "The User with given Email was not found.", content = {@Content(schema = @Schema())}),
                     @ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error")
             }
+
     )
-    public Mono<ResponseEntity<UserDto>> getOneUserByEmail(@PathVariable("email") String email) {
+    public Mono<ResponseEntity<UserDto>> getUserByEmail(@PathVariable @ValidEmail String email) {
         return userService.getUserByEmail(email)
                 .map(ResponseEntity.ok()::body);
     }
