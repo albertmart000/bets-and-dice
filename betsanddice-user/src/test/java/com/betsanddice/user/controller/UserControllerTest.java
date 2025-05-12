@@ -116,14 +116,31 @@ class UserControllerTest {
     }
 
     @Test
-    void getOneUser_ValidId_UserReturned() {
+    void getUser_ValidId_UserReturned() {
         String userId = "valid-user-id";
         UserDto expectedUserDto = new UserDto();
 
         when(userService.getUserById(userId)).thenReturn(Mono.just(expectedUserDto));
 
         webTestClient.get()
-                .uri(USER_BASE_URL + "/users/{userId}", userId)
+                .uri(USER_BASE_URL + "/users/userById/{userId}", userId)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(UserDto.class)
+                .value(dto -> {
+                    assert dto != null;
+                });
+    }
+
+    @Test
+    void getUser_ValidEmail_UserReturned() {
+        String email= "admin@email.com";
+        UserDto expectedUserDto = new UserDto();
+
+        when(userService.getUserByEmail(email)).thenReturn(Mono.just(expectedUserDto));
+
+        webTestClient.get()
+                .uri(USER_BASE_URL + "/users/userByEmail/{email}", email)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(UserDto.class)
