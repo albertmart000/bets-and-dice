@@ -244,6 +244,56 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "betsanddice-auth",
+					"item": [
+						{
+							"name": "/localhost:8072/betsanddice/auth/api/test",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8072/betsanddice/auth/api/test",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"betsanddice",
+										"auth",
+										"api",
+										"test"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/localhost:8072/betsanddice/auth/api/user/{email}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8072/betsanddice/auth/api/user/admin@email.com",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"betsanddice",
+										"auth",
+										"api",
+										"user",
+										"admin@email.com"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -539,12 +589,47 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "betsanddice-auth",
+			"item": [
+				{
+					"name": "/test",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_auth}}/test",
+							"host": [
+								"{{host_auth}}"
+							],
+							"path": [
+								"test"
+							]
+						}
+					},
+					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "/user/{email}",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{host_auth}}/user/admin@email.com",
+							"host": [
+								"{{host_auth}}"
+							],
+							"path": [
+								"user",
+								"admin@email.com"
+							]
+						}
 					},
 					"response": []
 				}
