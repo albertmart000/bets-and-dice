@@ -2,6 +2,7 @@ package com.betsanddice.auth.controller;
 
 import com.betsanddice.auth.dto.User;
 import com.betsanddice.auth.service.IUserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,18 @@ public class AuthController {
         this.userService = userService;
     }
 
-    // @Operation(summary = "Testing the App")
+    @Operation(summary = "Testing the App")
     @GetMapping(value = "/test")
     public String test() {
         log.info("** Greetings from the logger **");
         return "Hello from Auth!!!";
     }
+
+    @Operation(
+            operationId = "getUserDetails",
+            summary = "Retrieve User",
+            description = "Retrieves user details for the given email if it exists in the database."
+    )
 
     @GetMapping("/user/{email}")
     public Mono<ResponseEntity<User>> getUserDetails(@PathVariable("email") String email) {

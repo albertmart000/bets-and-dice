@@ -9,6 +9,9 @@ spring:
   config:
     import: "optional:configserver:http://localhost:8071/"
 
+server:
+  port: 8099
+
 config:
   webclient:
     #para local:
@@ -30,9 +33,6 @@ management:
   info:
     env:
       enabled: true
-
-server:
-  port: 8099
 
 eureka:
   instance:
