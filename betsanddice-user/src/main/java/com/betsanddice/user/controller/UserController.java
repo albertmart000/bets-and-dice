@@ -7,7 +7,7 @@ import com.betsanddice.user.dto.UserCrapsGameStatsDto;
 import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.dto.UserRegisterDto;
 import com.betsanddice.user.service.IUserService;
-import com.betsanddice.user.service.client.ICrapsGameClientService;
+import com.betsanddice.user.service.client.ICrapsClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,9 +37,9 @@ public class UserController {
     private static final String INVALID_PARAM = "Invalid parameter";
 
     IUserService userService;
-    ICrapsGameClientService crapsGameClient;
+    ICrapsClientService crapsGameClient;
 
-    public UserController(IUserService userService, ICrapsGameClientService crapsGameClient) {
+    public UserController(IUserService userService, ICrapsClientService crapsGameClient) {
         this.userService = userService;
         this.crapsGameClient = crapsGameClient;
     }
