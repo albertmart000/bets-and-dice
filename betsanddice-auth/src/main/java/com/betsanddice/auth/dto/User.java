@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-
 @Component
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @AllArgsConstructor
@@ -24,5 +23,8 @@ public class User {
 
     @JsonProperty(value = "email")
     private String email;
+
+    @JsonProperty(value = "password")
+    private String password;
 
 }

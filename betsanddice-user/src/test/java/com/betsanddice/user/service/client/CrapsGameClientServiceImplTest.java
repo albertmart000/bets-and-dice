@@ -62,9 +62,6 @@ class CrapsGameClientServiceImplTest {
         when(uuidValidator.validateUuid(validId)).thenReturn(Mono.just(userUuid));
         when(userRepository.findById(userUuid)).thenReturn(Mono.just(userDocument));
 
-
-
-
         mockWebServer.enqueue(new MockResponse()
                 .setBody(getMockedResponse())
                 .addHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE));
