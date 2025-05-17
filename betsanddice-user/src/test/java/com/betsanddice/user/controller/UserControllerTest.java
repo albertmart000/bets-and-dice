@@ -6,7 +6,7 @@ import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.dto.UserRegisterDto;
 import com.betsanddice.user.exception.UserAlreadyExistException;
 import com.betsanddice.user.service.IUserService;
-import com.betsanddice.user.service.client.ICrapsGameClientService;
+import com.betsanddice.user.service.client.ICrapsClientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
@@ -35,7 +35,7 @@ class UserControllerTest {
     private IUserService userService;
 
     @MockitoBean
-    private ICrapsGameClientService crapsGameClientService;
+    private ICrapsClientService crapsGameClientService;
 
     UserDto userDto1 = new UserDto();
     UserDto userDto2 = new UserDto();

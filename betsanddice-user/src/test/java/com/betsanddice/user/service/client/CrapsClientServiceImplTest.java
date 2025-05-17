@@ -23,7 +23,7 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.when;
 
-class CrapsGameClientServiceImplTest {
+class CrapsClientServiceImplTest {
 
     @Mock
     private static MockWebServer mockWebServer;
@@ -35,7 +35,7 @@ class CrapsGameClientServiceImplTest {
     private static StringToUuidValidator uuidValidator;
 
     @InjectMocks
-    private static CrapsGameClientServiceImpl crapsGameClientServiceToTest;
+    private static CrapsClientServiceImpl crapsGameClientServiceToTest;
 
     private final String validId = "706507d4-b89f-41eb-a7eb-41838d08a08f";
     private final UUID userUuid = UUID.fromString(validId);
@@ -48,7 +48,7 @@ class CrapsGameClientServiceImplTest {
         WebClient mockedWebClient = WebClient.builder()
                 .baseUrl(mockWebServer.url("/").toString())
                 .build();
-        crapsGameClientServiceToTest = new CrapsGameClientServiceImpl(userRepository,
+        crapsGameClientServiceToTest = new CrapsClientServiceImpl(userRepository,
                 uuidValidator, mockedWebClient);
     }
 
