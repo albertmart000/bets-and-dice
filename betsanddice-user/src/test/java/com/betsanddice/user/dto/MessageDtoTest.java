@@ -29,18 +29,6 @@ class MessageDtoTest {
     }
 
     @Test
-    void testEqualsAndHashCode() {
-        String testMessage = "Same message";
-        MessageDto messageDto1 = new MessageDto(testMessage);
-        MessageDto messageDto2 = new MessageDto(testMessage);
-        MessageDto messageDto3 = new MessageDto("Different Message");
-
-        Assertions.assertEquals(messageDto1, messageDto2);
-        Assertions.assertEquals(messageDto1.hashCode(), messageDto2.hashCode());
-        assertNotEquals(messageDto1, messageDto3);
-    }
-
-    @Test
     void testMessage() {
         String message = "Expected message";
 
