@@ -12,12 +12,17 @@ public class GatewayRoutesConfig {
     public RouteLocator betsanddiceRouteConfig(RouteLocatorBuilder routeLocatorBuilder) {
         return routeLocatorBuilder.routes()
                 .route(p -> p
-                        .path("/betsanddice/craps/**")
-                        .filters( f -> f.rewritePath("/betsanddice/craps/(?<segment>.*)","/${segment}"))
-                        .uri("lb://BETSANDDICE-CRAPS"))
+                        .path("/betsanddice/auth/**")
+                        .filters( f -> f.rewritePath("/betsanddice/auth/(?<segment>.*)","/${segment}"))
+                        .uri("lb://BETSANDDICE-AUTH"))
                 .route(p -> p
                         .path("/betsanddice/user/**")
                         .filters( f -> f.rewritePath("/betsanddice/user/(?<segment>.*)","/${segment}"))
-                        .uri("lb://BETSANDDICE-USER")).build();
+                        .uri("lb://BETSANDDICE-USER"))
+                .route(p -> p
+                        .path("/betsanddice/craps/**")
+                        .filters( f -> f.rewritePath("/betsanddice/craps/(?<segment>.*)","/${segment}"))
+                        .uri("lb://BETSANDDICE-CRAPS"))
+                .build();
     }
 }

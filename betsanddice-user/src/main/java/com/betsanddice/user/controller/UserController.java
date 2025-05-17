@@ -90,7 +90,7 @@ public class UserController {
             summary = "Get to see the User Data.",
             description = "Sending the Email User through the URI to retrieve it from the database.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "HTTP Status OK", content = {@Content(schema = @Schema(implementation = UserDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "200", description = "User retrieved successfully", content = {@Content(schema = @Schema(implementation = UserDto.class), mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404", description = "The User with given Email was not found.", content = {@Content(schema = @Schema())}),
                     @ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error")
             }

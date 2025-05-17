@@ -1,8 +1,58 @@
 spring:
   application:
     name: "betsanddice-auth"
+  profiles:
+    active: "dev"
   cloud:
     compatibility-verifier:
       enabled: false
   config:
     import: "optional:configserver:http://localhost:8071/"
+
+server:
+  port: 8099
+
+config:
+  webclient:
+    #para local:
+    host: http://localhost:8094
+    #para docker:
+    #host: http://betsanddice-user:8094
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      access: unrestricted
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui-custom.html"
+    operationsSorted: method
+  api-docs:
+    enable: true
+    path: "/api-docs"
+
+info:
+  app:
+    name: "betsanddice-auth"
+    description: "Bet-And-Dice Auth Application"
+    version: "1.0.0"
