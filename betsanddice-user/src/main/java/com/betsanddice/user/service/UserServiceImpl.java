@@ -1,6 +1,7 @@
 package com.betsanddice.user.service;
 
 import com.betsanddice.user.document.UserDocument;
+import com.betsanddice.user.document.enums.Role;
 import com.betsanddice.user.dto.GenericResultDto;
 import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.dto.UserRegisterDto;
@@ -95,6 +96,7 @@ public class UserServiceImpl implements IUserService {
                 .email(userRegisterDto.getEmail())
                 .password(userRegisterDto.getPassword())
                 .registrationDate(LocalDateTime.now())
+                .role(Role.PLAYER)
                 .build();
     }
 
