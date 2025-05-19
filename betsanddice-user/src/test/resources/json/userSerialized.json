@@ -6,5 +6,6 @@
   "email" : "morrowmontgomery@email.com",
   "password" : "player1",
   "birthdate" : "2000-03-03T00:00:00.000+00:00",
-  "registration_date" : "2020-03-03T00:00:00.000+00:00"
+  "registration_date" : "2020-03-03T00:00:00.000+00:00",
+  "role" : "PLAYER"
 }

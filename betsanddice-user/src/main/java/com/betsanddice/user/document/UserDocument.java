@@ -1,5 +1,6 @@
 package com.betsanddice.user.document;
 
+import com.betsanddice.user.document.enums.Role;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,8 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -41,5 +41,8 @@ public class UserDocument {
 
     @Field(name="registration_date")
     private LocalDateTime registrationDate;
+
+    @Field(name ="role")
+    private Role role;
 
 }

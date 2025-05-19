@@ -59,7 +59,7 @@ class UserControllerTest {
                 "player1", LocalDate.parse("2000-03-03"));
 
         UserDto expectedUserDto = new UserDto(userUuid, "Morrow", "Montgomery", "Player1", "morrowmontgomery@email.com",
-                "player1", "2000-03-03", "2025-05-11T00:00:00");
+                "player1", "2000-03-03", "2025-05-11T00:00:00", "PLAYER");
 
         when(userService.registerUser(any())).thenReturn(Mono.just(expectedUserDto));
 

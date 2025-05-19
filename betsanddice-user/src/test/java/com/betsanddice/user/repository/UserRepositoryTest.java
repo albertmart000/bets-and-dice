@@ -1,6 +1,7 @@
 package com.betsanddice.user.repository;
 
 import com.betsanddice.user.document.UserDocument;
+import com.betsanddice.user.document.enums.Role;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
@@ -57,13 +58,13 @@ class UserRepositoryTest {
         userRepository.deleteAll().block();
 
         UserDocument user1 = new UserDocument(uuidUser1, "Morrow", "Montgomery", "Player1",
-                emailUser1, nicknameUser1, LocalDate.now(), LocalDateTime.now());
+                emailUser1, nicknameUser1, LocalDate.now(), LocalDateTime.now(), Role.PLAYER);
 
         UserDocument user2 = new UserDocument(uuidUser2, "Morrow", "Montgomery", "Player2",
-                emailUser2, nicknameUser2, LocalDate.now(), LocalDateTime.now());
+                emailUser2, nicknameUser2, LocalDate.now(), LocalDateTime.now(), Role.PLAYER);
 
         UserDocument user3 = new UserDocument(uuidUser3, "Morrow", "Montgomery", "Player3",
-                emailUser3, nicknameUser3, LocalDate.now(), LocalDateTime.now());
+                emailUser3, nicknameUser3, LocalDate.now(), LocalDateTime.now(), Role.PLAYER);
 
         userRepository.saveAll(Flux.just(user1, user2, user3)).blockLast();
     }

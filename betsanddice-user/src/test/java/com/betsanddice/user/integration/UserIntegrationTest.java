@@ -1,6 +1,7 @@
 package com.betsanddice.user.integration;
 
 import com.betsanddice.user.document.UserDocument;
+import com.betsanddice.user.document.enums.Role;
 import com.betsanddice.user.dto.UserCrapsGameStatsDto;
 import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.dto.UserRegisterDto;
@@ -64,11 +65,11 @@ class UserIntegrationTest {
         userRepository.deleteAll().block();
 
         UserDocument user1 = new UserDocument(userId1, "Morrow", "Montgomery", "Player1",
-                "user1@email.com", "player1", LocalDate.now(), LocalDateTime.now());
+                "user1@email.com", "player1", LocalDate.now(), LocalDateTime.now(), Role.PLAYER);
         UserDocument user2 = new UserDocument(userId2, "Morrow", "Montgomery", "Player2",
-                "user2@email.com", "player2", LocalDate.now(), LocalDateTime.now());
+                "user2@email.com", "player2", LocalDate.now(), LocalDateTime.now(), Role.PLAYER);
         UserDocument user3 = new UserDocument(userId3, "Morrow", "Montgomery", "Player3",
-                "user3@email.com", "player3", LocalDate.now(), LocalDateTime.now());
+                "user3@email.com", "player3", LocalDate.now(), LocalDateTime.now(), Role.PLAYER);
 
         userRepository.saveAll(Flux.just(user1, user2, user3)).blockLast();
     }

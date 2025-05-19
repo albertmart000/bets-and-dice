@@ -1,21 +1,19 @@
 package com.betsanddice.auth.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.*;
-import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@Component
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter
-@Setter
-@JsonPropertyOrder({"user_id", "email"})
+@JsonPropertyOrder({"user_id", "email", "password", "role"})
 public class User {
 
     @JsonProperty(value = "user_id")
@@ -26,5 +24,8 @@ public class User {
 
     @JsonProperty(value = "password")
     private String password;
+
+    @JsonProperty(value = "role")
+    private String role;
 
 }

@@ -1,6 +1,7 @@
 package com.betsanddice.user.helper;
 
 import com.betsanddice.user.document.UserDocument;
+import com.betsanddice.user.document.enums.Role;
 import com.betsanddice.user.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,13 +36,13 @@ class UserDocumentToDtoConverterTest {
         LocalDateTime registered = LocalDateTime.of(2023, 1, 31, 12, 0, 0);
 
         userDocument1 = new UserDocument(userId1, "Morrow", "Montgomery", "Player1", "user1@email.com",
-                "player1",  birthdate,registered);
+                "player1",  birthdate, registered, Role.PLAYER);
         userDocument2 = new UserDocument(userId2, "Morrow", "Montgomery", "Player2", "user2@email.com",
-                "player2", birthdate,registered);
+                "player2", birthdate, registered, Role.PLAYER);
         userDto1 = new UserDto(userId1, "Morrow", "Montgomery", "Player1", "user1@email.com", "player1",
-                "2000-03-03", "2023-01-31");
+                "2000-03-03", "2023-01-31", "PLAYER");
         userDto2 = new UserDto(userId2, "Morrow", "Montgomery", "Player2", "user2@email.com", "player2",
-                "2000-03-03", "2023-01-31");
+                "2000-03-03", "2023-01-31", "PLAYER");
 
     }
 

@@ -1,6 +1,7 @@
 package com.betsanddice.user.service;
 
 import com.betsanddice.user.document.UserDocument;
+import com.betsanddice.user.document.enums.Role;
 import com.betsanddice.user.dto.GenericResultDto;
 import com.betsanddice.user.dto.UserDto;
 import com.betsanddice.user.dto.UserRegisterDto;
@@ -60,10 +61,13 @@ class UserServiceImplTest {
                 .nickname("Player1")
                 .email("player1@email.com")
                 .password("player1")
+                .birthdate(LocalDate.parse("2000-03-03"))
+                .registrationDate(LocalDateTime.now())
+                .role(Role.PLAYER)
                 .build();
 
         UserDto expectedUserDto = new UserDto(userDocument.getUuid(), "Morrow", "Montgomery", "Player1",
-                "player1@email.com", "player1", "2000-03-03", LocalDateTime.now().toString()
+                "player1@email.com", "player1", "2000-03-03", LocalDateTime.now().toString(), "PLAYER"
         );
 
         when(userRepository.findByEmail(userRegisterDto.getEmail())).thenReturn(Mono.empty());
