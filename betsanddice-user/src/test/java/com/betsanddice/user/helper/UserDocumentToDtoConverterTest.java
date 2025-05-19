@@ -40,9 +40,9 @@ class UserDocumentToDtoConverterTest {
         userDocument2 = new UserDocument(userId2, "Morrow", "Montgomery", "Player2", "user2@email.com",
                 "player2", birthdate, registered, Role.PLAYER);
         userDto1 = new UserDto(userId1, "Morrow", "Montgomery", "Player1", "user1@email.com", "player1",
-                "2000-03-03", "2023-01-31");
+                "2000-03-03", "2023-01-31", "PLAYER");
         userDto2 = new UserDto(userId2, "Morrow", "Montgomery", "Player2", "user2@email.com", "player2",
-                "2000-03-03", "2023-01-31");
+                "2000-03-03", "2023-01-31", "PLAYER");
 
     }
 

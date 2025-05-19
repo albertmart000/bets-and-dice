@@ -34,7 +34,7 @@ class UserDtoTest {
     void setUp() {
         UUID userId = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
         userDto = new UserDto(userId, "Morrow", "Montgomery", "Player1", "morrowmontgomery@email.com",
-                "player1", "2000-03-03T00:00:00.000+00:00", "2020-03-03T00:00:00.000+00:00");
+                "player1", "2000-03-03T00:00:00.000+00:00", "2020-03-03T00:00:00.000+00:00", "PLAYER");
     }
 
     @Test

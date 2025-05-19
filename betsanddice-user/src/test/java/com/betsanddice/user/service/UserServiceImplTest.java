@@ -67,7 +67,7 @@ class UserServiceImplTest {
                 .build();
 
         UserDto expectedUserDto = new UserDto(userDocument.getUuid(), "Morrow", "Montgomery", "Player1",
-                "player1@email.com", "player1", "2000-03-03", LocalDateTime.now().toString()
+                "player1@email.com", "player1", "2000-03-03", LocalDateTime.now().toString(), "PLAYER"
         );
 
         when(userRepository.findByEmail(userRegisterDto.getEmail())).thenReturn(Mono.empty());

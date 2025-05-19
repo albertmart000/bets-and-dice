@@ -33,7 +33,7 @@ class UserTest {
     @BeforeEach
     void setUp() {
         UUID userId = UUID.fromString("81099a9e-0d59-4571-a04c-31a08a711e3b");
-        user = new User(userId, "morrowmontgomery@email.com", "player1");
+        user = new User(userId, "morrowmontgomery@email.com", "player1", "PLAYER");
     }
 
     @Test
