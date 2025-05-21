@@ -13,4 +13,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.ok().body(new MessageDto(ex.getMessage()));
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<MessageDto> handleUserNotFoundException(UserNotFoundException ex) {
+        return ResponseEntity.ok().body(new MessageDto(ex.getMessage()));
+    }
 }

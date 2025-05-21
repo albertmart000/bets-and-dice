@@ -4,14 +4,18 @@ import com.betsanddice.auth.dto.MessageDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class GlobalExceptionHandlerTest {
 
-   private GlobalExceptionHandler globalExceptionHandler;
+    private final HttpStatus OK_REQUEST = HttpStatus.OK;
+
+    private GlobalExceptionHandler globalExceptionHandler;
 
     @BeforeEach
     void setUp() {
@@ -31,4 +35,16 @@ class GlobalExceptionHandlerTest {
         assertNotNull(response.getBody());
         assertEquals(errorMessage, response.getBody().getMessage());
     }
+
+    @Test
+    void testHandleUserNotFoundException() {
+        UserNotFoundException userNotFoundException = new UserNotFoundException("User not found");
+
+        ResponseEntity<MessageDto> responseEntity = globalExceptionHandler.handleUserNotFoundException(userNotFoundException);
+
+        assertEquals(OK_REQUEST, responseEntity.getStatusCode());
+        String responseBody = Objects.requireNonNull(responseEntity.getBody()).getMessage();
+        assertTrue(responseBody.contains("User not found"));
+    }
+
 }
